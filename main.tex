@@ -1,0 +1,126 @@
+% arara: pdflatex
+% arara: bibtex
+% arara: pdflatex
+% arara: pdflatex
+
+\documentclass[twoside,a4paper,11pt]{book}
+\usepackage[english]{babel}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{url}
+\usepackage[pdftex]{graphicx}
+\usepackage{a4wide}
+\usepackage{geometry}
+\usepackage[backend=bibtex]{biblatex}
+\usepackage{hyperref}
+\usepackage{subfiles}
+\usepackage[normalsize]{subfigure}
+\usepackage{color}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage[normalem]{ulem}
+\usepackage{float}
+\usepackage{enumitem}
+\usepackage{mathtools}
+\usepackage{listings}
+\usepackage{textcomp}
+\usepackage{tikz}
+\usepackage{verbatim}
+\usepackage{forest}
+
+\setcounter{tocdepth}{4}
+\setcounter{secnumdepth}{4}
+
+% For using margin notes instead of marginpar
+\usepackage{marginnote}
+% Margin notes smaller that default
+\renewcommand*{\marginfont}{\footnotesize}
+\newcommand{\myparagraph}[1]{\paragraph{#1}\mbox{}\\}
+
+\addto\captionsenglish{\renewcommand{\chaptername}{Capítulo}}
+\addto\captionsenglish{\renewcommand{\contentsname}{Índice}}
+\addto\captionsenglish{\renewcommand{\listfigurename}{Lista de figuras}}
+
+\lstset{
+    backgroundcolor=\color[rgb]{0.95, 0.95, 0.95},
+    tabsize=2,
+    rulecolor=,
+    basicstyle=\scriptsize,
+    upquote=true,
+    aboveskip={1.5\baselineskip},
+    columns=fixed,
+    showstringspaces=false,
+    extendedchars=true,
+    breaklines=true,
+    prebreak = \raisebox{0ex}[0ex][0ex]{\ensuremath{\hookleftarrow}},
+    frame=single,
+    showtabs=false,
+    showspaces=false,
+    showstringspaces=false,
+    identifierstyle=\ttfamily,
+    keywordstyle=\color[rgb]{1.0,0,0},
+    keywordstyle=[1]\color[rgb]{0,0,0.75},
+    keywordstyle=[2]\color[rgb]{0.5,0.0,0.0},
+    keywordstyle=[3]\color[rgb]{0.127,0.427,0.514},
+    keywordstyle=[4]\color[rgb]{0.4,0.4,0.4},
+    commentstyle=\color[rgb]{0.133,0.545,0.133},
+    stringstyle=\color[rgb]{0.639,0.082,0.082},
+}
+
+\lstdefinestyle{java} {
+    language=Java,
+    morekeywords={record}
+}
+
+
+%Macros Propias
+%********
+\newcommand{\basictree}[1]{\begin{forest}
+    for tree={
+        font=\ttfamily,
+        grow'=0,
+        child anchor=west,
+        parent anchor=south,
+        anchor=west,
+        calign=first,
+        edge path={
+            \noexpand\path [draw, \forestoption{edge}]
+            (!u.south west) +(7.5pt,0) |- node[fill,inner sep=1.25pt] {} (.child anchor)\forestoption{edge label};
+        },
+        before typesetting nodes={
+            if n=1
+                {insert before={[,phantom]}}
+                {}
+        },
+        fit=band,
+        before computing xy={l=15pt},
+    }
+    #1
+\end{forest}} %\sout}
+%********
+%\pretolerance=10000
+\DeclareGraphicsExtensions{.png, .jpg, .pdf, .eps, .tiff}
+\DeclareGraphicsRule{.eps}{pdf}{.pdf}{pdf}
+\pdfcompresslevel=9
+\geometry{a4paper, left=2.6cm, right=2.2cm, top=3.0cm, bottom=3.0cm}
+\linespread{1.2}
+\setlength{\parskip}{1ex plus 0.5ex minus 0.2ex}
+
+\bibliography{main}
+
+\begin{document}
+    \include{chapters/Front}
+    \clearpage
+    \thispagestyle{empty}
+    \vspace{5cm}
+    \frontmatter
+    \include{chapters/Resumen}
+    \include{chapters/Abstract}
+    \tableofcontents
+    \listoffigures
+    \mainmatter
+    \include{chapters/1-Introduction}
+    \include{chapters/2-BaseDevelopment}
+    \printbibliography[title=Bibliografía]
+\end{document}

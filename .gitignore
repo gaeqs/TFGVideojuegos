@@ -1,0 +1,11 @@
+**/*.bbl
+**/*.aux
+**/*.blg
+**/*.lof
+**/*.log
+**/*.rtf
+**/*.pdf
+**/*.toc
+
+# Project exclude paths
+/out/
