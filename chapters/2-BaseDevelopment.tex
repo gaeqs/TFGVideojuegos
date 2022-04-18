@@ -487,7 +487,7 @@ private void onLanguageRegister(ManagerElementRegisterEvent.After<Language> even
 
 La etiqueta \textbf{@Listener} permite definir comportamientos más avanzados en la escucha.
 
-\begin{lstlisting}[language=Java,style=java,frame=single,label={lst:registrar-escuchas-2}]
+\begin{lstlisting}[language=Java,style=java,frame=single,label={lst:escuchas-avanzadas}]
 @Listener(priority = 20, ignoreCancelled = true)
 private void onLanguageRegister(ManagerElementRegisterEvent.After<Language> event) {
     System.out.println("New language available! " + event.getElement().getName());
@@ -498,3 +498,337 @@ private void onLanguageRegister(ManagerElementRegisterEvent.After<Language> even
 La escucha con el número más alto será la primera en ser llamada.
 El parámetro \textbf{ignoreCancelled} es un booleano que le da a la escucha la capacidad
 de ser llamada incluso cuando un evento ha sido cancelado.
+
+
+\section{Interfaz de usuario}\label{sec:interfaz-de-usuario}
+
+La interfaz de \textit{JAMS} es muy similar a las interfaces que presentan los \textit{IDEs} modernos.
+Todas las herramientas están encapsuladas en \textbf{nodos}.
+Cada nodo se puede desplegar en los laterales del editor.
+Más concretamente, se pueden desplegar dos nodos por cada lado del editor.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/base/jams-basic}
+    \caption{\textit{Editor de \textit{JAMS} en su forma más básica}}
+    \label{fig:jams-basic}
+\end{figure}
+
+\noindent Los nodos también se pueden configurar para que se desplieguen en una ventana aparte.
+Esto permite poder desplegar un número indefinido de nodos al mismo tiempo.
+El modo de despliegue se puede configurar presionando el botón secundario sobre
+el botón del nodo.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/base/jams-windows}
+    \caption{\textit{Editor de \textit{JAMS} con ventanas desplegadas}}
+    \label{fig:jams-windows}
+\end{figure}
+
+\subsection{Menú superior}\label{subsec:menu-superior}
+
+El menú superior de \textit{JAMS} funciona de manera idéntica a cualquier otro programa.
+Por defecto existen cinco secciones:
+\begin{itemize}
+    \item \textbf{Archivo}: permite crear o abrir nuevos proyectos, además de
+    acceder a la configuración.
+    \item \textbf{Editar:} permite acceder a los comandos del editor de texto.
+    \item \textbf{Simulación:} permite acceder a los comandos de simulación.
+    \item \textbf{Herramientas:} permite habilitar o deshabilitar nodos.
+    \item \textbf{Ayuda:} permite acceder a ayuda sobre \textit{JAMS}.
+\end{itemize}
+
+\subsection{Proyectos abiertos}\label{subsec:proyectos-abiertos}
+
+Los proyectos abiertos aparecen justo debajo del menú superior.
+Cada proyecto está representado por una pestaña, lo que facilita alternar entre
+proyectos abiertos.
+Si se cierran todos los proyectos, \textit{JAMS} cerrará el editor y trasladará
+al usuario a la ventana de inicio.
+
+\noindent Los proyectos presentan una lista de pestañas con todas las secciones
+que tienen abiertas.
+Normalmente, la primera pestaña representa el editor del proyecto, mientras que
+las siguientes representan las simulaciones que el usuario vaya creando.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/base/jams-sections}
+    \caption{\textit{Editor de \textit{JAMS} con varias simulaciones creadas}}
+    \label{fig:jams-sections}
+\end{figure}
+
+\noindent Cada sección tiene una \textbf{barra de herramientas} propia.
+Esta barra está situada a la izquierda de la lista de secciones, y permite
+ejecutar acciones relacionadas con la sección actual.
+
+\subsection{Barra inferior}\label{subsec:barra-inferior}
+
+La barra inferior del editor es común a todas las secciones.
+En esta, se informa del último mensaje escrito en el \textbf{informe}.
+A la izquierda también se muestra la memoria que está usando actualmente
+\textit{JAMS}.
+Al estar creada la aplicación en \textit{Java}, esta utiliza un recolector
+de basura.
+Se puede forzar el paso del recolector de basura pulsando el panel que informa
+sobre el uso de memoria.
+
+\subsection{Ventana principal}\label{subsec:ventana-principal}
+
+Si \textit{JAMS} no tiene ningún proyecto que mostrar, se mostrará la ventana
+principal.
+En esta ventana se pueden encontrar cuatro apartados:
+\begin{itemize}
+    \item \textbf{Proyectos:} en este apartado se encuentran los proyectos más
+    recientes.
+    También se puede abrir un proyecto ya existente.
+    \item \textbf{Nuevo proyecto:} este apartado permite crear nuevos proyectos.
+    Un componente puede añadir su propio creador de proyectos.
+    \item \textbf{Configuración:} muestra la ventana de configuración.
+    Permite configurar \textit{JAMS} antes de abrir un proyecto.
+    \item \textbf{Acerca de:} muestra información básica sobre \textit{JAMS}.
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/base/jams-main-projects}
+    \caption{\textit{Ventana principal mostrando los proyectos recientes}}
+    \label{fig:jams-main-projects}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/base/jams-main-new-project}
+    \caption{\textit{Ventana de creación de nuevos proyectos}}
+    \label{fig:jams-main-new-project}
+\end{figure}
+
+
+\section{Idiomas}\label{sec:idiomas}
+
+Igual que cualquier aplicación moderna, \textit{JAMS} presenta un sistema de
+localización basado en paquetes de idiomas.
+Cualquier usuario o componente puede crear un paquete que añada
+o modifique un idioma.
+
+\subsection{Estructura de un paquete}\label{subsec:estructura-de-un-paquete}
+
+Un paquete de idiomas es una carpeta o un archivo comprimido
+que contienen un archivo \textbf{language.json} y varios archivos \textit{YAML}.
+Esta carpeta o archivo estará situado dentro de un componente
+o dentro de la carpeta \textbf{~/JAMS/languages}.
+Un ejemplo de un archivo \textbf{language.json} sería el siguiente:
+
+\begin{lstlisting}[frame=single,label={lst:language.json}]
+{
+  "name": "English",
+  "priority": 0,
+  "files": [
+    "actions.yml",
+    "configuration.yml",
+    "directives.yml",
+    "editor.yml",
+    "general.yml",
+    "instructions.yml",
+    "interface.yml",
+    "mips_elements.yml",
+    "mips_simulation_configuration.yml",
+    "simulation.yml"
+  ]
+}
+\end{lstlisting}
+
+\noindent Dentro de este archivo se encuentran los siguientes parámetros:
+\begin{itemize}
+    \item \textbf{name:} es el nombre del idioma.
+    Este nombre es el que será mostrado al usuario
+    y actúa como identificador del idioma.
+    \item \textbf{files:} son los archivos \textit{YAML} que componen el paquete.
+    \item \textbf{priority:} es la prioridad del paquete si existen varios
+    paquetes para el mismo idioma.
+    Cuanto más alto sea el número, más prioridad tiene el paquete.
+    Esta propiedad es opcional y por defecto toma el valor 0.
+\end{itemize}
+
+\noindent Los archivos \textit{YAML} pueden estar en carpetas dentro del paquete,
+y deben estar definidos en el archivo \textbf{language.json} con una
+dirección relativa a la raíz del paquete.
+Un ejemplo de archivo \textit{YAML} sería el siguiente:
+
+\begin{lstlisting}[frame=single,label={lst:interface.yml}]
+START_TITLE: JAMS {VERSION}
+START_PROJECTS: Projects
+START_NEW_PROJECT: New project
+START_ABOUT: About
+BOTTOM_BAR_MEMORY: '{USED} of {TOTAL}MiB'
+BOTTOM_BAR_MEMORY_TOOLTIP: Click to execute the garbage collector.
+
+MAIN_MENU_FILE: File
+MAIN_MENU_EDIT: Edit
+MAIN_MENU_SIMULATION: Simulation
+MAIN_MENU_TOOLS: Tools
+MAIN_MENU_HELP: Help
+MAIN_MENU_FILE_EXIT: Exit
+MAIN_MENU_FILE_SETTINGS: Settings
+MAIN_MENU_FILE_OPEN_PROJECT: Open project
+MAIN_MENU_FILE_CREATE_PROJECT: Create project
+MAIN_MENU_FILE_CREATE_PROJECT_TITLE: Create project
+MAIN_MENU_FILE_CREATE_PROJECT_NAME: 'Name:'
+MAIN_MENU_FILE_CREATE_PROJECT_PATH: 'Path:'
+MAIN_MENU_HELP_ABOUT: About
+\end{lstlisting}
+
+\noindent Aunque no se use en ningún paquete por defecto,
+los paquetes de idiomas permiten crear secciones como
+en cualquier archivo \textit{YAML}.
+En el siguiente caso, se usará el identificador
+\textbf{ACTION.MY\_ACTION} para referenciar el mensaje.
+
+\begin{lstlisting}[frame=single,label={lst:yaml-subsection}]
+ACTION:
+  MY_ACTION: My action
+\end{lstlisting}
+
+\subsection{Extensiones}\label{subsec:idiomas-extensiones}
+
+Puede existir el caso donde varios paquetes hagan referencia al mismo idioma.
+Este problema de colisión se soluciona gracias a las extensiones.
+Un paquete actúa siempre como una extensión de un idioma.
+Esta extensión tiene una prioridad que se define en el archivo
+\textbf{language.json} del paquete.
+Si dos extensiones tienen la misma prioridad, el orden se resuelve
+por orden de creación de la extensión, siendo el último en ser creado
+el que tenga más prioridad.
+El mensaje ligado a un identificador será el de la extensión con más prioridad
+que contenga un mensaje ligado al identificador.
+Gracias a este pequeño sistema de extensiones, los usuarios podrán crear modificaciones
+y los componentes podrán añadir nuevos mensajes.
+
+\subsection{Acceder a mensajes}\label{subsec:acceder-a-mensajes}
+
+Existen dos maneras de acceder a los mensajes mediante un identificador:
+\textbf{de manera directa} o \textbf{usando un componente preparado}.
+
+\noindent Un componente puede acceder al idioma seleccionado usando
+el gestor de idiomas por defecto.
+La manera más correcta para pedir un mensaje es usando el método
+\textbf{getOrDefault(String)} del idioma.
+Este método devolverá el mensaje asociado al identificador dado.
+Si el idioma no contiene ningún mensaje con ese identificador,
+lo buscará en el idioma por defecto.
+Si ninguno de los dos idiomas contiene el mensaje,
+devuelve una cadena de texto vacía.
+
+\noindent Cabe destacar que esta acción suele deber rehacerse cuando
+el idioma cambia, por lo que se debe registrar una escucha en el
+gestor de idiomas, escuchando el evento \textbf{LanguageRefreshEvent}.
+Si esto no se hace, el seguirá mostrando el mensaje en el idioma
+anterior.
+
+\begin{lstlisting}[language=Java,style=java,frame=single,label={lst:idioma-escucha}]
+@Listener
+public void onRefresh(LanguageRefreshEvent event) {
+    refreshMessage(event.getSelectedLanguage());
+}
+\end{lstlisting}
+
+\noindent También existe una gran variedad de nodos de \textit{JavaFX} preparados
+para usar mensajes traducibles, sin necesidad de que el desarrollador tenga que
+gestionar escuchas y gestores.
+Estos nodos se pueden encontrar en el paquete
+\textbf{net.jamsimulator.jams.language.wrapper}.
+
+\begin{lstlisting}[language=Java,style=java,frame=single,label={lst:idioma-nodo}]
+new LanguageLabel(Messages.ACTION_FOLDER_EXPLORER_ELEMENT_NEW_FOLDER)
+\end{lstlisting}
+
+
+\section{Temas}\label{sec:temas}
+
+Los temas de JAMS funcionan de la misma manera que el estilo de una página web:
+mediante archivos \textit{CSS}.
+funcionamiento de los temas es muy similar al funcionamiento de los idiomas:
+los temas son empaquetados en una carpeta o archivo comprimido,
+con un archivo \textit{JSON} que actúa como punto de entrada (\textbf{theme.json})
+y un conjunto de archivos \textit{CSS}.
+
+\noindent A diferencia de los idiomas, un desarrollador que implemente nuevos
+nodos a la escena de \textit{JAMS} no require gestionar ningún aspecto
+de los temas: el tema que el usuario tenga seleccionado será implementado
+de manera transparente gracias al sistema de temas de \textit{JavaFX}.
+
+\subsection{Estructura}\label{subsec:estructura}
+
+El archivo \textbf{theme.json} define el nombre y los archivos
+\textit{CSS} incluidos en el tema.
+Un ejemplo de archivo theme.json sería el siguiente:
+\begin{lstlisting}[frame=single,label={lst:theme.json}]
+{
+  "name": "Light Theme",
+  "dependencies": ["Other Theme"],
+  "files": [
+    "extra.css"
+  ]
+}
+\end{lstlisting}
+
+\noindent Un archivo \textbf{theme.json} presenta los siguientes parámetros:
+\begin{itemize}
+    \item \textbf{name:} es el nombre del tema.
+    Este nombre es el que será mostrado al usuario
+    y actúa como identificador del tema.
+    \item \textbf{files:} son los archivos \textit{CSS} que componen el paquete.
+    \item \textbf{dependencies:} los temas de los que este tema depende.
+    El estilo de estos temas será añadido al estilo del tema definido.
+    Este parámetro es opcional.
+\end{itemize}
+
+\noindent Estén definidos o no las dependencias,
+todo tema depende del tema \textbf{Common}.
+Este tema actúa de base, y define el estilo básico de \textit{JAMS}.
+Este tema define muchas variables globales, pero no le asigna ningún
+valor a ninguna de ellas.
+
+\subsection{Variables globales}\label{subsec:variables-globales}
+
+Las variables globales permiten definir el color de los diferentes
+componentes de manera muy sencilla.
+Un tema debe asignar un color a todas las variables del tema \textbf{Common}.
+Esta tarea se debe hacer en el archivo especial \textbf{global.css}.
+Este archivo es un archivo especial que siempre está incluido en el tema y,
+al compilar, será envuelto en una sección global \textit{CSS} \textbf{*\{ \}}.
+Esto permite que todos los componentes puedan usar
+las variables asignadas en este archivo.
+Un ejemplo de archivo \textbf{global.css} sería el siguiente:
+
+\begin{lstlisting}[frame=single,label={lst:global.css}]
+-theme-foreground: #222222;
+-theme-foreground-darker: derive(-theme-foreground, 20%);
+-theme-foreground-darker-2: derive(-theme-foreground, 40%);
+-theme-foreground-lighter: #000000;
+-theme-background: #f2f2f2;
+-theme-background-darker: #e5e5e5;
+-theme-background-darker-2: #eaeaea;
+-theme-background-lighter: #f7f7f7;
+-theme-background-pressed: derive(-theme-background, -10%);
+-theme-background-darkest: #FFFFFF;
+-theme-shadow: #555555;
+-theme-header: #8faccc;
+-theme-menu-item-hover: #4D6EAF;
+
+...
+\end{lstlisting}
+
+\subsection{Extensiones}\label{subsec:temas-extensiones}
+
+Igual que los idiomas, los temas funcionan mediante extensiones.
+Todo paquete de temas es convertido en una extensión del tema que define.
+Si existen varios paquetes apuntando al mismo tema, los dos coexistirán
+como dos extensiones del mismo tema.
+Una gran diferencia a los idiomas es que las extensiones de los temas
+no tienen prioridad.
+\textit{JavaFX} sigue el estándar
+\textit{CSS}\footnote{https://developer.mozilla.org/en-US/docs/Web/CSS/Specificity#how_is_specificity_calculated}
+para la prioridad de las definiciones,
+por lo que una capa de prioridades más es innecesaria.
