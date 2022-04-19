@@ -832,3 +832,147 @@ no tienen prioridad.
 \textit{CSS}\footnote{https://developer.mozilla.org/en-US/docs/Web/CSS/Specificity#how_is_specificity_calculated}
 para la prioridad de las definiciones,
 por lo que una capa de prioridades más es innecesaria.
+
+
+\section{Configuración}\label{sec:configuracion}
+
+Igual que cualquier aplicación moderna, \textit{JAMS} presenta una
+ventana de configuración donde el usuario podrá personalizar su experiencia.
+Internamente, el sistema de configuraciones orbita alrededor de dos archivos \textit{JSON}:
+\textbf{el archivo de valores} y el \textbf{archivo de estructura}.
+
+\noindent El archivo de valores es el encargado de almacenar los valores de
+todos los \textbf{nodos} de la configuración.
+Existe dos versiones de este archivo:
+el primero se encuentra en la carpeta \textbf{~/JAMS} y representa los \textbf{valores
+actuales de la configuración}.
+El segundo se encuentra dentro de la propia aplicación, y es el encargado de
+proporcionar \textbf{los valores por defecto de cada nodo}.
+Un componente podrá agregar nuevos valores a este archivo.
+
+\begin{lstlisting}[frame=single,label={lst:main_config.json}]
+{
+    "language": {
+        "default": "English",
+        "selected": "English"
+    },
+    "appearance": {
+        "theme": "Dark Theme",
+        "hide_top_bar": false,
+        "general_font": "JetBrains Mono",
+        "code_font": "JetBrains Mono",
+        "antialiasing": true
+    },
+    "editor": {
+        "zoom_using_mouse_wheel": true,
+        "reset_zoom_using_middle_button": true,
+        "zoom_sensibility": 0.007,
+        "mips": {
+            "use_tabs": true,
+            "preserve_tabs": true,
+            "preserve_tabs_before_labels": true,
+            "space_after_instruction": "SPACE",
+            "space_after_instruction_parameter": "COMMA_AND_SPACE",
+            "space_after_directive": "SPACE",
+            "space_after_directive_parameter": "SPACE",
+            "maximum_blank_lines": 2
+        }
+    }
+}
+\end{lstlisting}
+
+\noindent El archivo de estructura o metadatos contiene información
+relacionada sobre el propio nodo: el \textbf{tipo}, \textbf{región}
+y \textbf{nombre} de cada nodo están definidos en este archivo.
+Las secciones también tienen sus propios metadatos, especificando
+el \textbf{nombre} de la sección y sus \textbf{regiones} con sus
+\textbf{prioridades}.
+
+\begin{lstlisting}[frame=single,label={lst:main_config_meta.json}]
+{
+    "language": {
+        "meta": {
+            "language_node": "CONFIG_LANGUAGE",
+            "regions": {
+                "language": 0
+            }
+        },
+        "default": {
+            "type": "language",
+            "language_node": "CONFIG_LANGUAGE_DEFAULT",
+            "region": "language"
+        },
+        "selected": {
+            "type": "language",
+            "language_node": "CONFIG_LANGUAGE_SELECTED",
+            "region": "language"
+        }
+    }
+}
+\end{lstlisting}
+
+\subsection{Interfaz de la configuración}\label{subsec:interfaz-de-la-configuración}
+
+Para evitar que los usuarios tengan que modificar los valores de la configuración
+externamente, se ha implementado una interfaz que permite modificar los
+parámetros al vuelo dentro de la aplicación.
+Esta interfaz es accesible directamente en la ventana de inicio o accediendo a ella
+mediante la opción \textbf{Archivo > Configuración}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/base/jams-config}
+    \caption{\textit{Interfaz de configuración}}
+    \label{fig:jams-configuracion}
+\end{figure}
+
+\noindent Esta interfaz aprovecha los metadatos proporcionados por el archivo
+de estructura para proporcionar una interacción adecuada entre el usuario
+y los diferentes parámetros.
+Esta interfaz es extensible, pudiendo los componentes añadir nuevos tipos de datos
+proporcionando un \textbf{ValueEditor} y un \textbf{ValueConverter}.
+Un \textbf{ValueConverter} permite transformar un objeto compuesto a una cadena
+de caracteres y vice-versa.
+Un \textbf{ValueEditor} proporciona una interfaz de edición adecuada para un
+objeto compuesto.
+
+\subsection{Secciones especiales}\label{subsec:secciones-especiales}
+
+La interfaz de la configuración permite que ciertas gestiones se
+gestionen de manera externa por un controlador diferente al de
+por defecto.
+Este es el caso de las secciones \textbf{Acciones} y \textbf{Plugins}.
+Estas secciones tienen una estructura totalmente diferente a la
+del resto de secciones, lo que permite al usuario modificar
+de manera más eficiente sus parámetros.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/base/jams-config-actions}
+    \caption{\textit{Sección de acciones}}
+    \label{fig:jams-configuracion-acciones}
+\end{figure}
+
+\section{Acciones}\label{sec:acciones}
+
+Las acciones representan tareas que un usuario puede realizar de manera
+\textbf{atómica}.
+Las acciones pueden invocarse de diferentes maneras:
+desde el menú principal, desde un menú de contexto
+o usando una combinación de teclas modificable.
+Cabe destacar que las acciones son \textbf{sensibles al contexto}:
+una acción solo se podrá ejecutar en un determinado contexto
+de la aplicación (el usuario no puede copiar un trozo de texto
+en el explorador).
+
+\noindent Los componentes pueden implementar nuevas acciones
+creando una nueva clase que extienda \textbf{Action} o
+\textbf{ContextAction}.
+La clase \textbf{Action} es la clase básica para las acciones.
+Las implementaciones deben implementar el funcionamiento
+de la acción en el método \textbf{run}.
+La clase \textbf{ContextAction} permite que la acción sea
+mostrada en un menú contextual.
+Las implementaciones de esta clase deben implementar
+muchos más métodos que proporcionan información
+sobre la viabilidad de la acción en diferentes contextos.
