@@ -829,7 +829,7 @@ como dos extensiones del mismo tema.
 Una gran diferencia a los idiomas es que las extensiones de los temas
 no tienen prioridad.
 \textit{JavaFX} sigue el estándar
-\textit{CSS}\footnote{https://developer.mozilla.org/en-US/docs/Web/CSS/Specificity#how_is_specificity_calculated}
+\textit{CSS}\footnote{\url{https://developer.mozilla.org/en-US/docs/Web/CSS/Specificity\#how_is_specificity_calculated}}
 para la prioridad de las definiciones,
 por lo que una capa de prioridades más es innecesaria.
 
@@ -953,6 +953,7 @@ de manera más eficiente sus parámetros.
     \label{fig:jams-configuracion-acciones}
 \end{figure}
 
+
 \section{Acciones}\label{sec:acciones}
 
 Las acciones representan tareas que un usuario puede realizar de manera
@@ -976,3 +977,140 @@ mostrada en un menú contextual.
 Las implementaciones de esta clase deben implementar
 muchos más métodos que proporcionan información
 sobre la viabilidad de la acción en diferentes contextos.
+
+
+\section{Editor de texto}\label{sec:editor-de-texto}
+
+El editor de texto es la tecnología que más iteraciones
+ha sufrido en todo el desarrollo de \textit{JAMS},
+siendo uno de los elementos más avanzados de toda
+la aplicación.
+El editor de texto presenta una arquitectura
+\textbf{asíncrona}, y permite gestionar una gran
+cantidad de líneas de texto sin bloquear la aplicación.
+
+\subsection{Arquitectura}\label{subsec:arquitectura}
+
+El editor de texto presenta una arquitectura
+\textbf{Modelo-Vista-Controlador}:
+\begin{itemize}
+    \item \textbf{Vista:} la vista está gestionada
+    por la librería \textit{RichTextFX}\cite{RICH_TEXT_FX}.
+    \textit{RichTextFX} permite añadir estilos
+    a secciones del texto.
+    La vista está representada por la clase
+    \textbf{CodeArea}.
+    \item \textbf{Controlador:} el controlador está
+    gestionado por la clase \textbf{CodeFileEditor}.
+    Esta clase extiende \textbf{CodeArea}, y es la
+    encargada de gestionar las entradas del usuario.
+    \item \textbf{Modelo:} el modelo está representado
+    por la clase \textbf{EditorIndex}.
+    Las implementaciones de esta clase contienen
+    una representación abstracta de los contenidos
+    del editor de texto.
+    El modelo se actualiza de manera asíncrona.
+\end{itemize}
+
+\subsection{Filosofía del modelo}\label{subsec:filosofía-del-modelo}
+
+Debido a la gran complejidad de la arquitectura,
+se ha definido una filosofía en el desarrollo
+del modelo:
+\begin{itemize}
+    \item \textbf{Basado en elementos}: cada elemento representa
+    un componente en el editor: un comentario, una instrucción,
+    una etiqueta, etc.
+    Los elementos son \textbf{casi inmutables}:
+    solo sus inspecciones, alcances, y posición son mutables.
+    \item Los elementos son recreados siempre que una línea
+    es editada.
+    \item Los elementos almacenan la mínima información
+    posible.
+    Esta información debe ser buscada usando los métodos
+    de consulta proporcionados por el modelo.
+    \item Los métodos de consult deben ser lo más rápidos
+    posible.
+    Las implementaciones por defecto utilizan la
+    \textit{Stream API}\cite{STREAM_API} añadida en \textit{Java 8}.
+\end{itemize}
+
+\noindent \textbf{EditorIndexedElement} es la la interfaz principal
+que representa un elemento.
+Esta interfaz define los elementos de posición, tamaño, alcance,
+jerarquía y contenido.
+Los elementos concretos deben implementar esta interfaz.
+Una implementación básica de un elemento puede encontrarse
+en la clase \textbf{EditorIndexedElementImpl}.
+
+\noindent Si un elemento desea ser referenciado, este debe
+implementar la interfaz \textbf{EditorReferencedElement}.
+Un elemento que implemente esta interfaz será gestionado
+de manera diferente por el modelo.
+De igual manera, si un elemento desea referenciar
+otros elementos, este debe implementar la interfaz
+\textbf{EditorReferencingElement}.
+Estas dos interfaces no son incompatibles:
+un elemento puede referenciar y ser referenciado
+al mismo tiempo.
+
+\noindent El modelo es un componente \textit{thread-safe}.
+Para interactuar con él, un hilo debe reservar el acceso
+al modelo y especificar si desea editar su estructura o
+solo acceder a sus datos.
+Si el hilo modifica el modelo, se creará dos evento de tipo
+\textbf{IndexFinishEditEvent} y \textbf{IndexRequestRefreshEvent}
+cuando termine la edición.
+
+\subsection{Actualización del modelo}\label{subsec:actualizacion-del-modelo}
+
+Cuando el controlador sigue el siguiente
+protocolo cuando este recibe peticiones de modificación
+por parte del usuario:
+\begin{itemize}
+    \item \textbf{Recolección:} las peticiones cercanas
+    en el tiempo son registradas en una lista de peticiones.
+    Esta lista es es procesada cuando el usuario deje
+    de enviar modificaciones.
+    \item \textbf{Compresión:} se descartan las peticiones
+    de modificación que no van a tener efecto en el modelo.
+    El caso más común de modificaciones sin efecto sería
+    el de una cadena de modificaciones en una misma línea:
+    solo el estado de la línea en la modificación final
+    tendrá efecto en el modelo.
+    \item \textbf{Actualización:} se genera una tarea
+    asíncrona que modifica el modelo en base a las
+    peticiones.
+    \item \textbf{Finalización:} una vez el modelo
+    es modificado, se envían una serie de eventos
+    a la vista para que esta actualice el estilo
+    de las líneas visibles.
+\end{itemize}
+
+\subsection{Referencias entre modelos}\label{subsec:referencias-entre-modelos}
+
+Un modelo puede tener \textbf{referencias a elementos
+presentes en otros modelos}.
+Este es el caso de las etiquetas y macros globales.
+La clase \textbf{ProjectGlobalIndex} permite la
+comunicación entre modelos, actuando de intermediador.
+Solo los elementos que están dentro de los archivos
+de la lista de archivos a ensamblar serán tomados en cuenta.
+Para evitar interbloqueos, todas las modificaciones
+realizadas en un proyecto son gestionadas en el
+mismo hilo.
+
+
+\subsection{Implementaciones}\label{subsec:implementaciones}
+
+\textit{JAMS} incorpora implementaciones básicas de los
+diferentes componentes usados en el editor.
+Una de las implementaciones más importantes es la que está
+definida en la clase \textbf{EditorLineIndex}, la cual
+implementa un modelo donde cada línea representa una
+unidad autocontenida.
+
+\noindent Otras implementaciones serían la de elementos
+básicos y comunes en diferentes lenguajes ensamblador:
+las etiquetas, las macros, las llamadas a macros o
+los comentarios son ejemplos de elementos ya definidos.
