@@ -1087,6 +1087,46 @@ por parte del usuario:
     de las líneas visibles.
 \end{itemize}
 
+\subsection{Estructura del modelo}\label{subsec:estructura-del-modelo}
+
+El modelo presenta una arquitectura jerárquica de elementos:
+un elemento tiene un padre y puede tener varios hijos.
+Cada elemento contiene su posición inicial en el proyecto, la
+longitud del texto y el texto representado.
+Esta estructura puede considerarse una implementación de un
+\textit{Rope}\cite{ROPES}, una estructura de dastos muy
+utilizada para editores de texto.
+
+\begin{center}
+    \basictree{
+        [Instruction 0 13 sw \$s0 0(\$s2)
+        [Mnemonic 0 2 sw]
+        [Parameter 3 3 \$s0
+        [Register 3 3 \$s0]
+        ]
+        [Parameter 7 6 0(\$s2)
+        [Immediate 7 1 0]
+        [Register 9 3 \$s2]
+        ]
+        ]
+    }
+\end{center}
+
+\noindent Los nodos hoja pueden implementar la interfaz
+\textbf{EditorIndexStyleableElement}, permitiendo inyectar
+estilos en la vista del editor de texto.
+Esta interfaz solo presenta un método que pide una lista
+de estilos.
+\textit{JAMS} es el encargado de inyectar dichos estilos
+en el editor cuando sea necesario.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/base/jams-text-editor}
+    \caption{Editor de texto con estilos inyectados}
+    \label{fig:jams-editor-texto}
+\end{figure}
+
 \subsection{Referencias entre modelos}\label{subsec:referencias-entre-modelos}
 
 Un modelo puede tener \textbf{referencias a elementos
@@ -1099,7 +1139,6 @@ de la lista de archivos a ensamblar serán tomados en cuenta.
 Para evitar interbloqueos, todas las modificaciones
 realizadas en un proyecto son gestionadas en el
 mismo hilo.
-
 
 \subsection{Implementaciones}\label{subsec:implementaciones}
 
@@ -1114,3 +1153,49 @@ unidad autocontenida.
 básicos y comunes en diferentes lenguajes ensamblador:
 las etiquetas, las macros, las llamadas a macros o
 los comentarios son ejemplos de elementos ya definidos.
+
+\subsection{Autocompletación}\label{subsec:autocompletacion}
+
+\textit{JAMS} aprovecha los datos proporcionados por
+el modelo para implementar una interfaz de autocompletación
+que el usuario puede usar en el editor.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/base/jams-autocompletion}
+    \caption{Autocompletador del editor de texto}
+    \label{fig:jams-autocompletador}
+\end{figure}
+
+\noindent Igual que el propio editor de texto, esta interfaz
+presenta una estructura modelo-vista-controlador:
+
+\begin{itemize}
+    \item \textbf{Controlador:} implementado en dos partes.
+    \textit{JAMS} implementa las acciones de la interfaz,
+    mientras que el desarrollador debe implementar el
+    generador del modelo.
+    \item \textbf{Modelo:} contiene los candidatos de
+    la interfaz.
+    \item \textbf{Vista:} implementa la interfaz que
+    muestra los candidatos del modelo.
+    \textit{JAMS} implementa una vista por defecto,
+    pero los desarrolladores pueden implementar una
+    vista propia.
+\end{itemize}
+
+\subsection{Documentación}\label{subsec:documentacion}
+
+Como característica final, el editor de texto presenta
+una interfaz de documentación que los proyectos
+pueden utilizar para documentar sus diferentes
+elementos.
+Se puede acceder a la documentación con la secuencia por defecto
+\textbf{Ctrl + Q}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/base/jams-documentation}
+    \caption{Documentación en el editor de texto}
+    \label{fig:jams-documentacion}
+\end{figure}
