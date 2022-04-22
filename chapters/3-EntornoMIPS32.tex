@@ -1,10 +1,356 @@
 \chapter{Entorno de desarrollo \textit{MIPS32}}\label{ch:entorno-de-desarrollo-mips32}
 
-El entorno de desarrollo \textit{MIPS32} presente
-en \textit{JAMS} se ha desarrollado como una
-capa por encima del entorno de desarrollo base
-anteriormente explicado.
-El entorno de desarrollo \textit{MIPS32} sigue
-la misma arquitectura, pudiendo otros desarrolladores
-crear nuevos componentes que extiendan las capacidades
-del entorno.
+El desarrollo de \textit{JAMS} está dividido en dos secciones:
+la aplicación base y el entorno de desarrollo \textit{MIPS32}.
+\textit{JAMS} da soporte al lenguaje ensamblador \textit{MIPS32}
+creando una \textbf{capa sobre la aplicación base},
+aprovechando todas las herramientas y características explicadas anteriormente.
+En este capítulo se abordarán las capacidades de este entorno,
+documentando el ensamblador, el simulador y el editor junto
+con sus componentes esenciales.
+
+
+\section{Ensamblador \textit{MIPS32}}\label{sec:ensamblador-mips32}
+
+El ensamblador \textit{MIP32} de \textit{JAMS} es un ensamblador avanzado
+usado para ensamblar proyectos \textit{MIPS32}.
+Este ensamblador soporta características avanzadas empleadas
+comúnmente al programar en ensamblador, como las macros,
+las etiquetas globales o las referencias relativas.
+
+\noindent El ensamblador ensambla el código de un proyecto en cuatro pasos:
+descubrimiento, expansión, asignación de direcciones y asignación de valores.
+Se utilizará el siguiente programa para comentar los
+diferentes pasos del ensamblador:
+
+\begin{lstlisting}[frame=single,label={lst:example.asm}]
+    .macro print ( %string )
+    .data
+text:   .asciiz %string
+    .text
+    la $a0, text
+    li $v0, 4
+    syscall
+    .endmacro
+
+    .macro printJams ()
+    print ("Welcome to JAMS!\n")
+    .endmacro
+
+    .text
+    .globl main print
+main:
+local:
+    printJams ()
+\end{lstlisting}
+
+\subsection{Descubrimiento}\label{subsec:descubrimiento}
+
+En este paso el texto del proyecto se \textbf{descompone en sus primitivas},
+permitiendo al ensamblador entender los diferentes componentes de cada línea.
+Al final de este paso, las etiquetas globales y las etiquetas de archivo
+(etiquetas no definidas dentro de una macro) \textbf{son registradas sin
+ningún valor asignado}.
+
+\noindent Las macros de cada archivo también son registradas.
+El identificador de una macro es definido por su nombre concatenado
+al número de parámetros que necesitan.
+Este procedimiento se realiza para dar soporte a la sobrecarga de macros.
+En el caso de la macro \textbf{print}, su identificador sería \textbf{print-1}.
+
+\begin{lstlisting}[frame=single,label={lst:descubrimiento}]
+Etiquetas globales:
+main - XXXXXXXX
+
+Etiquetas del archivo:
+local - XXXXXXXX
+
+Macros globales:
+print-1
+
+Macros del archivo:
+printJams-0
+\end{lstlisting}
+
+\subsection{Expansión}\label{subsec:expansion}
+
+En este paso, las llamadas a macros son invocadas,
+insertando el código de la macro en la posición de la llamada.
+Este código efectúa el primer paso del ensamblador mientras es añadido.
+Al ser insertado justo después de la llamada, el código de la macro
+también será expandido.
+
+\begin{lstlisting}[frame=single,label={lst:expansion}]
+main:
+local:
+    # Macro printJams-0
+    # Macro print-1
+    .data # Data returns the previous address.
+text:   .asciiz "Welcome to JAMS!\n"
+    .text
+    la $s0, text
+    li $v0, 4
+    syscall
+    # Endmacro print-1
+    # Endmacro printJams-0
+\end{lstlisting}
+
+\subsubsection{Alcance}\label{subsubsec:alcance}
+
+Las etiquetas y macros que están dentro de una macro
+\textbf{tienen un alcance diferente al del archivo}.
+Si la macro es global, el alcance es considerado hijo del alcance global
+y no podrá acceder a las etiquetas del archivo que lo invoca.
+Si la macro es local, el alcance es considerado hijo del alcance del archivo.
+
+\noindent Cuando un alcance es hijo de otro alcance,
+\textbf{el hijo podrá acceder a las etiquetas y macros de su padre}.
+El hijo también podrá definir nuevas etiquetas y macros con el mismo
+identificador que una etiqueta o macro de su padre.
+Aunque este comportamiento está permitido, \textbf{el hijo solo podrá acceder
+al elemento que él define}.
+Esta funcionalidad es llamada \textbf{ocultamiento o \textit{shadowing}}.
+
+\subsection{Assignación de direcciones}\label{subsec:assignacion-de-direcciones}
+
+Una vez el ensamblador haya expandido las macros,
+se asignan las direcciones de todas las instrucciones,
+etiquetas y directivas que requieran dirección.
+Estas direcciones se asignan de manera secuencial.
+Existen directivas que pueden modificar el flujo de la asignación,
+como es el caso de la directiva \textbf{.text}.
+
+\begin{lstlisting}[frame=single,label={lst:address-assignation}]
+main:
+local:
+                    # Macro printJams-0
+                    # Macro print-1
+
+0x00400000          .data # Data returns the previous address.
+0x10010000      text:    .asciiz "Welcome to JAMS!\n"
+0x10010010          .text
+
+                    # la is a pseudo-instruction and
+                    # it will be split in two instructions
+0x00400000          la $s0, text
+0x00400008          li $v0, 4
+0x0040000c          syscall
+
+                    # Endmacro print-1
+                    # Endmacro printJams-0
+\end{lstlisting}
+
+\subsection{Asignación de valores}\label{subsec:asignacion-de-valores}
+
+Como paso final, el ensamblador insertará en memoria los valores
+que representan las directivas e instrucciones.
+
+\begin{lstlisting}[frame=single,label={lst:value-assignation}]
+                    # Macro printJams-0
+                    # Macro print-1
+
+0x10010000          Welcome to JAMS!\n\0
+0x00400000          0x3c011001 # la $a0, text
+0x00400004          0x34240000
+0x00400008          0x24020004 # li $v0, 4
+0x0040000c          0x0000000c # syscall
+
+                    # Endmacro print-1
+                    # Endmacro printJams-0
+\end{lstlisting}
+
+\subsection{Características avanzadas}\label{subsec:características-avanzadas}
+
+El ensamblador permite el uso de técnicas avanzadas en
+el desarrollo de aplicaciones en lenguaje ensamblador.
+
+\subsubsection{Referencias relativas}\label{subsubsec:referencias-relativas}
+
+Una directiva o instrucción puede \textbf{referenciar a una etiqueta de manera
+relativa} con las referencias especiales \textbf{+} y \textbf{-}.
+La referencia \textbf{+} hace referencia a la etiqueta siguiente.
+La referencia \textbf{-} hace referencia a la etiqueta anterior.
+Las referencias relativas \textbf{solo pueden hacer referencia
+a etiquetas del mismo alcance}.
+No pueden hacer referencia a etiquetas de un alcance mayor.
+
+\begin{lstlisting}[frame=single,label={lst:relative-reference}]
+main:
+    li $s0, 0
+    li $s1, 10
+loop:
+    printJams ()
+    addi $s0, $s0, 1
+    bne $s0, $s1, -
+\end{lstlisting}
+
+\subsubsection{Macros anidadas}\label{subsubsec:macros-anidadas}
+
+Una macro puede ser definida dentro de otra macro.
+Esto es conocido como una \textbf{macro anidada}.
+Esta macro solo podrá ser accedida en el alcance de la macro
+en la que está declarada.
+
+\begin{lstlisting}[frame=single,label={lst:nested-macro}]
+    .macro printJams ()
+    .macro print (%string)
+    .data
+text:   .asciiz %string
+    .text
+    la $a0, text
+    li $v0, 4
+    syscall
+
+    .endmacro
+    print ("Welcome to JAMS!\n")
+    .endmacro
+\end{lstlisting}
+
+\section{Instrucciones}\label{sec:instrucciones}
+
+Las instrucciones son la parte más importante de un lenguaje ensamblador.
+JAMS permite crear y gestionar instrucciones de una manera modular.
+
+\subsection{Estructura de una instrucción}\label{subsec:estructura-de-una-instruccion}
+
+Todas las instrucciones implementan la interfaz \textbf{Instruction}.
+Esta interfaz define conceptos básicos de una instrucción,
+como su nombre, su mnemónico, su documentación o sus parámetros.
+Esta interfaz también define los métodos \textbf{match},
+usada para comprobar si un mnemónico y un conjunto de parámetros
+representan una instrucción.
+Estos métodos son utilizados por el ensamblador y el editor para saber qué
+instrucción define una línea.
+Por último, la interfaz define el método \textit{assemble}, el
+cual traduce la instrucción en un conjunto de instrucciones ensambladas.
+Este método debe ser implementado por las clases hijas.
+Esta interfaz es implementada por dos clases abstractas básicas:
+\textbf{BasicInstruction} y \textbf{PseudoInstruction}.
+
+\subsection{Instrucciones básicas}\label{subsec:instrucciones-basicas}
+
+Las instrucciones básicas (representadas por la clase abstracta
+\textbf{BasicInstruction}) representan instrucciones normales del ensamblador.
+Estas instrucciones tienen una traducción directa a código máquina.
+Esta clase abstracta define elementos más concretos, como el código de operación,
+la unidad aritmético-lógica donde la instrucción debe ejecutarse y
+un nuevo método \textbf{match} que permite saber si un código de instrucción
+representa la instrucción.
+Esta clase define los métodos abstractos \textbf{assembleBasic}
+y \textbf{assembleFromCode}.
+Estos métodos permiten crear un elemento de tipo \textbf{AssembledInstruction}
+mediante un código de instrucción o un conjunto de parámetros.
+El método \textbf{assemble} de la interfaz \textbf{Instruction}
+está implementada por esta clase.
+
+\noindent Todas las instrucciones básicas requieren dos
+constantes globales en su implementación:
+\begin{itemize}
+    \item \textbf{MNEMONIC:} es un \textbf{String} que define
+    el mnemónico de la instrucción.
+    \item \textbf{PARAMETER\_TYPES:} es un elemento de tipo
+    \textbf{InstructionParameterTypes} que representa
+    los tipos de los parámetros de la instrucción.
+\end{itemize}
+
+\begin{lstlisting}[language=Java,style=java,frame=single,label={lst:basic-instruction}]
+public class InstructionAbsDouble extends
+    BasicRFPUInstruction<InstructionAbsDouble.Assembled> {
+
+    public static final String MNEMONIC = "abs.d";
+    public static final InstructionParameterTypes PARAMETER_TYPES =
+        new InstructionParameterTypes(
+            ParameterType.EVEN_FLOAT_REGISTER,
+            ParameterType.EVEN_FLOAT_REGISTER
+        );
+}
+\end{lstlisting}
+
+\subsection{Pseudo-instrucciones}\label{subsec:pseudo-instrucciones}
+
+Las pseudo-instrucciones son instrucciones que el ensamblador
+convertirá en un conjunto de instrucciones básicas.
+Pueden considerarse un conjunto de instrucciones que ejecutan una acción común.
+Estas instrucciones están representadas por la clase
+\textbf{PseudoInstruction},
+la cual define el método \textbf{getInstructionAmount}.
+Este método le permite saber al ensamblador cuántas instrucciones
+debe esperar que la pseudo-instrucción dé como resultado dependiendo
+del conjunto de parámetros dado.
+La clase también implementa varios métodos estáticos que sirven
+de utilidad para implementar pseudo-instrucciones rápidamente.
+
+\noindent Como ejemplo, la implementación de la pseudo-instrucción
+\textbf{addi} sería la siguiente:
+
+\begin{lstlisting}[language=Java,style=java,frame=single,label={lst:pseudo-instruction}]
+public class PseudoInstructionAddi extends PseudoInstruction {
+
+    public static final String MNEMONIC = "addi";
+
+    public static final InstructionParameterTypes PARAMETER_TYPES =
+        new InstructionParameterTypes(
+            ParameterType.REGISTER,
+            ParameterType.REGISTER,
+            ParameterType.SIGNED_16_BIT
+        );
+
+    public PseudoInstructionAddi() {
+        super(MNEMONIC, PARAMETER_TYPES);
+    }
+
+    @Override
+    public int getInstructionAmount(String[] parameters) {
+        return 2;
+    }
+
+    @Override
+    public AssembledInstruction[] assemble(
+            InstructionSet set,
+            int address,
+            ParameterParseResult[] parameters
+    ) {
+        var instructions = instructions(set,
+                InstructionAddiu.class, InstructionAdd.class);
+
+        var addiu = parameters(AT, ZERO, parameters[2]);
+        var add = parameters(parameters[0], AT, parameters[1]);
+
+        return assemble(instructions, addiu, add);
+    }
+}
+\end{lstlisting}
+
+\subsection{Instrucciones ensambladas}\label{subsec:instrucciones-ensambladas}
+
+La clase \textbf{AssembledInstruction} representa una instrucción ensamblada.
+Esta clase guarda el entero que representa el código de instrucción,
+la instrucción que ha creado la instrucción ensamblada
+(puede ser una instrucción básica o una pseudo-instrucción),
+y la instrucción básica que representa.
+Este tipo de elementos sirve únicamente para guardar
+la información sobre la instrucción.
+Las clases hijas de \textbf{AssembledInstruction} pueden definir métodos útiles
+que permitan extraer parámetros del código de instrucción.
+
+\subsection{Ejecución de una instrucción}\label{subsec:ejecución-de-una-instruccion}
+
+Por último, las instrucciones también están definidas por una clase
+\textbf{InstructionExecution}.
+Esta clase implementa la ejecución de una instrucción en una arquitectura,
+e implementa muchos métodos útiles que los hijos pueden usar para definir
+la ejecución de sus instrucciones.
+La clase \textbf{InstructionExecution} no debe ser extendida directamente,
+si no que se debe extender la clase \textbf{SingleCycleExecution}
+para ejecuciones uni-ciclo y \textbf{MultiCycleExecution} para ejecuciones
+multi-ciclo o segmentadas.
+Estas ejecuciones deben ser registradas en la instrucción
+empleando el método \textbf{addExecutionBuilder}.
+
+\subsection{Conjuntos de instrucciones}\label{subsec:conjuntos-de-instrucciones}
+
+Las instrucciones están agrupadas en conjuntos de instrucciones.
+Un proyecto utilizará un conjunto de instrucciones para ensamblar su código,
+ayudar al usuario en el editor e interpretar el código máquina del simulador.
+Los conjuntos de instrucciones están gestionados por el gestor
+\textbf{InstructionSetManager}.
