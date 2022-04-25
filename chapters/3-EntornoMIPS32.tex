@@ -529,3 +529,33 @@ también define propiedades de la caché.
 En el gestor estará registrado el constructor con los parámetros por defecto,
 mientras que las configuraciones de los proyectos almacenarán copias con los
 parámetros deseados.
+
+
+\section{Simulador}\label{sec:simulador}
+
+Un simulador es una pieza de \textit{software} que imita el comportamiento
+de un dispositivo.
+\textit{JAMS} implementa diversos simuladores para las diferentes
+arquitecturas \textit{MIPS32}.
+
+\subsection{Diferencia entre simulador y emulador}
+\label{subsec:diferencia-entre-simulador-y-emulador}
+
+Es importante diferenciar los conceptos de \textbf{simulación}
+y \textbf{emulación} a la hora de crear un programa que ejecute
+código de arquitecturas externas, como es el caso de \textit{JAMS}.
+
+\noindent Ambos tipos de aplicaciones tienen una finalidad en común:
+poder ejecutar código de una arquitectura en otra diferente.
+La diferencia se manifiesta en la manera en la que los dos enfoques
+se implementan.
+
+\noindent Un emulador tiene como único objetivo el anteriormente
+mencionado, y debe cumplirlo de la \textbf{manera más eficiente posible}.
+Para ello, recurre a tecnologías como la reconversión del programa
+a código nativo.
+
+\noindent Los simuladores toman un enfoque totalmente diferente:
+ejecutan el código de la \textbf{manera más fiel posible} a la
+arquitectura original, simulando todos los componentes, chips y
+buses de datos.
