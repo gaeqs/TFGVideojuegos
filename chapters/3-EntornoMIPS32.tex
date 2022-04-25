@@ -206,6 +206,7 @@ text:   .asciiz %string
     .endmacro
 \end{lstlisting}
 
+
 \section{Instrucciones}\label{sec:instrucciones}
 
 Las instrucciones son la parte más importante de un lenguaje ensamblador.
@@ -355,6 +356,7 @@ ayudar al usuario en el editor e interpretar el código máquina del simulador.
 Los conjuntos de instrucciones están gestionados por el gestor
 \textbf{InstructionSetManager}.
 
+
 \section{Directivas}\label{sec:directivas}
 
 Las directivas son instrucciones que el ensamblador ejecuta al
@@ -430,3 +432,100 @@ Igual que con los conjuntos de instrucciones,
 un proyecto tendrá asignado un conjunto de directivas.
 Los conjuntos de directivas están gestionados por el gestor
 \textbf{DirectiveSetManager}.
+
+
+\section{Memoria}\label{sec:memoria}
+
+La memoria es la parte del simulador y ensamblador
+donde se guardan los datos y las instrucciones de una aplicación.
+La memoria de la arquitectura \textit{MIPS32} es una memoria de 4 GB
+($2^{32}$ bytes) separada en las siguientes secciones:
+
+\begin{figure}[H]
+    \centering
+    \resizebox{\textwidth}{!}{%
+        \begin{tabular}{|l|l|l|l|}
+            \hline
+            Sección       & Tipo         & Primera dirección & Uso                                                              \\ \hline
+            Reserved      & Kernel Level & 0xFFFF0000        & Sección usada para leer y escribir de componentes.               \\ \hline
+            Kernel Data   & Kernel Level & 0x90000000        & Datos estáticos del \textit{kernel}.                             \\ \hline
+            Kernel text   & Kernel Level & 0x80000000        & Instrucciones del \textit{kernel}.                               \\ \hline
+            Stack Segment & User Level   & ↓                 & Pila.                                                            \\ \hline
+            Dynamic Data  & User Level   & ↓                 & Memoria reservada en tiempo de ejecución.                        \\ \hline
+            Static Data   & User Level   & 0x10000000        & Datos estáticos generados por las directivas al ensamblar.       \\ \hline
+            Text Segment  & User Level   & 0x04000000        & Instrucciones del programa.                                      \\ \hline
+            Reserved      & Kernel Level & 0x00000000        & Sección usada por el sistema operativo. Sin uso en el simulador. \\ \hline
+        \end{tabular}%
+    }
+    \caption{Estructura de la memoria en \textit{MIPS32}}
+    \label{fig:memory-table}
+\end{figure}
+
+\noindent Reservar 4 GB de memoria para cada simulación no es una buena idea:
+ocuparía una gran parte de la RAM de un computador y la gran mayoría no se utilizaría.
+Para evitar este problema existen varias técnicas para la
+implementación de la memoria:
+\begin{itemize}
+    \item Limitar la memoria de cada sección.
+    Esta técnica es la empleada en el simulador \textit{MARS}.
+    \item Partir las secciones en sub-secciones.
+\end{itemize}
+
+\noindent \textit{JAMS} implementa la segunda opción:
+cada sección de memoria es separada en bloques de 4 KB.
+Estas secciones no serán reservadas en memoria
+hasta que sean necesarias.
+Con esta implementación, se reserva un array inicial de
+$2^{22}$ ($2^{32}$ / $2^{12}$) entradas, lo que equivaldría
+a unos simples 8 MB\@.
+Según el uso de la memoria dentro del simulador,
+se irán reservando trozos de 4 KB\@.
+
+\subsection{Cachés}\label{subsec:caches}
+
+Las cachés son memorias más pequeñas y más rápidas que están
+situadas entre la memoria y el procesador.
+Los computadores actuales suelen tener varios niveles de caché,
+actuando unas sobre otras.
+En \textit{JAMS}, las memorias funcionan de manera muy similar.
+Tanto las cachés como las memorias implementan la interfaz \textbf{Memory}.
+Esta interfaz define los métodos de lectura y escritura.
+Cuando un simulador necesita leer o escribir en la memoria,
+llama al método correspondiente en su memoria.
+Lo que no sabe el simulador es que su \textbf{memoria puede ser una caché}
+con una referencia a otra memoria.
+Cuando una caché es invocada en una operación de lectura o escritura,
+es ella la que gestiona la operación y,
+si es necesario, accede a la memoria que tiene como referencia.
+Con esta sencilla arquitectura se genera una jerarquía de memorias
+muy similar a la que encontramos en computadores reales.
+
+\noindent Actualmente, \textit{JAMS} soporta tres tipos básicos
+de cachés: \textbf{cachés por correspondencia directa},
+\textbf{cachés asociativas} y \textbf{cachés asociativas por conjuntos}.
+Todos los tipos de cachés soportan tanto el modo \textit{write-back}
+como el modo \textit{write-through}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/mips/jams-caches}
+    \caption{Cachés en las configuraciones del proyecto}
+    \label{fig:jams-caches}
+\end{figure}
+
+\subsection{Constructores}\label{subsec:constructores}
+
+Para permitir crear nuevos tipos de cachés y memorias,
+\textit{JAMS} implementa dos gestores que guardan constructores de cachés
+y de memorias.
+Estos gestores son \textbf{MemoryBuilderManager} y \textbf{CacheBuilderManager},
+los cuales gestionan elementos de tipo
+\textbf{MemoryBuilder} y \textbf{CacheBuilder} respectivamente.
+
+\noindent La clase \textbf{MemoryBuilder} es muy sencilla:
+contiene un único método que permite crear una nueva memoria.
+La clase \textbf{CacheBuilder} es más compleja:
+también define propiedades de la caché.
+En el gestor estará registrado el constructor con los parámetros por defecto,
+mientras que las configuraciones de los proyectos almacenarán copias con los
+parámetros deseados.
