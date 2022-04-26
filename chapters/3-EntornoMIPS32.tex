@@ -559,3 +559,65 @@ a código nativo.
 ejecutan el código de la \textbf{manera más fiel posible} a la
 arquitectura original, simulando todos los componentes, chips y
 buses de datos.
+Los simuladores pueden simular la arquitectura en diferentes
+niveles: a nivel electrónico, a nivel de puerta lógica, a nivel
+de circuito o a nivel de componente.
+
+\noindent En \textit{JAMS} toma mucho más peso en enfoque de la
+\textbf{simulación} a nivel de circuito, permitiendo al usuario
+conocer el funcionamiento de su aplicación en la arquitectura que desee.
+Esto no significa que \textit{JAMS} no optimice la ejecución de código:
+todos los componentes están altamente optimizados, pudiendo llegar
+la simulación a una velocidad de 40 MHz.
+
+\subsection{Arquitecturas disponibles}\label{subsec:arquitecturas-disponibles}
+
+Actualmente, \textit{JAMS} permite ejecutar el código
+en tres arquitecturas \textit{MIPS32} diferentes:
+\begin{itemize}
+    \item \textbf{Uniciclo}: es la arquitectura más sencilla y
+    mejor optimizada.
+    Ha sido creada con la velocidad en mente, optando por una
+    política de \textbf{cero liberación de memoria}: se crean los mínimos
+    objetos posibles, y estos no se liberarán de la memoria hasta que
+    la simulación haya terminado.
+    Esta política evita que el recolector de basura interfiera en la
+    ejecución del simulador, aunmentando su velocidad de ejecución.
+    \item \textbf{Multiciclo:} simula una arquitectura
+    \textit{MIPS32} multiciclo.
+    Es mucho más lenta que la arquitectura uniciclo, ya que requiere
+    tener muchos más conceptos en cuenta.
+    Las implementaciones de las ejecuciones en esta arquitectura
+    están pensadas para ser aprovechadas en arquitecturas más
+    complejas, definiendo las lecturas y escrituras de sus
+    registros y compartiendo una interfaz transparente para los saltos.
+    \item \textbf{Segmentada con varias \textit{ALUs}}: simula
+    una arquitectura segmentada o \textit{pipelined} donde coexisten varias
+    unidades aritmético-lógicas.
+    Esta arquitectura aprovecha mucho código de la arquitectura
+    multi-ciclo, y tiende a ser mucho más lenta.
+    Los usuarios pueden modificar el número y tipo de las unidades
+    aritmético-lógicas, así como el número de ciclos que requiere
+    cada una para completar una operación.
+\end{itemize}
+
+\subsection{Funcionamiento del simulador}\label{subsec:funcionamiento-del-simulador}
+
+Independientemente de la arquitectura, todas las simulaciones presentan
+la misma estructura básica.
+Una simulación es un objeto que implementa la interfaz \textbf{Simulation}.
+Dentro de su clase, se implementa el \textbf{hilo} donde la ejecución
+de la simulación toma lugar.
+Las simulaciones definen acciones básicas que \textit{JAMS} reflejará en la
+aplicación para poder controlar la ejecución: ejecutar, parar, reiniciar
+o deshacer un ciclo son algunas de estas acciones.
+La interfaz \textbf{Simulation} también define diversos métodos
+que permiten acceder a los componentes de la simulación de
+manera segura, evitando \textbf{condiciones de carrera}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/mips/jams-simulation}
+    \caption{Interfaz de usuario del simulador}
+    \label{fig:jams-simulation}
+\end{figure}
