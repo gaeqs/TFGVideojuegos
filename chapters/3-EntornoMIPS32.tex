@@ -685,6 +685,9 @@ interrupciones, su ejecución termina de manera abrupta.
 \noindent Cuando varias interrupciones ocurren al mismo tiempo,
 estas se ejecutan de manera secuencial, teniendo más prioridad
 la interrupción \textbf{con mayor nivel}.
+Si una interrupción ocurre mientras el simulador está en el
+modo \textit{kernel}, esta se añade a la cola de interrupciones
+y se procesará cuando el simulador pase al modo usuario.
 
 \noindent Las interrupciones pueden clasificarse en interrupciones
 \textit{software} e interrupciones \textit{hardware}:
@@ -702,6 +705,18 @@ la interrupción \textbf{con mayor nivel}.
     Este nivel permite calcular la dirección de memoria
     del punto de entrada del controlador de interrupciones.
 \end{itemize}
+
+\noindent El simulador gestiona las interrupciones usando la
+implementación presentada en la figura 6.2 del documento
+\textit{MIPS® Architecture For Programmers Vol. III}\cite{MIPS_VOL_3},
+permitiendo generar hasta 63 tipos diferentes de excepciones.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{images/mips/mips-exception-generator}
+    \caption{Generador de excepciones para excepciones externas}
+    \label{fig:mips-exception-generator}
+\end{figure}
 
 \noindent Los puntos de entrada de los controladores de excepciones
 son calculados aplicando el nivel y los parámetros del coprocesador
