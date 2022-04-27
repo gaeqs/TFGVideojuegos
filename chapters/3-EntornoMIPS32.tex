@@ -56,7 +56,7 @@ ningún valor asignado}.
 El identificador de una macro es definido por su nombre concatenado
 al número de parámetros que necesitan.
 Este procedimiento se realiza para dar soporte a la sobrecarga de macros.
-En el caso de la macro \textbf{print}, su identificador sería \textbf{print-1}.
+En el caso de la macro $print$, su identificador sería $print-1$.
 
 \begin{lstlisting}[frame=single,label={lst:descubrimiento}]
 Etiquetas globales:
@@ -118,7 +118,7 @@ se asignan las direcciones de todas las instrucciones,
 etiquetas y directivas que requieran dirección.
 Estas direcciones se asignan de manera secuencial.
 Existen directivas que pueden modificar el flujo de la asignación,
-como es el caso de la directiva \textbf{.text}.
+como es el caso de la directiva $.text$.
 
 \begin{lstlisting}[frame=single,label={lst:address-assignation}]
 main:
@@ -167,9 +167,9 @@ el desarrollo de aplicaciones en lenguaje ensamblador.
 \subsubsection{Referencias relativas}\label{subsubsec:referencias-relativas}
 
 Una directiva o instrucción puede \textbf{referenciar a una etiqueta de manera
-relativa} con las referencias especiales \textbf{+} y \textbf{-}.
-La referencia \textbf{+} hace referencia a la etiqueta siguiente.
-La referencia \textbf{-} hace referencia a la etiqueta anterior.
+relativa} con las referencias especiales $+$ y $-$.
+La referencia $+$ hace referencia a la etiqueta siguiente.
+La referencia $-$ hace referencia a la etiqueta anterior.
 Las referencias relativas \textbf{solo pueden hacer referencia
 a etiquetas del mismo alcance}.
 No pueden hacer referencia a etiquetas de un alcance mayor.
@@ -217,7 +217,7 @@ JAMS permite crear y gestionar instrucciones de una manera modular.
 Todas las instrucciones implementan la interfaz \textbf{Instruction}.
 Esta interfaz define conceptos básicos de una instrucción,
 como su nombre, su mnemónico, su documentación o sus parámetros.
-Esta interfaz también define los métodos \textbf{match},
+Esta interfaz también define los métodos $match$,
 usada para comprobar si un mnemónico y un conjunto de parámetros
 representan una instrucción.
 Estos métodos son utilizados por el ensamblador y el editor para saber qué
@@ -226,31 +226,31 @@ Por último, la interfaz define el método \textit{assemble}, el
 cual traduce la instrucción en un conjunto de instrucciones ensambladas.
 Este método debe ser implementado por las clases hijas.
 Esta interfaz es implementada por dos clases abstractas básicas:
-\textbf{BasicInstruction} y \textbf{PseudoInstruction}.
+$BasicInstruction$ y $PseudoInstruction$.
 
 \subsection{Instrucciones básicas}\label{subsec:instrucciones-basicas}
 
 Las instrucciones básicas (representadas por la clase abstracta
-\textbf{BasicInstruction}) representan instrucciones normales del ensamblador.
+$BasicInstruction$) representan instrucciones normales del ensamblador.
 Estas instrucciones tienen una traducción directa a código máquina.
 Esta clase abstracta define elementos más concretos, como el código de operación,
 la unidad aritmético-lógica donde la instrucción debe ejecutarse y
-un nuevo método \textbf{match} que permite saber si un código de instrucción
+un nuevo método $match$ que permite saber si un código de instrucción
 representa la instrucción.
-Esta clase define los métodos abstractos \textbf{assembleBasic}
-y \textbf{assembleFromCode}.
-Estos métodos permiten crear un elemento de tipo \textbf{AssembledInstruction}
+Esta clase define los métodos abstractos $assembleBasic$
+y $assembleFromCode$.
+Estos métodos permiten crear un elemento de tipo $AssembledInstruction$
 mediante un código de instrucción o un conjunto de parámetros.
-El método \textbf{assemble} de la interfaz \textbf{Instruction}
+El método $assemble$ de la interfaz $Instruction$
 está implementada por esta clase.
 
 \noindent Todas las instrucciones básicas requieren dos
 constantes globales en su implementación:
 \begin{itemize}
-    \item \textbf{MNEMONIC:} es un \textbf{String} que define
+    \item \textbf{MNEMONIC:} es un $String$ que define
     el mnemónico de la instrucción.
     \item \textbf{PARAMETER\_TYPES:} es un elemento de tipo
-    \textbf{InstructionParameterTypes} que representa
+    $InstructionParameterTypes$ que representa
     los tipos de los parámetros de la instrucción.
 \end{itemize}
 
@@ -272,9 +272,8 @@ public class InstructionAbsDouble extends
 Las pseudo-instrucciones son instrucciones que el ensamblador
 convertirá en un conjunto de instrucciones básicas.
 Pueden considerarse un conjunto de instrucciones que ejecutan una acción común.
-Estas instrucciones están representadas por la clase
-\textbf{PseudoInstruction},
-la cual define el método \textbf{getInstructionAmount}.
+Estas instrucciones están representadas por la clase $PseudoInstruction$,
+la cual define el método $getInstructionAmount$.
 Este método le permite saber al ensamblador cuántas instrucciones
 debe esperar que la pseudo-instrucción dé como resultado dependiendo
 del conjunto de parámetros dado.
@@ -282,7 +281,7 @@ La clase también implementa varios métodos estáticos que sirven
 de utilidad para implementar pseudo-instrucciones rápidamente.
 
 \noindent Como ejemplo, la implementación de la pseudo-instrucción
-\textbf{addi} sería la siguiente:
+$addi$ sería la siguiente:
 
 \begin{lstlisting}[language=Java,style=java,frame=single,label={lst:pseudo-instruction}]
 public class PseudoInstructionAddi extends PseudoInstruction {
@@ -324,29 +323,33 @@ public class PseudoInstructionAddi extends PseudoInstruction {
 
 \subsection{Instrucciones ensambladas}\label{subsec:instrucciones-ensambladas}
 
-La clase \textbf{AssembledInstruction} representa una instrucción ensamblada.
+La clase $AssembledInstruction$ representa una instrucción ensamblada.
 Esta clase guarda el entero que representa el código de instrucción,
 la instrucción que ha creado la instrucción ensamblada
 (puede ser una instrucción básica o una pseudo-instrucción),
 y la instrucción básica que representa.
 Este tipo de elementos sirve únicamente para guardar
 la información sobre la instrucción.
-Las clases hijas de \textbf{AssembledInstruction} pueden definir métodos útiles
+Las clases hijas de $AssembledInstruction$ pueden definir métodos útiles
 que permitan extraer parámetros del código de instrucción.
 
 \subsection{Ejecución de una instrucción}\label{subsec:ejecución-de-una-instruccion}
 
 Por último, las instrucciones también están definidas por una clase
-\textbf{InstructionExecution}.
+$InstructionExecution$.
 Esta clase implementa la ejecución de una instrucción en una arquitectura,
 e implementa muchos métodos útiles que los hijos pueden usar para definir
 la ejecución de sus instrucciones.
-La clase \textbf{InstructionExecution} no debe ser extendida directamente,
-si no que se debe extender la clase \textbf{SingleCycleExecution}
-para ejecuciones uni-ciclo y \textbf{MultiCycleExecution} para ejecuciones
+La clase $InstructionExecution$ no debe ser extendida directamente,
+si no que se debe extender la clase $SingleCycleExecution$
+para ejecuciones uni-ciclo y $MultiCycleExecution$ para ejecuciones
 multi-ciclo o segmentadas.
 Estas ejecuciones deben ser registradas en la instrucción
-empleando el método \textbf{addExecutionBuilder}.
+empleando el método $addExecutionBuilder$.
+
+\noindent Cabe destacar que todas las ejecuciones siguen el comportamiento
+definido para su instrucción en el documento
+\textit{MIPS® Architecture For Programmers Vol. II}\cite{MIPS_VOL_2}.
 
 \subsection{Conjuntos de instrucciones}\label{subsec:conjuntos-de-instrucciones}
 
@@ -354,7 +357,7 @@ Las instrucciones están agrupadas en conjuntos de instrucciones.
 Un proyecto utilizará un conjunto de instrucciones para ensamblar su código,
 ayudar al usuario en el editor e interpretar el código máquina del simulador.
 Los conjuntos de instrucciones están gestionados por el gestor
-\textbf{InstructionSetManager}.
+$InstructionSetManager$.
 
 
 \section{Directivas}\label{sec:directivas}
@@ -370,7 +373,7 @@ y muy básica del preprocesador de C\cite{C_PREPROCESSOR}.
 \subsection{Implementación de una directiva}\label{subsec:implementacion-de-una-directiva}
 
 A diferencia de las instrucciones, las directivas
-están definidas por una única clase que extiende \textbf{Directive}.
+están definidas por una única clase que extiende $Directive$.
 Una implementación de una directiva puede sobreescribir los siguientes métodos:
 \begin{itemize}
     \item \textbf{onDiscovery:} este método se ejecuta cuando la directiva
@@ -390,7 +393,7 @@ almacenar información de estado.
 Toda la directiva debe ser resuelta de manera local en los métodos definidos.
 
 \noindent Como ejemplo, una implementación de la directiva
-\textbf{.space} sería la siguiente:
+$.space$ sería la siguiente:
 
 \begin{lstlisting}[language=Java,style=java,frame=single,label={lst:directive-space}]
 public class DirectiveSpace extends Directive {
@@ -431,7 +434,7 @@ Las directivas están agrupadas en \textbf{conjuntos de directivas}.
 Igual que con los conjuntos de instrucciones,
 un proyecto tendrá asignado un conjunto de directivas.
 Los conjuntos de directivas están gestionados por el gestor
-\textbf{DirectiveSetManager}.
+$DirectiveSetManager$.
 
 
 \section{Memoria}\label{sec:memoria}
@@ -488,7 +491,7 @@ situadas entre la memoria y el procesador.
 Los computadores actuales suelen tener varios niveles de caché,
 actuando unas sobre otras.
 En \textit{JAMS}, las memorias funcionan de manera muy similar.
-Tanto las cachés como las memorias implementan la interfaz \textbf{Memory}.
+Tanto las cachés como las memorias implementan la interfaz $Memory$.
 Esta interfaz define los métodos de lectura y escritura.
 Cuando un simulador necesita leer o escribir en la memoria,
 llama al método correspondiente en su memoria.
@@ -518,13 +521,13 @@ como el modo \textit{write-through}.
 Para permitir crear nuevos tipos de cachés y memorias,
 \textit{JAMS} implementa dos gestores que guardan constructores de cachés
 y de memorias.
-Estos gestores son \textbf{MemoryBuilderManager} y \textbf{CacheBuilderManager},
+Estos gestores son $MemoryBuilderManager$ y $CacheBuilderManager$,
 los cuales gestionan elementos de tipo
-\textbf{MemoryBuilder} y \textbf{CacheBuilder} respectivamente.
+$MemoryBuilder$ y $CacheBuilder$ respectivamente.
 
-\noindent La clase \textbf{MemoryBuilder} es muy sencilla:
+\noindent La clase $MemoryBuilder$ es muy sencilla:
 contiene un único método que permite crear una nueva memoria.
-La clase \textbf{CacheBuilder} es más compleja:
+La clase $CacheBuilder$ es más compleja:
 también define propiedades de la caché.
 En el gestor estará registrado el constructor con los parámetros por defecto,
 mientras que las configuraciones de los proyectos almacenarán copias con los
@@ -601,17 +604,17 @@ en tres arquitecturas \textit{MIPS32} diferentes:
     cada una para completar una operación.
 \end{itemize}
 
-\subsection{Funcionamiento del simulador}\label{subsec:funcionamiento-del-simulador}
+\subsection{Estructura del simulador}\label{subsec:estructura-del-simulador}
 
 Independientemente de la arquitectura, todas las simulaciones presentan
 la misma estructura básica.
-Una simulación es un objeto que implementa la interfaz \textbf{Simulation}.
+Una simulación es un objeto que implementa la interfaz $Simulation$.
 Dentro de su clase, se implementa el \textbf{hilo} donde la ejecución
 de la simulación toma lugar.
 Las simulaciones definen acciones básicas que \textit{JAMS} reflejará en la
 aplicación para poder controlar la ejecución: ejecutar, parar, reiniciar
 o deshacer un ciclo son algunas de estas acciones.
-La interfaz \textbf{Simulation} también define diversos métodos
+La interfaz $Simulation$ también define diversos métodos
 que permiten acceder a los componentes de la simulación de
 manera segura, evitando \textbf{condiciones de carrera}.
 
@@ -621,3 +624,114 @@ manera segura, evitando \textbf{condiciones de carrera}.
     \caption{Interfaz de usuario del simulador}
     \label{fig:jams-simulation}
 \end{figure}
+
+\subsection{Interpretación de instrucciones}\label{subsec:interpretación-de-instrucciones}
+
+Una de las operaciones más importantes en un simulador es la búsqueda
+de instrucciones y su interpretación.
+Este paso es común en todas las arquitecturas: el método $fetch$
+incluido en todas las simulaciones \textit{MIPS32} es el encargado
+de buscar la instrucción en la memoria, interpretarla y convertirla
+en una ejecución adecuada para la arquitectura.
+
+\noindent En las arquitecturas donde una misma instrucción no se puede
+ejecutar varias veces al mismo tiempo, este método implementa una
+\textbf{caché de ejecuciones}.
+Esta caché invalida las instrucciones cuando su representación en
+la memoria es modificada, permitiendo al usuario modificar las
+instrucciones dentro de la simulación.
+Esta caché se llena en el momento en el que la simulación es creada,
+realizando un \textit{pre-fetch} de ejecuciones.
+
+\noindent Una vez la simulación consiga la ejecución de la instrucción,
+realizará una acción u otra dependiendo de la arquitectura.
+Si la arquitectura es una arquitectura uniciclo, el simulador ejecutará
+la instrucción invocando el método $execute$ de la ejecución.
+Si la arquitectura es una arquitectura multiciclo o segmentada, el simulador
+agregará la ejecución en un \textit{pipeline}, e invocará
+los métodos $fetch$, $decode$, $execute$, $memory$
+o $writeBack$ en el ciclo correspondiente.
+
+\subsection{Registros}\label{subsec:registros}
+
+Un registro es una celda de memoria muy rápida que las instrucciones
+utilizan para efectuar sus operaciones.
+El procesador \textit{MIPS32} principal implementa 32 registros.
+
+\noindent En \textit{JAMS}, un registro está representado por
+una clase que contiene sus diferentes aspectos: identificador, nombres,
+si es modificable y su valor por defecto.
+La clase también contiene el estado del registro en el estado
+actual de una simulación, guardando su valor y
+\textbf{una lista con las ejecuciones que están bloqueando el registro}.
+
+\noindent Esta lista es muy importante para determinar el flujo de
+las instrucciones en arquitecturas avanzadas, \textbf{permitiendo
+detectar y resolver riesgos}.
+
+\subsection{Interrupciones}\label{subsec:interrupciones}
+
+Las interrupciones permiten informar sobre eventos al
+simulador.
+Cuando una interrupción sucede, el simulador entrará en el
+modo \textit{kernel}, saltando automáticamente al controlador
+de interrupciones proporcionado por el proyecto.
+Si la simulación no tiene implementado ningún controlador de
+interrupciones, su ejecución termina de manera abrupta.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/mips/jams-exception}
+    \caption{Excepción en una simulación}
+    \label{fig:jams-exception}
+\end{figure}
+
+\noindent Cuando varias interrupciones ocurren al mismo tiempo,
+estas se ejecutan de manera secuencial, teniendo más prioridad
+la interrupción \textbf{con mayor nivel}.
+Si una interrupción ocurre mientras el simulador está en el
+modo \textit{kernel}, esta se añade a la cola de interrupciones
+y se procesará cuando el simulador pase al modo usuario.
+
+\noindent Las interrupciones pueden clasificarse en interrupciones
+\textit{software} e interrupciones \textit{hardware}:
+\begin{itemize}
+    \item \textbf{Interrupciones \textit{software}:} permiten informar
+    al programa de errores o excepciones en la simulación.
+    Este tipo de interrupciones deben contener una causa que
+    el programa puede leer.
+    Estas interrupciones son de nivel 1.
+    \item \textbf{Interrupciones \textit{hardware}:} permiten informar
+    al programa de eventos generados por los diferentes componentes
+    conectado al simulador.
+    Estas interrupciones están definidas por un nivel entre el
+    nivel 2 al 63.
+    Este nivel permite calcular la dirección de memoria
+    del punto de entrada del controlador de interrupciones.
+\end{itemize}
+
+\noindent El simulador gestiona las interrupciones usando la
+implementación presentada en la figura 6.2 del documento
+\textit{MIPS® Architecture For Programmers Vol. III}\cite{MIPS_VOL_3},
+permitiendo generar hasta 63 tipos diferentes de excepciones.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{images/mips/mips-exception-generator}
+    \caption{Generador de excepciones para excepciones externas}
+    \label{fig:mips-exception-generator}
+\end{figure}
+
+\noindent Los puntos de entrada de los controladores de excepciones
+son calculados aplicando el nivel y los parámetros del coprocesador
+0 $IntCtl/VS$ (por defecto 1) y $EBase$ (por defecto 0) en la
+siguiente expresión:
+
+\[address = EBase + offset \ \& \ 0x3fffffff \ | \ 0x80000000\]
+
+\noindent Donde $offset$ depende del tipo de interrupción:
+\begin{itemize}
+    \item \textbf{Interrupción \textit{software}:} $0x180$
+    \item \textbf{Error de caché:} $0x100$
+    \item \textbf{Interrupción \textit{hardware}:} $0x200 + level * VS * 32$
+\end{itemize}

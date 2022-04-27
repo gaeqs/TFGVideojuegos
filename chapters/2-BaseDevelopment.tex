@@ -42,6 +42,7 @@ librerías de alto nivel suelen incorporar paradigmas propios del lenguaje de pr
 desarrolladas.
 
 \noindent Para el desarrollo de la aplicación se desea utilizar una librería gráfica \textbf{moderna},
+
 \textbf{de alto nivel} y \textbf{multiplataforma}, disponible en un lenguaje de programación estable,
 con una comunidad grande y \textbf{rápido tanto en el desarrollo como en la ejecución}.
 Otro requisito crucial es que el lenguaje permita \textbf{vincular código externo} de manera
@@ -181,24 +182,24 @@ Las \textbf{tareas} son las encargadas de definir dicho comportamiento.
     \textit{Java} y esté soportado por \textit{JavaFX}.
 \end{itemize}
 
-\noindent Para ejecutar estas tareas ha de usarse el \textit{script} \textbf{gradlew}.
+\noindent Para ejecutar estas tareas ha de usarse el \textit{script} $gradlew$.
 Este comando descargará \textit{Gradle} si es necesario y ejecutará
 la tarea pasada como argumento.
 Todos estos comportamientos están automatizados en \textit{GitHub}
-mediante los \textit{scripts} dentro de la carpeta \textbf{.github}.
+mediante los \textit{scripts} dentro de la carpeta $.github$.
 
 \subsection{Módulos y paquetes}\label{subsec:modulos-y-paquetes}
 
-Dentro de la carpeta \textbf{src} están definidos los dos módulos principales del
-proyecto: \textbf{main} y \textbf{test}.
+Dentro de la carpeta $src$ están definidos los dos módulos principales del
+proyecto: $main$ y $test$.
 
-\noindent El módulo \textbf{main} es el encargado de almacenar todo el código fuente
+\noindent El módulo $main$ es el encargado de almacenar todo el código fuente
 de la aplicación.
 Puede ser considerado el módulo más importante de todo el proyecto.
-El módulo \textbf{test} define todas las pruebas unitarias que el módulo \textbf{main}
+El módulo $test$ define todas las pruebas unitarias que el módulo $main$
 debe superar para que la aplicación se compile con éxito.
 
-\noindent El código fuente almacenado en el módulo \textbf{main} está separado en diferentes
+\noindent El código fuente almacenado en el módulo $main$ está separado en diferentes
 paquetes \textit{Java}:
 \begin{itemize}
     \item \textbf{collection:} contiene una serie de colecciones modificadas.
@@ -299,7 +300,7 @@ todos los gestores proporcionados por el proveedor son eliminados del registro.
 \noindent \textit{JAMS} permite separar los gestores en dos tipos:
 \textbf{gestores primarios} y \textbf{gestores secundarios}.
 Los gestores primarios son fácilmente accesibles cuando se busca un gestor por tipo
-usando métodos como \textbf{Manager.of(Type.class)}.
+usando métodos como $Manager.of(Type.class)$.
 Solo puede existir un gestor primario por tipo.
 Para buscar gestores secundarios, se debe proveer el nombre del gestor explícitamente.
 
@@ -327,7 +328,7 @@ Manager<Language> manager = Jams.REGISTRY.of("other-language-manager", Language.
 
 \subsection{Usar los gestores}\label{subsec:usar-los-gestores}
 
-Los \textbf{gestores} implementan la interfaz \textbf{Set}
+Los \textbf{gestores} implementan la interfaz $Set$
 \footnote{https://docs.oracle.com/javase/8/docs/api/java/util/Set.html},
 por lo que son fácilmente manipulables.
 
@@ -350,7 +351,7 @@ if (english.isPresent()) {
 
 \subsection{Crear nuevos gestores}\label{subsec:crear-nuevos-gestores}
 
-Se pueden crear gestores de cualquier tipo de dato que extienda la interfaz \textbf{ManagerResource}.
+Se pueden crear gestores de cualquier tipo de dato que extienda la interfaz $ManagerResource$.
 
 \begin{lstlisting}[language=Java,style=java,frame=single,label={lst:crear-nuevos-gestores}]
 // The element to store inside the manager
@@ -390,17 +391,17 @@ de esta tecnología.
 \subsection{Emisores de eventos}\label{subsec:emisores-de-eventos}
 
 Los emisores de eventos son los encargados de relacionar los creadores de eventos con sus escuchadores.
-Un emisor de evento está representado por la interfaz \textbf{EventBroadcast}.
+Un emisor de evento está representado por la interfaz $EventBroadcast$.
 Esta interfaz es implementada por cualquier elemento que quiera ser usado para registrar escuchas.
 Los gestores, los componentes, o el propio \textit{JAMS} implementan un emisor por defecto.
-La clase \textbf{SimpleEventBroadcast} contiene una implementación de \textbf{EventBroadcast}
+La clase $SimpleEventBroadcast$ contiene una implementación de $EventBroadcast$
 que se puede usar como superclase.
 
 \subsection{Definir escuchas}\label{subsec:definir-escuchas}
 
 Las escuchas son \textbf{métodos no estáticos anotados con la anotación @Listener}.
 Estos métodos solo tienen un parámetro que pide un elemento que extienda la clase
-\textbf{Event} y deben devolver \textbf{void}.
+$Event$ y deben devolver $void$.
 
 \begin{lstlisting}[language=Java,style=java,frame=single,label={lst:definir-escuchas}]
 @Listener
@@ -415,18 +416,18 @@ se ejecutará cuando un nuevo idioma sea añadido al gestor.
 \noindent A diferencia de otros sistemas de eventos similares,
 el sistema de eventos de \textit{JAMS} permite usar \textbf{eventos genéricos}.
 Un ejemplo es el caso anterior, donde el método pide un elemento de tipo
-\textbf{ManagerElementRegisterEvent.After<Language>}.
+$ManagerElementRegisterEvent.After<Language>$.
 Si el emisor al que está registrado emite un evento de tipo
-\textbf{ManagerElementRegisterEvent.After<Theme>}, la escucha no será invocada.
+$ManagerElementRegisterEvent.After<Theme>$, la escucha no será invocada.
 
 \noindent Un evento puede extender la clase de otro evento.
 Esto permite generar una jerarquía de eventos.
 Una escucha que pide un cierto tipo de evento se ejecutará siempre que dicho evento o uno de sus hijos ocurra.
-Si una escucha pide el evento \textbf{Event}, su método se ejecutará siempre que un evento ocurra.
+Si una escucha pide el evento $Event$, su método se ejecutará siempre que un evento ocurra.
 
-\noindent Algunos eventos implementan la interfaz \textbf{Cancellable}, lo cual permite cancelar el evento.
+\noindent Algunos eventos implementan la interfaz $Cancellable$, lo cual permite cancelar el evento.
 Las escuchas restantes no serán llamadas cuando un evento es cancelado salvo que se defina lo contrario
-en la etiqueta \textbf{@Listener}.
+en la etiqueta $@Listener$.
 
 \subsection{Registrar escuchas}\label{subsec:registrar-escuchas}
 
@@ -437,13 +438,13 @@ Esto añade una gran flexibilidad al sistema, permitiendo que un elemento regist
 escuchas dependiendo de su estado.
 
 \noindent El método más usado para registrar escuchas es el método
-\textbf{registerListeners(Object, boolean)}.
-Este método buscará en el objeto todos los métodos con la etiqueta \textbf{@Listener}
-que pidan un evento y devuelvan \textbf{void}.
+$registerListeners(Object, boolean)$.
+Este método buscará en el objeto todos los métodos con la etiqueta $@Listener$
+que pidan un evento y devuelvan $void$.
 Esta búsqueda incluye a todos los métodos definidos en el objeto,
 incluyendo métodos privados y métodos de las superclases.
 
-\noindent El booleano \textbf{useWeakReferences} permite registrar la escucha usando una referencia débil.
+\noindent El booleano $useWeakReferences$ permite registrar la escucha usando una referencia débil.
 Si este booleano es falso, el objeto usado para el registro quedará en memoria aunque todas
 sus referencias cesen de existir, por lo que se debe eliminar el registro de manera manual.
 La referencia débil elimina este paso, borrándose el registro automáticamente cuando
@@ -481,11 +482,11 @@ private void onLanguageRegister(ManagerElementRegisterEvent.After<Language> even
 \end{lstlisting}
 
 \noindent Para eliminar los registros, se han de usar los métodos análogos
-\textbf{unregisterListeners} y \textbf{unregisterListener}.
+$unregisterListeners$ y $unregisterListener$.
 
 \subsection{Parámetros avanzados}\label{subsec:parámetros-avanzados}
 
-La etiqueta \textbf{@Listener} permite definir comportamientos más avanzados en la escucha.
+La etiqueta $@Listener$ permite definir comportamientos más avanzados en la escucha.
 
 \begin{lstlisting}[language=Java,style=java,frame=single,label={lst:escuchas-avanzadas}]
 @Listener(priority = 20, ignoreCancelled = true)
@@ -494,16 +495,16 @@ private void onLanguageRegister(ManagerElementRegisterEvent.After<Language> even
 }
 \end{lstlisting}
 
-\noindent El parámetro \textbf{priority} permite definir la prioridad de la escucha.
+\noindent El parámetro $priority$ permite definir la prioridad de la escucha.
 La escucha con el número más alto será la primera en ser llamada.
-El parámetro \textbf{ignoreCancelled} es un booleano que le da a la escucha la capacidad
+El parámetro $ignoreCancelled$ es un booleano que le da a la escucha la capacidad
 de ser llamada incluso cuando un evento ha sido cancelado.
 
 
 \section{Interfaz de usuario}\label{sec:interfaz-de-usuario}
 
 La interfaz de \textit{JAMS} es muy similar a las interfaces que presentan los \textit{IDEs} modernos.
-Todas las herramientas están encapsuladas en \textbf{nodos}.
+Todas las herramientas están encapsuladas en $nodos$.
 Cada nodo se puede desplegar en los laterales del editor.
 Más concretamente, se pueden desplegar dos nodos por cada lado del editor.
 
@@ -683,7 +684,7 @@ MAIN_MENU_HELP_ABOUT: About
 los paquetes de idiomas permiten crear secciones como
 en cualquier archivo \textit{YAML}.
 En el siguiente caso, se usará el identificador
-\textbf{ACTION.MY\_ACTION} para referenciar el mensaje.
+$ACTION.MY\_ACTION$ para referenciar el mensaje.
 
 \begin{lstlisting}[frame=single,label={lst:yaml-subsection}]
 ACTION:
@@ -713,7 +714,7 @@ Existen dos maneras de acceder a los mensajes mediante un identificador:
 \noindent Un componente puede acceder al idioma seleccionado usando
 el gestor de idiomas por defecto.
 La manera más correcta para pedir un mensaje es usando el método
-\textbf{getOrDefault(String)} del idioma.
+$getOrDefault(String)$ del idioma.
 Este método devolverá el mensaje asociado al identificador dado.
 Si el idioma no contiene ningún mensaje con ese identificador,
 lo buscará en el idioma por defecto.
@@ -722,7 +723,7 @@ devuelve una cadena de texto vacía.
 
 \noindent Cabe destacar que esta acción suele deber rehacerse cuando
 el idioma cambia, por lo que se debe registrar una escucha en el
-gestor de idiomas, escuchando el evento \textbf{LanguageRefreshEvent}.
+gestor de idiomas, escuchando el evento $LanguageRefreshEvent$.
 Si esto no se hace, el seguirá mostrando el mensaje en el idioma
 anterior.
 
@@ -737,7 +738,7 @@ public void onRefresh(LanguageRefreshEvent event) {
 para usar mensajes traducibles, sin necesidad de que el desarrollador tenga que
 gestionar escuchas y gestores.
 Estos nodos se pueden encontrar en el paquete
-\textbf{net.jamsimulator.jams.language.wrapper}.
+$net.jamsimulator.jams.language.wrapper$.
 
 \begin{lstlisting}[language=Java,style=java,frame=single,label={lst:idioma-nodo}]
 new LanguageLabel(Messages.ACTION_FOLDER_EXPLORER_ELEMENT_NEW_FOLDER)
@@ -785,7 +786,7 @@ Un ejemplo de archivo theme.json sería el siguiente:
 \end{itemize}
 
 \noindent Estén definidos o no las dependencias,
-todo tema depende del tema \textbf{Common}.
+todo tema depende del tema $Common$.
 Este tema actúa de base, y define el estilo básico de \textit{JAMS}.
 Este tema define muchas variables globales, pero no le asigna ningún
 valor a ninguna de ellas.
@@ -794,10 +795,10 @@ valor a ninguna de ellas.
 
 Las variables globales permiten definir el color de los diferentes
 componentes de manera muy sencilla.
-Un tema debe asignar un color a todas las variables del tema \textbf{Common}.
+Un tema debe asignar un color a todas las variables del tema $Common$.
 Esta tarea se debe hacer en el archivo especial \textbf{global.css}.
 Este archivo es un archivo especial que siempre está incluido en el tema y,
-al compilar, será envuelto en una sección global \textit{CSS} \textbf{*\{ \}}.
+al compilar, será envuelto en una sección global \textit{CSS} $*\{ \}$.
 Esto permite que todos los componentes puedan usar
 las variables asignadas en este archivo.
 Un ejemplo de archivo \textbf{global.css} sería el siguiente:
@@ -930,10 +931,10 @@ mediante la opción \textbf{Archivo > Configuración}.
 de estructura para proporcionar una interacción adecuada entre el usuario
 y los diferentes parámetros.
 Esta interfaz es extensible, pudiendo los componentes añadir nuevos tipos de datos
-proporcionando un \textbf{ValueEditor} y un \textbf{ValueConverter}.
-Un \textbf{ValueConverter} permite transformar un objeto compuesto a una cadena
+proporcionando un $ValueEditor$ y un $ValueConverter$.
+Un $ValueConverter$ permite transformar un objeto compuesto a una cadena
 de caracteres y vice-versa.
-Un \textbf{ValueEditor} proporciona una interfaz de edición adecuada para un
+Un $ValueEditor$ proporciona una interfaz de edición adecuada para un
 objeto compuesto.
 
 \subsection{Secciones especiales}\label{subsec:secciones-especiales}
@@ -967,12 +968,11 @@ de la aplicación (el usuario no puede copiar un trozo de texto
 en el explorador).
 
 \noindent Los componentes pueden implementar nuevas acciones
-creando una nueva clase que extienda \textbf{Action} o
-\textbf{ContextAction}.
-La clase \textbf{Action} es la clase básica para las acciones.
+creando una nueva clase que extienda $Action$ o $ContextAction$.
+La clase $Action$ es la clase básica para las acciones.
 Las implementaciones deben implementar el funcionamiento
-de la acción en el método \textbf{run}.
-La clase \textbf{ContextAction} permite que la acción sea
+de la acción en el método $run$.
+La clase $ContextAction$ permite que la acción sea
 mostrada en un menú contextual.
 Las implementaciones de esta clase deben implementar
 muchos más métodos que proporcionan información
@@ -999,13 +999,13 @@ El editor de texto presenta una arquitectura
     \textit{RichTextFX} permite añadir estilos
     a secciones del texto.
     La vista está representada por la clase
-    \textbf{CodeArea}.
+    $CodeArea$.
     \item \textbf{Controlador:} el controlador está
-    gestionado por la clase \textbf{CodeFileEditor}.
-    Esta clase extiende \textbf{CodeArea}, y es la
+    gestionado por la clase $CodeFileEditor$.
+    Esta clase extiende $CodeArea$, y es la
     encargada de gestionar las entradas del usuario.
     \item \textbf{Modelo:} el modelo está representado
-    por la clase \textbf{EditorIndex}.
+    por la clase $EditorIndex$.
     Las implementaciones de esta clase contienen
     una representación abstracta de los contenidos
     del editor de texto.
@@ -1035,21 +1035,21 @@ del modelo:
     \textit{Stream API}\cite{STREAM_API} añadida en \textit{Java 8}.
 \end{itemize}
 
-\noindent \textbf{EditorIndexedElement} es la la interfaz principal
+\noindent $EditorIndexedElement$ es la la interfaz principal
 que representa un elemento.
 Esta interfaz define los elementos de posición, tamaño, alcance,
 jerarquía y contenido.
 Los elementos concretos deben implementar esta interfaz.
 Una implementación básica de un elemento puede encontrarse
-en la clase \textbf{EditorIndexedElementImpl}.
+en la clase $EditorIndexedElementImpl$.
 
 \noindent Si un elemento desea ser referenciado, este debe
-implementar la interfaz \textbf{EditorReferencedElement}.
+implementar la interfaz $EditorReferencedElement$.
 Un elemento que implemente esta interfaz será gestionado
 de manera diferente por el modelo.
 De igual manera, si un elemento desea referenciar
 otros elementos, este debe implementar la interfaz
-\textbf{EditorReferencingElement}.
+$EditorReferencingElement$.
 Estas dos interfaces no son incompatibles:
 un elemento puede referenciar y ser referenciado
 al mismo tiempo.
@@ -1059,7 +1059,7 @@ Para interactuar con él, un hilo debe reservar el acceso
 al modelo y especificar si desea editar su estructura o
 solo acceder a sus datos.
 Si el hilo modifica el modelo, se creará dos evento de tipo
-\textbf{IndexFinishEditEvent} y \textbf{IndexRequestRefreshEvent}
+$IndexFinishEditEvent$ y $IndexRequestRefreshEvent$
 cuando termine la edición.
 
 \subsection{Actualización del modelo}\label{subsec:actualizacion-del-modelo}
@@ -1113,7 +1113,7 @@ utilizada para editores de texto.
 \end{center}
 
 \noindent Los nodos hoja pueden implementar la interfaz
-\textbf{EditorIndexStyleableElement}, permitiendo inyectar
+$EditorIndexStyleableElement$, permitiendo inyectar
 estilos en la vista del editor de texto.
 Esta interfaz solo presenta un método que pide una lista
 de estilos.
@@ -1132,7 +1132,7 @@ en el editor cuando sea necesario.
 Un modelo puede tener \textbf{referencias a elementos
 presentes en otros modelos}.
 Este es el caso de las etiquetas y macros globales.
-La clase \textbf{ProjectGlobalIndex} permite la
+La clase $ProjectGlobalIndex$ permite la
 comunicación entre modelos, actuando de intermediador.
 Solo los elementos que están dentro de los archivos
 de la lista de archivos a ensamblar serán tomados en cuenta.
@@ -1145,7 +1145,7 @@ mismo hilo.
 \textit{JAMS} incorpora implementaciones básicas de los
 diferentes componentes usados en el editor.
 Una de las implementaciones más importantes es la que está
-definida en la clase \textbf{EditorLineIndex}, la cual
+definida en la clase $EditorLineIndex$, la cual
 implementa un modelo donde cada línea representa una
 unidad autocontenida.
 
