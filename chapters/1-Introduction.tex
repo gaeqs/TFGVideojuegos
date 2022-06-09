@@ -1,10 +1,9 @@
-\chapter{Introducción} \label{cap:intro}
-
-El objetivo de este documento es presentar JAMS, una nueva aplicación realizada como Trabajo de Fin de Grado
-del Grado en Ingeniería de Computadores de la Universidad Rey Juan Carlos.
+\chapter{Descripción del problema} \label{cap:descripcion-del-problema}
 
 
-\section{La arquitectura \textit{MIPS}}\label{sec:la-arquitectura-mips}
+\section{Definición de conceptos}\label{sec:definicion-de-conceptos}
+
+\subsection{La arquitectura \textit{MIPS}}\label{subsec:la-arquitectura-mips}
 
 Se les conoce con el nombre de \textbf{procesadores \textit{MIPS}} a una familia de microprocesadores que implementan
 la arquitectura \textit{RISC} del mismo nombre.
@@ -14,8 +13,7 @@ sistemas embebidos, enrutadores y videoconsolas como la \textit{Nintendo 64} o l
 \noindent Su simple diseño y baja curva de aprendizaje hace a esta arquitectura ideal para introducir a los alumnos
 a los lenguajes ensamblador.
 
-
-\section{\textit{IDEs}: entornos de desarrollo integrados}\label{sec:ides-entornos-de-desarrollo-integrados}
+\subsection{\textit{IDEs}: entornos de desarrollo integrados}\label{subsec:ides-entornos-de-desarrollo-integrados}
 
 Un \textbf{entorno de desarrollo integrado} (\textit{IDE, Integrated Development Environment}) es una aplicación
 informática con diversas herramientas usados en el desarrollo, construcción y depuración de \textit{software}.
@@ -45,23 +43,50 @@ Estos se pueden clasificar de diferentes maneras.
     Algunos ejemplos son \textit{Visual Studio Code}, \textit{Atom} o \textit{Notepad++}.
 \end{itemize}
 
+\subsection{Simuladores y emuladores}
+\label{subsec:simuladores-y-emuladores}
 
-\section{Motivación}\label{sec:motivacion}
+Tanto los simuladores como los simuladores pueden definirse como un
+programa de computador que imita el funcionamiento de uno o varios
+componentes \textit{hardware}.
+Un emulador o simulador puede imitar una arquitectura, permitiendo
+ejecutar aplicaciones ajenas a la arquitectura del computador principal.
 
-Actualmente existen varias herramientas para el desarrollo y ejecución de programas basados en
-la arquitectura \textit{MIPS}.
-La herramienta más famosa es el editor, ensamblador y simulador \textit{MARS}\cite{MARS}, desarrollada en
-el año 2006 usando la biblioteca gráfica \textit{Swing}
-\footnote{\url{https://docs.oracle.com/javase/8/docs/technotes/guides/swing/}}
-y el lenguaje de programación \textit{Java}.
-Otra herramienta conocida es el simulador \textit{EduMIPS64}\cite{EDUMIPS64}, desarrollada en 2014 con
-la misma tecnología.
+Es importante diferenciar los conceptos de \textbf{simulación}
+y \textbf{emulación} a la hora de crear un programa que ejecute
+código de arquitecturas externas, como es el caso de \textit{JAMS}.
 
-\noindent Estas dos aplicaciones presentan una serie de problemas importantes:
+\noindent La diferencia entre los simuladores y emuladores se manifiesta
+en la manera en la que se implementan.
+
+\noindent Un emulador tiene como objetivo \textbf{imitar el resultado}
+que la arquitectura imitada produce al ejecutar un programa, sin tener
+en cuenta el proceso interno que produce dicho resultado.
+Los emuladores tienden a ser rápidos, intentando producir el resultado
+de la manera más rápida y fiel posible.
+
+\noindent Los simuladores tienen como objetivo \textbf{imitar el proceso}
+que produce el resultado, simulando todos los componentes de la arquitectura.
+Los simuladores tienden a ser más lentos que los emuladores, pero son más
+adecuados para desarrollar y depurar aplicaciones para la arquitectura
+imitada sin tener el \textit{hardware} físicamente.
+
+
+\section{Descripción del problema}\label{sec:descripcion-del-problema}
+
+Como se verá más adelante, los simuladores de la arquitectura \textit{MIPS} tuvieron
+un auge importante a principios del milenio, con herramientas como \textit{MARS}\cite{MARS}
+o \textit{EduMIPS64}\cite{EDUMIPS64}.
+Estas herramientas estaban centradas principalmente en el \textbf{ámbito educativo}, proporcionando
+interfaces sencillas y pocas herramientas.
+Con el paso de los años, estas herramientas han quedado obsoletas, impidiendo desarrollar aplicaciones
+en ensamblador \textit{MIPS32} de una manera cómoda.
+
+\noindent Los principales problemas que presentas estas aplicaciones son los siguientes:
 \begin{itemize}
     \item \textbf{Falta de herramientas:} los entornos de desarrollo \textit{MIPS} sufren de una
     carencia grave de herramientas importantes.
-    Este problema afecta principalmente a \textit{EduMIPS64}, donde no existe un editor de texto y
+    Este problema afecta principalmente a programas como \textit{EduMIPS64}, donde no existe un editor de texto y
     el ensamblador es una aplicación separada que require la línea de comandos para funcionar.
     \item \textbf{Falta de estructura de proyecto:} ninguna aplicación actual presenta una estructura
     de proyecto, indispensable para el desarrollo de aplicaciones medianas y grandes.
@@ -81,27 +106,75 @@ El objetivo principal de este proyecto es el desarrollo de \textbf{\textit{JAMS}
 (\textit{Just Another MIPS Simulator})}, un \textbf{entorno de desarrollo integrado ligero, expandible y moderno}
 centrado en los lenguajes ensamblador y, más concretamente, en el lenguaje ensamblador \textit{MIPS}.
 
-\noindent Específicamente, en este documento se detallarán los siguientes objetivos:
+\noindent Específicamente, en este apartado se detallarán diferentes objetivos.
+
+\subsection{Investigar sobre las tecnologías más adecuados para el desarrollo}
+\label{subsec:investigar-sobre-las-tecnologias-mas-adecuados-para-el-desarrollo}
+
+La tecnología usada en un proyecto tiene mucho peso en el resultado final.
+Es por eso que se debe buscar un conjunto de tecnologías que permitan crear una aplicación
+moderna, multiplataforma y expansible.
+
+\noexpand Este objetivo puede separarse en dos pasos:
 \begin{itemize}
-    \item Investigación sobre las tecnologías más adecuadas para el desarrollo de la aplicación.
-    \item Creación de un entorno base y un \textit{framework} que permita implementar diferentes herramientas.
-    \item Desarrollo de un editor, ensamblador y simulador para la arquitectura \textit{MIPS32}.
-    \item Desarrollo de múltiples herramientas que permitan un desarrollo y depuración sencillos.
+    \item Buscar una lenguaje de programación que permita crear aplicaciones modernas,
+    que permita cargar código externo a voluntad y que tenga un buen rendimiento
+    tanto en ejecución como en el desarrollo.
+    \item Dentro de las posibilidades del lenguaje de programación seleccionado,
+    buscar un \textit{framework} de desarrollo de aplicaciones de escritorio
+    que permita desarrollar aplicaciones modernas y de gran calidad.
 \end{itemize}
 
-\noindent La aplicación deberá cumplir los siguientes requisitos:
+\subsection{Crear un entorno base y un \textit{framework} que permita implementar diferentes herramientas}
+\label{subsec:crear-un-entorno-base-y-un-framework-que-permita-implementar-diferentes-herramientas}
+
+JAMS pretende ser un entorno de desarrollo completamente modificable.
+La mejor manera para conseguir esto es desarrollar una base genérica
+que se pueda ajustar posteriormente al desarrollo de una tecnología en concreto.
+
+\noindent Esta base debe poder modificar cualquier aspecto de la aplicación,
+desde poder modificar simples mensajes y parámetros de un tema hasta poder
+añadir nuevas herramientas.
+Estas modificaciones pueden venir de diferentes fuentes, como lo son
+los paquetes de idiomas, los paquetes de temas y los complementos.
+
+\noindent Por último, JAMS debe permitir al usuario configurar los parámetros
+de la aplicación de manera sencilla, proporcionando una interfaz de configuración
+cómoda de usar.
+
+\noindent Para conseguir este resultado, se proponen los siguientes subobjetivos:
 \begin{itemize}
-    \item El entorno de desarrollo debe ser moderno, cómodo, fácil de usar y enfocado en el aprendizaje.
-    \item El simulador debe ser capaz de ejecutar la mayoría de programas escritos en ensamblador \textit{MIPS32}.
-    \item La aplicación debe tener un sistema completo de personalización, permitiendo al usuario cambiar su apariencia.
-    \item La aplicación debe ser expansible mediante el uso de complementos (\textit{plugins}).
+    \item Desarrollar una aplicación base en conjunto con una \textit{API} que pueda
+    ser usada por las diferentes herramientas para tecnologías concretas.
+    \item Desarrollar e investigar diferentes formatos que permitan guardar
+    y modificar los diferentes elementos estáticos de la aplicación, como lo son
+    los idiomas, los temas y la configuración.
+    \item Desarrollar un sistema de carga dinámica de componentes, permitiendo
+    al usuario activar y desactivar componentes a voluntad sin tener que
+    reiniciar la aplicación.
 \end{itemize}
 
-\noindent Por último, el desarrollo de la aplicación no tiene como objetivo los siguientes puntos:
+\subsection{Desarrollar un entorno de desarrollo para la arquitectura \textit{MIPS32}}
+\label{subsec:desarrollar-un-entorno-de-desarrollo-para-la-arquitectura-mips32}
+
+Una vez se tenga una base sólida, de ha de desarrollar un editor, un ensamblador
+y un simulador para la arquitectura \textit{MIPS32r6}.
+Estas tres tecnologías se apoyarán en diferentes herramientas que complementarán
+su utilización, como puede ser el caso del explorador en el editor y el visualizador
+de memoria en el simulador.
+
+\noindent Este objetivo se desarrollará en dos pasos:
+
 \begin{itemize}
-    \item Crear un entorno de desarrollo complejo con soporte para una gran variedad de lenguajes de programación.
-    \item Crear un entorno de desarrollo que permita crear código válido para entornos \textit{MIPS} reales.
+    \item Desarrollar un editor, un ensamblador y un simulador usando la tecnología
+    proporcionada por la base.
+    Estos tres componentes deben ser expandibles mediante componentes externos.
+    \item Desarrollar diferentes herramientas que complementen las funcionalidades
+    del editor, el ensamblador y el simulador.
 \end{itemize}
+
+\noindent Cabe destacar que no es un objetivo el permitir crear código válido para
+entornos \textit{MIPS} reales.
 
 \section{Metodología}\label{sec:metodologia}
 
