@@ -1,0 +1,133 @@
+\chapter{Antecedentes}\label{ch:antecedentes}
+
+
+\section{Antecedentes en los entornos de desarrollo \textit{MIPS}}
+\label{sec:antecedentes-en-los-entornos-de-desarrollo-mips}
+
+Los entornos de desarrollo \textit{MIPS} han estado presentes en
+el mercado desde el principio de los años 90, quedando su desarrollo
+estancado en la década del 2010.
+Estos entornos de desarrollo suelen estar enfocados al ámbito
+educativo, con implementaciones muy básicas de la arquitectura.
+
+\noindent A continuación se presentarán los principales
+entornos de desarrollo y simuladores \textit{MIPS}:
+\begin{itemize}
+    \item \textbf{SPIM}\cite{SPIM}: es uno de los primeros simuladores
+    \textit{MIPS32}, y uno de los más influyentes.
+    La aplicación cuenta con un ensamblador que soporta las
+    instrucciones más básicas de las primeras revisiones de la arquitectura.
+    Es una aplicación que \textbf{se controla principalmente por consola},
+    aunque las últimas versiones incorporan una interfaz gráfica
+    desarrollada con el \textit{framework Qt}\cite{QT}.
+    Los simuladores posteriores \textbf{tomarían mucha inspiración} de \textit{SPIM},
+    implementando las llamadas al sistema desarrolladas específicamente
+    para este simulador.
+    \item \textbf{MARS}\cite{MARS}: desarrollado en la Universidad
+    del estado de Missouri en 2005, \textit{MARS} es uno de los
+    entornos de desarrollo \textit{MIPS32} más populares en el ámbito educativo.
+    La aplicación, desarrollada en \textit{Java} usando la librería \textit{Swing},
+    presenta un editor de texto básico con \textbf{autocompletador}, un
+    ensamblador con soporte para una gran variedad de instrucciones y
+    pseudo-instrucciones y un simulador básico con diferentes herramientas
+    desplegables.
+    \item \textbf{WinMIPS64}\cite{WINMIPS64}: simulador
+    de la arquitectura \textit{MIPS64} que implementa
+    un procesador segmentado donde las instrucciones
+    pueden tardar varios ciclos en ejecutarse.
+    La herramienta más interesante de la aplicación
+    es su \textbf{visualizador de flujo}.
+    Existe un clon llamado \textit{EduMIPS64} desarrollado
+    en \textit{Java} y multiplataforma.
+    \item \textbf{Simula3MS}\cite{SIMULA3MS}: desarrollado en
+    la Universidad de A Coruña, \textit{Simula3MS} es un
+    pequeño entorno de desarrollo para \textit{MIPS32}
+    con un simulador que permite \textbf{ejecutar el código en
+    diferentes tipos de procesadores}.
+    Está desarrollado en \textit{Java} con la librería \textit{Swing}.
+    \item \textbf{DrMIPS}\cite{DRMIPS}: presenta un
+    editor de texto, un ensamblador y un simulador
+    para \textit{MIPS32}.
+    La aplicación tiene un enfoque educativo, teniendo el simulador
+    un \textbf{visualizador de los caminos del procesador}.
+    \item \textbf{VisualMIPS32}\cite{VISUALMIPS32}: entorno
+    de desarrollo \textit{MIPS32} desarrollado y
+    utilizado por la Universidad de Sevilla para la enseñanza.
+    Cuenta con un editor, un ensamblador y un simulador.
+    Igual que \textit{WinMIPS64}, cuenta con un visualizador
+    de flujo integrado.
+\end{itemize}
+
+
+\section{Antecedentes en los entornos de desarrollo}
+\label{sec:antecedentes-en-los-entornos-de-desarrollo}
+
+\noindent \textit{JAMS} también está fuertemente inspirado en los
+entornos de desarrollo de carácter general más modernos.
+Estas aplicaciones presentan una serie de funcionalidades que
+caracterizan a los \textit{IDEs} de hoy en día:
+
+\begin{itemize}
+    \item \textbf{Nodos}: también conocidos como \textit{Widgets} o \textit{Tools}.
+    Consisten en pequeñas herramientas que complementan al entorno.
+    Antiguamente, estas herramientas solían desplegarse en una ventana diferente,
+    siendo necesario seleccionarlas desde un menú desplegable en la ventana principal.
+    Actualmente, los nodos suelen estar integrados los lados de la ventana principal,
+    siendo estos capaces de ser desplegados pulsando un botón en las barras laterales
+    de la aplicación.
+    Estos nodos son altamente personalizables, pudiendo el usuario cambiar su posición
+    y el modo de despliegue.
+    \item \textbf{Proyectos}: los entornos de desarrollo modernos están estructurados
+    al rededor del concepto de proyecto.
+    Un proyecto es un conjunto de archivos que componen el código fuente de una aplicación.
+    Actualmente, no existe ningún entorno de desarrollo especializado en \textit{MIPS32}
+    que presente esta característica.
+\end{itemize}
+
+Actualmente, existe una gran cantidad de entornos de desarrollo en el mercado:
+específicos y generales, complejos y ligeros.
+Cada uno de ellos presenta unas características diferentes que los hace único.
+
+\noindent A continuación se presentarán algunos de los principales
+entornos de desarrollo:
+\begin{itemize}
+    \item \textbf{Microsoft Visual Studio}\cite{VISUALSTUDIO}: entorno de desarrollo
+    integrado general y complejo desarrollado por \textit{Microsoft}.
+    Está programado en C++ y C\#, con soporte para componentes.
+    Estos componentes son los que permiten añadir soporte para diversas tecnologías
+    al entorno de desarrollo, ya que de por sí tiene soporte para una pequeña
+    variedad de tecnologías.
+    Junto a \textit{Intellij IDEA}, \textit{Microsoft Visual Studio} ha sido uno
+    de los pioneros en integrar sus herramientas a la ventana principal.
+    \textit{Microsoft Visual Studio} está disponible en tres versiones: la versión
+    \textit{Community} para uso no comercial, la versión \textit{Professional} para
+    proyectos comerciales y la versión \textit{Enterprise}, siendo esta la versión
+    con más características.
+    Las tres versiones son de \textbf{código privativo}.
+    \item \textbf{Visual Studio Code}\cite{VISUALSTUDIOCODE}:
+    es la alternativa de código abierto de \textit{Microsoft}.
+    \textit{Visual Studio Code} es un entorno de desarrollo general
+    y ligero \textit{desarrollado en HTML/CSS/TS} que sigue la misma filosofía
+    de componentes de \textit{Microsoft Visual Studio}.
+    \item \textbf{Eclipse}\cite{ECLIPSE}: creado por \textit{IBM} y actualmente
+    desarrollado por \textit{Eclipse Foundation}.
+    \textit{Eclipse} es entorno de desarrollo complejo desarrollado en \textit{Java},
+    centrándose principalmente en el \textbf{desarrollo de aplicaciones para dicho lenguaje}.
+    Actualmente, \textit{Eclipse} se ha convertido en un \textit{IDE} general que
+    permite desarrollar en más de 20 lenguajes de programación.
+    \textit{Eclipse} es de código abierto y totalmente gratis.
+    \item \textbf{Intellij IDEA / \textit{IDEs} de \textit{JetBrains}}\cite{INTELLIJIDEA}:
+    \textit{JetBrains} sigue una filosofía diferente al introducir
+    soporte a un nuevo lenguaje de programación.
+    Al principio, lanzan un componente para todos sus entornos de desarrollo,
+    el cual da la habilidad de desarrollar en una nueva tecnología.
+    Una vez el componente es lo suficientemente maduro, \textit{JetBrains}
+    \textbf{lanza un nuevo entorno de desarrollo} para el lenguaje de programación
+    en concreto.
+    Todos estos entornos de desarrollo tienen la misma base, creada a
+    principios de los años 2000 para \textit{Intellij IDEA}, su primer \textit{IDE}.
+    Salvo algunas excepciones, todos los entornos de desarollo de \textit{JetBrains}
+    son de código privativo y de pago, necesitando una licencia para poder usarlos.
+    Las únicas excepciones son las versiones \textit{Community} de \textit{Intellij IDEA}
+    y \textit{PyCharm}, de código abierto y para uso no comercial.
+\end{itemize}
