@@ -9,6 +9,110 @@ En este capítulo se abordarán las capacidades de este entorno,
 documentando el ensamblador, el simulador y el editor junto
 con sus componentes esenciales.
 
+\section{Editor de código \textit{MIPS32}}\label{sec:editor-de-codigo-mips32}
+
+\textit{JAMS} aprovecha la tecnología creada en el entorno base
+para el editor de código \textit{MIPS32}.
+Este editor es complementado por diferentes nodos presentes en la
+aplicación.
+
+\noindent Cuando el usuario abre un proyecto y desea editar su código,
+debe seleccionar el archivo que desea modificar.
+Esto se consigue gracias a la herramienta \textbf{explorador}, la cual
+muestra una representación en forma de árbol de la estructura del proyecto.
+El usuario puede expandir y contraer carpetas, así como crear, borrar y
+mover archivos.
+Si el usuario usa el doble clic sobre un archivo editable, este se abrirá
+en el editor.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/tools/jams-explorer}
+    \caption{Explorador de archivos}
+    \label{fig:jams-explorer}
+\end{figure}
+
+\noindent El explorador presenta un menú contextual donde el usuario
+puede ejecutar varias acciones sobre las carpetas y los archivos
+del proyecto.
+Una de las opciones más particulares es la opción de añadir o eliminar
+archivos de código al ensamblador.
+Al ser \textit{JAMS} un entorno de desarrollo basado en \textbf{proyectos},
+se ha de proporcionar una manera de incluir o excluir archivos de
+la aplicación resultante.
+Con este simple sistema, el usuario podrá elegir qué archivos de debe ensamblar.
+Los archivos a ensamblar estarán marcados en \textbf{verde} en el explorador,
+y aparecerán en orden en el nodo \textbf{Archivos a ensamblar}.
+Cabe destacar que, como se verá más adelante, los el orden de ensamblaje
+importa, por lo que esta herramienta permite ordenarlos de una manera sencilla.
+
+\noindent Una vez el usuario haya abierto el archivo a editar, todo su código
+aparecerá en la herramienta principal de la sección: \textbf{el visualizador
+de archivos}.
+Esta herramienta permite mostrar diferentes editores dependiendo del tipo
+de archivo abierto.
+En la versión sin componentes de \textbf{JAMS}, el editor permite visualizar
+imágenes y editar archivos de texto.
+En el caso de estos últimos archivos, solo los archivos ensamblador presentan
+ayudas, como pueden ser el autocompletador, en resaltador o la documentación.
+
+\noindent El visualizador de archivos puede tener varios archivos abiertos
+al mismo tiempo.
+Cada archivo estará representado por una pestaña que podrá cerrarse.
+El usuario podrá arrastrar una de las pestañas a un lado del visualizador
+para mostrar dos o más editores al mismo tiempo.
+
+\noindent El editor de código \textit{MIPS32} puede considerarse un editor
+de texto \textbf{inteligente}: gracias a las librerías creadas en la sección
+anterior, es capaz de convertir el texto puro en los diferentes componentes
+ensamblador que representa.
+El editor también tiene conocimiento de las referencias y el alcance de
+todas las etiquetas y macros, tanto en el propio archivo a editar
+como en el resto de archivos a ensamblar.
+Toda esta información puede ser visualizada por el usuario manteniendo
+durante un segundo el ratón encima de un elemento.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/mips/jams-text-hover}
+    \caption{Información sobre un elemento del editor}
+    \label{fig:jams-text-hover}
+\end{figure}
+
+\noindent Una vez la aplicación esté lista para su funcionamiento,
+el usuario deberá \textbf{crear una configuración} con todos los parámetros
+del ensamblador y del simulador deseados para ejecutar la aplicación.
+Esto se consigue pulsando el botón \textbf{configuración} en la parte
+superior derecha de la aplicación.
+En este menú, el usuario podrá seleccionar el tipo de arquitectura,
+el tipo de memoria, las llamadas a sistema que se desean usar,
+el número y tipos de caché que se desean utilizar, entre otras
+muchas opciones.
+
+\noindent Esta configuración será utilizable únicamente en el proyecto
+donde se ha creado, y el usuario podrá crear por cada proyecto
+un número indeterminado de ellas.
+De esta manera, el usuario podrá probar su aplicación en una infinidad
+de configuraciones diferentes sin tener que generar un proyecto por cada
+configuración.
+El usuario podrá seleccionar la configuración que desea ejecutar en
+el menú desplegable inmediatamente a la izquierda del botón de configuración.
+
+\noindent Finalmente, el usuario podrá llamar al ensamblador pulsando el botón
+\textbf{construir proyecto}, representado por un martillo verde.
+Una vez pulsado, el informe se desplegará y mostrará el resultado del ensamblador.
+Si el resultado es positivo y el código se ha ensamblado, una pestaña con
+una simulación aparecerá en el proyecto, permitiendo al usuario simular
+el código que acaba de ensamblar.
+Cabe destacar que un usuario puede tener diferentes simulaciones abiertas
+al mismo tiempo, lo cual amplía las posibilidades de uso de la aplicación.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/mips/mips-configuration}
+    \caption{Configuración de la ejecución de un proyecto}
+    \label{fig:jams-configuration}
+\end{figure}
 
 \section{Ensamblador \textit{MIPS32}}\label{sec:ensamblador-mips32}
 
