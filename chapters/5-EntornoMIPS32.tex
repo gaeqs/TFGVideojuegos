@@ -9,6 +9,7 @@ En este capítulo se abordarán las capacidades de este entorno,
 documentando el ensamblador, el simulador y el editor junto
 con sus componentes esenciales.
 
+
 \section{Editor de código \textit{MIPS32}}\label{sec:editor-de-codigo-mips32}
 
 \textit{JAMS} aprovecha la tecnología creada en el entorno base
@@ -18,19 +19,20 @@ aplicación.
 
 \noindent Cuando el usuario abre un proyecto y desea editar su código,
 debe seleccionar el archivo que desea modificar.
-Esto se consigue gracias a la herramienta \textbf{explorador}, la cual
+Esto se consigue gracias a la herramienta \textbf{explorador}\ref{fig:jams-explorer-text-hover}, la cual
 muestra una representación en forma de árbol de la estructura del proyecto.
 El usuario puede expandir y contraer carpetas, así como crear, borrar y
 mover archivos.
 Si el usuario usa el doble clic sobre un archivo editable, este se abrirá
 en el editor.
 
-\begin{figure}[H]
+\begin{figure}[h]
     \centering
-    \includegraphics[width=0.8\textwidth]{images/tools/jams-explorer}
-    \caption{Explorador de archivos}
-    \label{fig:jams-explorer}
+    \includegraphics[width=0.8\textwidth]{images/mips/jams-text-hover}
+    \caption{Explorador e información sobre un elemento del editor}
+    \label{fig:jams-explorer-text-hover}
 \end{figure}
+
 
 \noindent El explorador presenta un menú contextual donde el usuario
 puede ejecutar varias acciones sobre las carpetas y los archivos
@@ -70,14 +72,8 @@ El editor también tiene conocimiento de las referencias y el alcance de
 todas las etiquetas y macros, tanto en el propio archivo a editar
 como en el resto de archivos a ensamblar.
 Toda esta información puede ser visualizada por el usuario manteniendo
-durante un segundo el ratón encima de un elemento.
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.8\textwidth]{images/mips/jams-text-hover}
-    \caption{Información sobre un elemento del editor}
-    \label{fig:jams-text-hover}
-\end{figure}
+durante un segundo el ratón encima de un elemento, como se puede observar
+en la figura \ref{fig:jams-explorer-text-hover}.
 
 \noindent Una vez la aplicación esté lista para su funcionamiento,
 el usuario deberá \textbf{crear una configuración} con todos los parámetros
@@ -87,7 +83,14 @@ superior derecha de la aplicación.
 En este menú, el usuario podrá seleccionar el tipo de arquitectura,
 el tipo de memoria, las llamadas a sistema que se desean usar,
 el número y tipos de caché que se desean utilizar, entre otras
-muchas opciones.
+muchas opciones, como se puede observar en la figura \ref{fig:jams-configuration}.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/mips/mips-configuration}
+    \caption{Configuración de la ejecución de un proyecto}
+    \label{fig:jams-configuration}
+\end{figure}
 
 \noindent Esta configuración será utilizable únicamente en el proyecto
 donde se ha creado, y el usuario podrá crear por cada proyecto
@@ -107,12 +110,6 @@ el código que acaba de ensamblar.
 Cabe destacar que un usuario puede tener diferentes simulaciones abiertas
 al mismo tiempo, lo cual amplía las posibilidades de uso de la aplicación.
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.8\textwidth]{images/mips/mips-configuration}
-    \caption{Configuración de la ejecución de un proyecto}
-    \label{fig:jams-configuration}
-\end{figure}
 
 \section{Ensamblador \textit{MIPS32}}\label{sec:ensamblador-mips32}
 
@@ -121,11 +118,9 @@ usado para ensamblar proyectos \textit{MIPS32}.
 Este ensamblador soporta características avanzadas empleadas
 comúnmente al programar en ensamblador, como las macros,
 las etiquetas globales o las referencias relativas.
-
-\noindent El ensamblador ensambla el código de un proyecto en cuatro pasos:
+El ensamblador ensambla el código de un proyecto en \textbf{cuatro pasos}:
 descubrimiento, expansión, asignación de direcciones y asignación de valores.
-Se utilizará el siguiente programa para comentar los
-diferentes pasos del ensamblador:
+Se utilizará el siguiente programa para comentar los diferentes pasos del ensamblador:
 
 \begin{lstlisting}[frame=single,label={lst:example.asm}]
     .macro print ( %string )
@@ -152,12 +147,11 @@ local:
 
 En este paso el texto del proyecto se \textbf{descompone en sus primitivas},
 permitiendo al ensamblador entender los diferentes componentes de cada línea.
-Al final de este paso, las etiquetas globales y las etiquetas de archivo
+Al final de este paso, las etiquetas globales y las etiquetas del archivo
 (etiquetas no definidas dentro de una macro) \textbf{son registradas sin
 ningún valor asignado}.
-
 \noindent Las macros de cada archivo también son registradas.
-El identificador de una macro es definido por su nombre concatenado
+El identificador de una macro es definido por su nombre concatenado-*
 al número de parámetros que necesitan.
 Este procedimiento se realiza para dar soporte a la sobrecarga de macros.
 En el caso de la macro $print$, su identificador sería $print-1$.
@@ -310,238 +304,158 @@ text:   .asciiz %string
     .endmacro
 \end{lstlisting}
 
+\subsection{Detalles finales}\label{subsec:detalles-finales}
 
-\section{Instrucciones}\label{sec:instrucciones}
+Como detalle final, cabe destacar que este ensamblador es totalmente personalizable.
+Los componentes pueden añadir, eliminar y modificar las instrucciones y directivas
+que el ensamblador usa.
+La adición de directivas por parte de los componentes permite
+\textbf{modificar el comportamiento} del ensamblador, añadiendo
+nuevas funcionalidades a este.
 
-Las instrucciones son la parte más importante de un lenguaje ensamblador.
-JAMS permite crear y gestionar instrucciones de una manera modular.
+\noindent Añadir una instrucción o una directiva es muy sencillo en \textit{JAMS}:
+un componente únicamente debe añadir una nueva instrucción o
+una nueva directiva (representadas por clases) a un conjunto de
+instrucciones o directivas ya existente, o crear ese conjunto y registrarlo
+con la \textit{API} de \textit{JAMS}.
+A este nuevo elemento se le puede añadir un nombre traducible y documentación
+a través de un paquete de idiomas.
 
-\subsection{Estructura de una instrucción}\label{subsec:estructura-de-una-instruccion}
+\noindent El ensamblador para el \textbf{procesador 6502} utilizado en el
+componente creado para el Trabajo de Fin de Grado del Grado en Diseño
+y Desarrollo de Videojuegos utiliza una arquitectura muy similar a la mostrada,
+teniendo únicamente diferencias en el tratamiento de referencias.
 
-Todas las instrucciones implementan la interfaz $Instruction$.
-Esta interfaz define conceptos básicos de una instrucción,
-como su nombre, su mnemónico, su documentación o sus parámetros.
-Esta interfaz también define los métodos $match$,
-usada para comprobar si un mnemónico y un conjunto de parámetros
-representan una instrucción.
-Estos métodos son utilizados por el ensamblador y el editor para saber qué
-instrucción define una línea.
-Por último, la interfaz define el método \textit{assemble}, el
-cual traduce la instrucción en un conjunto de instrucciones ensambladas.
-Este método debe ser implementado por las clases hijas.
-Esta interfaz es implementada por dos clases abstractas básicas:
-$BasicInstruction$ y $PseudoInstruction$.
+\section{Simulador}\label{sec:simulador}
 
-\subsection{Instrucciones básicas}\label{subsec:instrucciones-basicas}
+Un simulador es una pieza de \textit{software} que imita el comportamiento
+de un dispositivo.
+\textit{JAMS} implementa diversos simuladores para las diferentes
+arquitecturas \textit{MIPS32}.
+\noindent En \textit{JAMS} toma mucho más peso en enfoque de la
+\textbf{simulación} a nivel de circuito, permitiendo al usuario
+conocer el funcionamiento de su aplicación en la arquitectura que desee.
+Esto no significa que \textit{JAMS} no optimice la ejecución de código:
+todos los componentes están altamente optimizados, pudiendo llegar
+la simulación a una velocidad de 40 MHz.
 
-Las instrucciones básicas (representadas por la clase abstracta
-$BasicInstruction$) representan instrucciones normales del ensamblador.
-Estas instrucciones tienen una traducción directa a código máquina.
-Esta clase abstracta define elementos más concretos, como el código de operación,
-la unidad aritmético-lógica donde la instrucción debe ejecutarse y
-un nuevo método $match$ que permite saber si un código de instrucción
-representa la instrucción.
-Esta clase define los métodos abstractos $assembleBasic$
-y $assembleFromCode$.
-Estos métodos permiten crear un elemento de tipo $AssembledInstruction$
-mediante un código de instrucción o un conjunto de parámetros.
-El método $assemble$ de la interfaz $Instruction$
-está implementada por esta clase.
+\subsection{Arquitecturas disponibles}\label{subsec:arquitecturas-disponibles}
 
-\noindent Todas las instrucciones básicas requieren dos
-constantes globales en su implementación:
+Actualmente, \textit{JAMS} permite ejecutar el código
+en tres arquitecturas \textit{MIPS32} diferentes:
 \begin{itemize}
-    \item \textbf{MNEMONIC:} es un $String$ que define
-    el mnemónico de la instrucción.
-    \item \textbf{PARAMETER\_TYPES:} es un elemento de tipo
-    $InstructionParameterTypes$ que representa
-    los tipos de los parámetros de la instrucción.
+    \item \textbf{Uniciclo}: es la arquitectura más sencilla y
+    mejor optimizada.
+    Ha sido creada con la velocidad en mente, optando por una
+    política de \textbf{cero liberación de memoria}: se crean los mínimos
+    objetos posibles, y estos no se liberarán de la memoria hasta que
+    la simulación haya terminado.
+    Esta política evita que el recolector de basura interfiera en la
+    ejecución del simulador, aunmentando su velocidad de ejecución.
+    \item \textbf{Multiciclo:} simula una arquitectura
+    \textit{MIPS32} multiciclo.
+    Es mucho más lenta que la arquitectura uniciclo, ya que requiere
+    tener muchos más conceptos en cuenta.
+    Las implementaciones de las ejecuciones en esta arquitectura
+    están pensadas para ser aprovechadas en arquitecturas más
+    complejas, definiendo las lecturas y escrituras de sus
+    registros y compartiendo una interfaz transparente para los saltos.
+    \item \textbf{Segmentada con varias \textit{ALUs}}: simula
+    una arquitectura segmentada o \textit{pipelined} donde coexisten varias
+    unidades aritmético-lógicas.
+    Esta arquitectura aprovecha mucho código de la arquitectura
+    multiciclo, y tiende a ser mucho más lenta.
+    Los usuarios pueden modificar el número y tipo de las unidades
+    aritmético-lógicas, así como el número de ciclos que requiere
+    cada una para completar una operación.
 \end{itemize}
 
-\begin{lstlisting}[language=Java,style=java,frame=single,label={lst:basic-instruction}]
-public class InstructionAbsDouble extends
-    BasicRFPUInstruction<InstructionAbsDouble.Assembled> {
+\subsection{Estructura del simulador}\label{subsec:estructura-del-simulador}
 
-    public static final String MNEMONIC = "abs.d";
-    public static final InstructionParameterTypes PARAMETER_TYPES =
-        new InstructionParameterTypes(
-            ParameterType.EVEN_FLOAT_REGISTER,
-            ParameterType.EVEN_FLOAT_REGISTER
-        );
-}
-\end{lstlisting}
+Independientemente de la arquitectura, todas las simulaciones presentan
+la misma estructura básica, idéntica en su base al editor.
+Al ejecutar una simulación, el usuario encuentra como nodo principal
+un \textbf{visualizador de instrucciones}, mostrado en la figura \ref{fig:jams-simulation}.
+Esta herramienta permite visualizar todas las instrucciones que se han
+ensamblado, junto a su dirección de memoria, su valor en hexadecimal y
+su origen.
+El orden de estos valores se puede cambiar en la configuración.
+El visualizador también informa sobre las \textbf{instrucciones que se van
+a ejecutar} en el siguiente ciclo y, si la arquitectura tiene varias
+etapas, mostrará qué etapa ejecutará.
+Si la aplicación simulada tiene código para el modo \textit{kernel},
+este se mostrará en una pestaña aparte.
 
-\subsection{Pseudo-instrucciones}\label{subsec:pseudo-instrucciones}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/mips/jams-simulation}
+    \caption{Interfaz de usuario del simulador}
+    \label{fig:jams-simulation}
+\end{figure}
 
-Las pseudo-instrucciones son instrucciones que el ensamblador
-convertirá en un conjunto de instrucciones básicas.
-Pueden considerarse un conjunto de instrucciones que ejecutan una acción común.
-Estas instrucciones están representadas por la clase $PseudoInstruction$,
-la cual define el método $getInstructionAmount$.
-Este método le permite saber al ensamblador cuántas instrucciones
-debe esperar que la pseudo-instrucción dé como resultado dependiendo
-del conjunto de parámetros dado.
-La clase también implementa varios métodos estáticos que sirven
-de utilidad para implementar pseudo-instrucciones rápidamente.
+\noindent En la parte superior derecha se pueden encontrar los
+\textbf{botones de control} del simulador.
+Estos botones permiten empezar o parar la simulación, ejecutar un
+único ciclo, deshacer un ciclo o reiniciar por completo la simulación.
+Esta sección también contiene una barra deslizable que permite controlar
+la velocidad a la que se ejecuta la simulación.
 
-\noindent Como ejemplo, la implementación de la pseudo-instrucción
-$addi$ sería la siguiente:
+\noindent La ejecución del simulador es totalmente asíncrono, lo cual
+impide bloqueos de interfaz cuando una aplicación se está ejecutando.
+Todos los componentes y herramientas que desean acceder al simulador
+deberán sincronizarse con el hilo del simulador.
 
-\begin{lstlisting}[language=Java,style=java,frame=single,label={lst:pseudo-instruction}]
-public class PseudoInstructionAddi extends PseudoInstruction {
+\noindent El simulador tiene integrado \textbf{diversas herramientas} que complementan
+el visualizador de instrucciones, permitiendo visualizar y modificar varios
+aspectos de la ejecución de un programa.
 
-    public static final String MNEMONIC = "addi";
+\noindent El nodo más importante es la herramienta de \textbf{memoria},
+la cual permite al usuario visualizar y editar el estado de la memoria
+de la memoria en el instante actual.
+El usuario puede seleccionar el \textbf{modo de representación} de los valores
+de la memoria de entre una gran variedad, pudiendo elegir formatos
+muy usados como son el formato hexadecimal a formatos específicos
+como el \textit{RGB}.
+Por último, esta herramienta también permite visualizar el \textbf{estado
+de las cachés} del simulador.
+Esta información es complementada por la herramienta \textbf{cachés},
+la cual informa sobre los fallos y aciertos de las cachés, además de un
+informe completo sobre sus acciones.
 
-    public static final InstructionParameterTypes PARAMETER_TYPES =
-        new InstructionParameterTypes(
-            ParameterType.REGISTER,
-            ParameterType.REGISTER,
-            ParameterType.SIGNED_16_BIT
-        );
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/tools/jams-memory-cache-flow}
+    \caption{Las herramientas memoria, cachés y flujo en funcionamiento}
+    \label{fig:jams-memory-cache-flow}
+\end{figure}
 
-    public PseudoInstructionAddi() {
-        super(MNEMONIC, PARAMETER_TYPES);
-    }
+\noindent Otro nodo muy relevante es la herramienta \textbf{flujo},
+la cual registra el estado de todas las instrucciones en cada ciclo
+de ejecución.
+De esta manera, el usuario podrá saber de un vistazo qué flujo
+ha seguido su aplicación en la arquitectura seleccionada.
 
-    @Override
-    public int getInstructionAmount(String[] parameters) {
-        return 2;
-    }
+\noindent Como último nodo crucial se encuentra la herramienta
+\textbf{laboratorio}, la cual permite al usuario simular
+dos visualizadores de siete segmentos, un teclado hexadecimal
+y un contador, además de poder generar interrupciones \textit{hardware}
+y \textit{software}.
 
-    @Override
-    public AssembledInstruction[] assemble(
-            InstructionSet set,
-            int address,
-            ParameterParseResult[] parameters
-    ) {
-        var instructions = instructions(set,
-                InstructionAddiu.class, InstructionAdd.class);
+\noindent El simulador cuenta con muchos nodos más, como es la
+herramienta \textbf{registros}, que permite visualizar y modificar
+todos los registros del simulador, la herramienta \textbf{etiquetas},
+que guarda las referencias de las etiquetas usadas por el usuario
+en el editor, la herramienta \textbf{información}, que muestra
+información muy básica y general de la simulación y la
+herramienta \textbf{consola}, que permite recibir y enviar
+mensajes a la aplicación.
 
-        var addiu = parameters(AT, ZERO, parameters[2]);
-        var add = parameters(parameters[0], AT, parameters[1]);
+\subsection{Aspectos técnicos}\label{subsec:aspectos-tecnicos}
 
-        return assemble(instructions, addiu, add);
-    }
-}
-\end{lstlisting}
+En esta sección se detallarán brevemente algunos aspectos técnicos
+del simulador.
 
-\subsection{Instrucciones ensambladas}\label{subsec:instrucciones-ensambladas}
-
-La clase $AssembledInstruction$ representa una instrucción ensamblada.
-Esta clase guarda el entero que representa el código de instrucción,
-la instrucción que ha creado la instrucción ensamblada
-(puede ser una instrucción básica o una pseudo-instrucción),
-y la instrucción básica que representa.
-Este tipo de elementos sirve únicamente para guardar
-la información sobre la instrucción.
-Las clases hijas de $AssembledInstruction$ pueden definir métodos útiles
-que permitan extraer parámetros del código de instrucción.
-
-\subsection{Ejecución de una instrucción}\label{subsec:ejecución-de-una-instruccion}
-
-Por último, las instrucciones también están definidas por una clase
-$InstructionExecution$.
-Esta clase implementa la ejecución de una instrucción en una arquitectura,
-e implementa muchos métodos útiles que los hijos pueden usar para definir
-la ejecución de sus instrucciones.
-La clase $InstructionExecution$ no debe ser extendida directamente,
-si no que se debe extender la clase $SingleCycleExecution$
-para ejecuciones uni-ciclo y $MultiCycleExecution$ para ejecuciones
-multi-ciclo o segmentadas.
-Estas ejecuciones deben ser registradas en la instrucción
-empleando el método $addExecutionBuilder$.
-
-\noindent Cabe destacar que todas las ejecuciones siguen el comportamiento
-definido para su instrucción en el documento
-\textit{MIPS® Architecture For Programmers Vol. II}\cite{MIPS_VOL_2}.
-
-\subsection{Conjuntos de instrucciones}\label{subsec:conjuntos-de-instrucciones}
-
-Las instrucciones están agrupadas en conjuntos de instrucciones.
-Un proyecto utilizará un conjunto de instrucciones para ensamblar su código,
-ayudar al usuario en el editor e interpretar el código máquina del simulador.
-Los conjuntos de instrucciones están gestionados por el gestor
-$InstructionSetManager$.
-
-
-\section{Directivas}\label{sec:directivas}
-
-Las directivas son instrucciones que el ensamblador ejecuta al
-ensamblar un proyecto.
-Las directivas permiten al desarrollador definir espacios de memoria
-(con datos por defecto o no), indicar el flujo del ensamblaje,
-definir macros y equivalencias, entre otras funciones.
-El preprocesador de \textit{JAMS} se puede considerar una versión primitiva
-y muy básica del preprocesador de C\cite{C_PREPROCESSOR}.
-
-\subsection{Implementación de una directiva}\label{subsec:implementacion-de-una-directiva}
-
-A diferencia de las instrucciones, las directivas
-están definidas por una única clase que extiende $Directive$.
-Una implementación de una directiva puede sobreescribir los siguientes métodos:
-\begin{itemize}
-    \item \textbf{onDiscovery:} este método se ejecuta cuando la directiva
-    es encontrada en la fase de descubrimiento del ensamblador.
-    \item \textbf{onExpansion:} este método se ejecuta cuando la directiva
-    es encontrada en la fase de expansión.
-    \item \textbf{onAddressAssignation:} este método se ejecuta en la fase
-    de asignación de direcciones.
-    Si la directiva reserva memoria o hace operaciones con la memoria,
-    esta debe devolver la dirección en la que empieza.
-    \item \textbf{onMemoryAssignation:} este método se ejecuta en la fase
-    de asignación de valores del ensamblador.
-\end{itemize}
-
-\noindent Las clases que implementan una directiva no deben
-almacenar información de estado.
-Toda la directiva debe ser resuelta de manera local en los métodos definidos.
-
-\noindent Como ejemplo, una implementación de la directiva
-$.space$ sería la siguiente:
-
-\begin{lstlisting}[language=Java,style=java,frame=single,label={lst:directive-space}]
-public class DirectiveSpace extends Directive {
-
-    public static final String NAME = "space";
-    private static final DirectiveParameterType[] PARAMETERS = {
-        DirectiveParameterType.POSITIVE_INT};
-
-    public DirectiveSpace() {
-        super(NAME, PARAMETERS, false, false, true);
-    }
-
-    @Override
-    public OptionalInt onAddressAssignation(MIPS32AssemblerLine line,
-             String[] parameters, String rawParameters) {
-        if (parameters.length != 1)
-            throw new AssemblerException(line.getIndex(), "." + NAME
-                + " must have one parameter.");
-
-        if (!NumericUtils.isInteger(parameters[0]))
-            throw new AssemblerException(parameters[0] + " is not a number.");
-        int i = NumericUtils.decodeInteger(parameters[0]);
-        if (i < 0) throw new AssemblerException(i + " cannot be negative.");
-
-        MIPS32AssemblerData data = line.getAssembler().getAssemblerData();
-        data.align(0);
-        int start = data.getCurrent();
-        data.addCurrent(i);
-        return OptionalInt.of(start);
-    }
-
-}
-\end{lstlisting}
-
-\subsection{Conjuntos de directivas}\label{subsec:conjuntos-de-directivas}
-
-Las directivas están agrupadas en \textbf{conjuntos de directivas}.
-Igual que con los conjuntos de instrucciones,
-un proyecto tendrá asignado un conjunto de directivas.
-Los conjuntos de directivas están gestionados por el gestor
-$DirectiveSetManager$.
-
-
-\section{Memoria}\label{sec:memoria}
+\subsubsection{Memoria}\label{subsubsec:memoria}
 
 La memoria es la parte del simulador y ensamblador
 donde se guardan los datos y las instrucciones de una aplicación.
@@ -588,7 +502,7 @@ a unos simples 8 MB\@.
 Según el uso de la memoria dentro del simulador,
 se irán reservando trozos de 4 KB\@.
 
-\subsection{Cachés}\label{subsec:caches}
+\subsubsection{Cachés}\label{subsubsec:caches}
 
 Las cachés son memorias más pequeñas y más rápidas que están
 situadas entre la memoria y el procesador.
@@ -613,167 +527,7 @@ de cachés: \textbf{cachés por correspondencia directa},
 Todos los tipos de cachés soportan tanto el modo \textit{write-back}
 como el modo \textit{write-through}.
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.8\textwidth]{images/mips/jams-caches}
-    \caption{Cachés en las configuraciones del proyecto}
-    \label{fig:jams-caches}
-\end{figure}
-
-\subsection{Constructores}\label{subsec:constructores}
-
-Para permitir crear nuevos tipos de cachés y memorias,
-\textit{JAMS} implementa dos gestores que guardan constructores de cachés
-y de memorias.
-Estos gestores son $MemoryBuilderManager$ y $CacheBuilderManager$,
-los cuales gestionan elementos de tipo
-$MemoryBuilder$ y $CacheBuilder$ respectivamente.
-
-\noindent La clase $MemoryBuilder$ es muy sencilla:
-contiene un único método que permite crear una nueva memoria.
-La clase $CacheBuilder$ es más compleja:
-también define propiedades de la caché.
-En el gestor estará registrado el constructor con los parámetros por defecto,
-mientras que las configuraciones de los proyectos almacenarán copias con los
-parámetros deseados.
-
-
-\section{Simulador}\label{sec:simulador}
-
-Un simulador es una pieza de \textit{software} que imita el comportamiento
-de un dispositivo.
-\textit{JAMS} implementa diversos simuladores para las diferentes
-arquitecturas \textit{MIPS32}.
-
-\subsection{Diferencia entre simulador y emulador}
-\label{subsec:diferencia-entre-simulador-y-emulador}
-
-Es importante diferenciar los conceptos de \textbf{simulación}
-y \textbf{emulación} a la hora de crear un programa que ejecute
-código de arquitecturas externas, como es el caso de \textit{JAMS}.
-
-\noindent Ambos tipos de aplicaciones tienen una finalidad en común:
-poder ejecutar código de una arquitectura en otra diferente.
-La diferencia se manifiesta en la manera en la que los dos enfoques
-se implementan.
-
-\noindent Un emulador tiene como único objetivo el anteriormente
-mencionado, y debe cumplirlo de la \textbf{manera más eficiente posible}.
-Para ello, recurre a tecnologías como la reconversión del programa
-a código nativo.
-
-\noindent Los simuladores toman un enfoque totalmente diferente:
-ejecutan el código de la \textbf{manera más fiel posible} a la
-arquitectura original, simulando todos los componentes, chips y
-buses de datos.
-Los simuladores pueden simular la arquitectura en diferentes
-niveles: a nivel electrónico, a nivel de puerta lógica, a nivel
-de circuito o a nivel de componente.
-
-\noindent En \textit{JAMS} toma mucho más peso en enfoque de la
-\textbf{simulación} a nivel de circuito, permitiendo al usuario
-conocer el funcionamiento de su aplicación en la arquitectura que desee.
-Esto no significa que \textit{JAMS} no optimice la ejecución de código:
-todos los componentes están altamente optimizados, pudiendo llegar
-la simulación a una velocidad de 40 MHz.
-
-\subsection{Arquitecturas disponibles}\label{subsec:arquitecturas-disponibles}
-
-Actualmente, \textit{JAMS} permite ejecutar el código
-en tres arquitecturas \textit{MIPS32} diferentes:
-\begin{itemize}
-    \item \textbf{Uniciclo}: es la arquitectura más sencilla y
-    mejor optimizada.
-    Ha sido creada con la velocidad en mente, optando por una
-    política de \textbf{cero liberación de memoria}: se crean los mínimos
-    objetos posibles, y estos no se liberarán de la memoria hasta que
-    la simulación haya terminado.
-    Esta política evita que el recolector de basura interfiera en la
-    ejecución del simulador, aunmentando su velocidad de ejecución.
-    \item \textbf{Multiciclo:} simula una arquitectura
-    \textit{MIPS32} multiciclo.
-    Es mucho más lenta que la arquitectura uniciclo, ya que requiere
-    tener muchos más conceptos en cuenta.
-    Las implementaciones de las ejecuciones en esta arquitectura
-    están pensadas para ser aprovechadas en arquitecturas más
-    complejas, definiendo las lecturas y escrituras de sus
-    registros y compartiendo una interfaz transparente para los saltos.
-    \item \textbf{Segmentada con varias \textit{ALUs}}: simula
-    una arquitectura segmentada o \textit{pipelined} donde coexisten varias
-    unidades aritmético-lógicas.
-    Esta arquitectura aprovecha mucho código de la arquitectura
-    multi-ciclo, y tiende a ser mucho más lenta.
-    Los usuarios pueden modificar el número y tipo de las unidades
-    aritmético-lógicas, así como el número de ciclos que requiere
-    cada una para completar una operación.
-\end{itemize}
-
-\subsection{Estructura del simulador}\label{subsec:estructura-del-simulador}
-
-Independientemente de la arquitectura, todas las simulaciones presentan
-la misma estructura básica.
-Una simulación es un objeto que implementa la interfaz $Simulation$.
-Dentro de su clase, se implementa el \textbf{hilo} donde la ejecución
-de la simulación toma lugar.
-Las simulaciones definen acciones básicas que \textit{JAMS} reflejará en la
-aplicación para poder controlar la ejecución: ejecutar, parar, reiniciar
-o deshacer un ciclo son algunas de estas acciones.
-La interfaz $Simulation$ también define diversos métodos
-que permiten acceder a los componentes de la simulación de
-manera segura, evitando \textbf{condiciones de carrera}.
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.8\textwidth]{images/mips/jams-simulation}
-    \caption{Interfaz de usuario del simulador}
-    \label{fig:jams-simulation}
-\end{figure}
-
-\subsection{Interpretación de instrucciones}\label{subsec:interpretación-de-instrucciones}
-
-Una de las operaciones más importantes en un simulador es la búsqueda
-de instrucciones y su interpretación.
-Este paso es común en todas las arquitecturas: el método $fetch$
-incluido en todas las simulaciones \textit{MIPS32} es el encargado
-de buscar la instrucción en la memoria, interpretarla y convertirla
-en una ejecución adecuada para la arquitectura.
-
-\noindent En las arquitecturas donde una misma instrucción no se puede
-ejecutar varias veces al mismo tiempo, este método implementa una
-\textbf{caché de ejecuciones}.
-Esta caché invalida las instrucciones cuando su representación en
-la memoria es modificada, permitiendo al usuario modificar las
-instrucciones dentro de la simulación.
-Esta caché se llena en el momento en el que la simulación es creada,
-realizando un \textit{pre-fetch} de ejecuciones.
-
-\noindent Una vez la simulación consiga la ejecución de la instrucción,
-realizará una acción u otra dependiendo de la arquitectura.
-Si la arquitectura es una arquitectura uniciclo, el simulador ejecutará
-la instrucción invocando el método $execute$ de la ejecución.
-Si la arquitectura es una arquitectura multiciclo o segmentada, el simulador
-agregará la ejecución en un \textit{pipeline}, e invocará
-los métodos $fetch$, $decode$, $execute$, $memory$
-o $writeBack$ en el ciclo correspondiente.
-
-\subsection{Registros}\label{subsec:registros}
-
-Un registro es una celda de memoria muy rápida que las instrucciones
-utilizan para efectuar sus operaciones.
-El procesador \textit{MIPS32} principal implementa 32 registros.
-
-\noindent En \textit{JAMS}, un registro está representado por
-una clase que contiene sus diferentes aspectos: identificador, nombres,
-si es modificable y su valor por defecto.
-La clase también contiene el estado del registro en el estado
-actual de una simulación, guardando su valor y
-\textbf{una lista con las ejecuciones que están bloqueando el registro}.
-
-\noindent Esta lista es muy importante para determinar el flujo de
-las instrucciones en arquitecturas avanzadas, \textbf{permitiendo
-detectar y resolver riesgos}.
-
-\subsection{Interrupciones}\label{subsec:interrupciones}
+\subsubsection{Interrupciones}\label{subsubsec:interrupciones}
 
 Las interrupciones permiten informar sobre eventos al
 simulador.
@@ -783,7 +537,7 @@ de interrupciones proporcionado por el proyecto.
 Si la simulación no tiene implementado ningún controlador de
 interrupciones, su ejecución termina de manera abrupta.
 
-\begin{figure}[H]
+\begin{figure}[h]
     \centering
     \includegraphics[width=0.8\textwidth]{images/mips/jams-exception}
     \caption{Excepción en una simulación}
@@ -815,27 +569,14 @@ y se procesará cuando el simulador pase al modo usuario.
 \end{itemize}
 
 \noindent El simulador gestiona las interrupciones usando la
-implementación presentada en la figura 6.2 del documento
+implementación presentada en la figura \ref{fig:mips-exception-generator},
+extraída del documento
 \textit{MIPS® Architecture For Programmers Vol. III}\cite{MIPS_VOL_3},
 permitiendo generar hasta 63 tipos diferentes de excepciones.
 
-\begin{figure}[H]
+\begin{figure}[h]
     \centering
     \includegraphics[width=\textwidth]{images/mips/mips-exception-generator}
     \caption{Generador de excepciones para excepciones externas}
     \label{fig:mips-exception-generator}
 \end{figure}
-
-\noindent Los puntos de entrada de los controladores de excepciones
-son calculados aplicando el nivel y los parámetros del coprocesador
-0 $IntCtl/VS$ (por defecto 1) y $EBase$ (por defecto 0) en la
-siguiente expresión:
-
-\[address = EBase + offset \ \& \ 0x3fffffff \ | \ 0x80000000\]
-
-\noindent Donde $offset$ depende del tipo de interrupción:
-\begin{itemize}
-    \item \textbf{Interrupción \textit{software}:} $0x180$
-    \item \textbf{Error de caché:} $0x100$
-    \item \textbf{Interrupción \textit{hardware}:} $0x200 + level * VS * 32$
-\end{itemize}

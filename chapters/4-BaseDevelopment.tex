@@ -120,7 +120,8 @@ a los idiomas usar caracteres especiales en sus mensajes.
 \subsection{Estructura de un paquete}\label{subsec:estructura-de-un-paquete}
 
 Un paquete de idiomas es una carpeta o un archivo comprimido
-que contienen un archivo \textbf{language.json} y varios archivos \textit{YAML}.
+que contienen un archivo \textbf{language.json}
+y varios archivos \textit{YAML}\cite{YAML}.
 Esta carpeta o archivo estará situado dentro de un componente
 o dentro de la carpeta \textbf{\textasciitilde/JAMS/languages}.
 Un ejemplo de un archivo \textbf{language.json} sería el siguiente:
@@ -203,7 +204,7 @@ reiniciar la aplicación para que el cambio de idioma tenga efecto.
 \section{Temas}\label{sec:temas}
 
 Los temas de JAMS funcionan de la misma manera que el estilo de una página web:
-mediante archivos \textit{CSS}.
+mediante archivos \textit{CSS}\cite{CSS}.
 funcionamiento de los temas es muy similar al funcionamiento de los idiomas:
 los temas son empaquetados en una carpeta o archivo comprimido,
 con un archivo \textit{JSON} que actúa como punto de entrada (\textbf{theme.json})
@@ -301,7 +302,7 @@ buscará el tema más adecuado para reemplazarlo.
 
 \noindent De la misma manera que en los idiomas, el cambio de tema tiene un
 efecto \textbf{instantáneo} en la aplicación, por lo que no es necesario
-reiniciar la aplicación pa que el cambio de tema tenga efecto.
+reiniciar la aplicación para que el cambio de tema tenga efecto.
 
 \begin{figure}[H]
     \centering
@@ -315,7 +316,8 @@ reiniciar la aplicación pa que el cambio de tema tenga efecto.
 
 Igual que cualquier aplicación moderna, \textit{JAMS} presenta una
 ventana de configuración donde el usuario podrá personalizar su experiencia.
-Internamente, el sistema de configuraciones orbita alrededor de dos archivos \textit{JSON}:
+Internamente, el sistema de configuraciones orbita
+alrededor de dos archivos \textit{JSON}\cite{JSON}:
 \textbf{el archivo de valores} y el \textbf{archivo de estructura}.
 
 \noindent El archivo de valores es el encargado de almacenar los valores de
@@ -584,8 +586,9 @@ Esta interfaz solo presenta un método que pide una lista
 de estilos.
 \textit{JAMS} es el encargado de inyectar dichos estilos
 en el editor cuando sea necesario.
+El resultado puede observarse en la figura \ref{fig:jams-editor-texto}.
 
-\begin{figure}[H]
+\begin{figure}[h]
     \centering
     \includegraphics[width=0.8\textwidth]{images/base/jams-text-editor}
     \caption{Editor de texto con estilos inyectados}
@@ -624,8 +627,9 @@ los comentarios son ejemplos de elementos ya definidos.
 \textit{JAMS} aprovecha los datos proporcionados por
 el modelo para implementar una interfaz de autocompletación
 que el usuario puede usar en el editor.
+Esta interfaz tiene por defecto el estilo mostrado en la figura \ref{fig:jams-autocompletador}.
 
-\begin{figure}[H]
+\begin{figure}[h]
     \centering
     \includegraphics[width=0.8\textwidth]{images/base/jams-autocompletion}
     \caption{Autocompletador del editor de texto}
@@ -656,9 +660,9 @@ una interfaz de documentación que los proyectos
 pueden utilizar para documentar sus diferentes
 elementos.
 Se puede acceder a la documentación con la secuencia por defecto
-\textbf{Ctrl + Q}.
+\textbf{Ctrl + Q}, como se puede observar en la figura \ref{fig:jams-documentacion}.
 
-\begin{figure}[H]
+\begin{figure}[h]
     \centering
     \includegraphics[width=0.8\textwidth]{images/base/jams-documentation}
     \caption{Documentación en el editor de texto}

@@ -18,18 +18,22 @@ Estas tecnologías se pueden clasificar dependiendo de una gran cantidad de crit
     \item \textbf{Librerías de bajo nivel:} son más cercanas al \textit{hardware} gráfico.
     Permiten tener un gran control sobre los gráficos, pero no son adecuadas para
     interfaces gráficas de usuarios.
-    Algunos ejemplos de librerías de bajo nivel son \textit{OpenGL}, \textit{Vulkan} o \textit{DirectX}.
+    Algunos ejemplos de librerías de bajo nivel son \textit{OpenGL}\cite{OPENGL},
+    \textit{Vulkan}\cite{VULKAN} o \textit{DirectX}\cite{DIRECTX}.
     \item \textbf{Librerías de alto nivel}: incorporan una capa de abstracción sobre el \textit{hardware} gráfico.
     Permiten generar interfaces gráficas de usuario mediante una arquitectura ya definida.
-    Algunos ejemplos de librerías de alto nivel son \textit{Qt}, \textit{JavaFX}, \textit{Swing}, \textit{GTK} o
-    \textit{Compose Multiplatform}.
+    Algunos ejemplos de librerías de alto nivel son \textit{Qt}\cite{QT},
+    \textit{JavaFX}\cite{JAVAFX}, \textit{Swing}\cite{SWING}, \textit{GTK} o
+    \textit{Compose Multiplatform}\cite{COMPOSE}.
 \end{itemize}
 
 \noindent Según su disponibilidad en varias plataformas:
 \begin{itemize}
     \item \textbf{Librerías exclusivas:} son librerías que solo están disponibles en una plataforma.
-    Algunos ejemplos de librerías exclusivas son \textit{Windows Forms} y \textit{DirectX} en \textit{Windows},
-    \textit{Metal} y \textit{QuickDraw} en \textit{MacOS} o \textit{AndroidX/Graphics} y \textit{Jetpack Compose}
+    Algunos ejemplos de librerías exclusivas son \textit{Windows Forms}\cite{WINDOWSFORMS}
+    y \textit{DirectX} en \textit{Windows},
+    \textit{Metal} y \textit{QuickDraw} en \textit{MacOS}
+    o \textit{AndroidX/Graphics} y \textit{Jetpack Compose}\cite{COMPOSE}
     en \textit{Android}.
     \item \textbf{Librerías multiplataforma:} están disponibles en una gran variedad de plataformas.
     Algunos ejemplos de librerías multiplataforma son \textit{Qt}, \textit{JavaFX}, \textit{Swing}, \textit{GTK}
@@ -56,7 +60,8 @@ sencilla y en \textbf{tiempo de ejecución}.
     \item \textbf{Kotlin / Compose Multiplatform:} \textit{Compose Multiplatform} es una librería gráfica
     para \textit{Kotlin}, un lenguaje de programación muy joven y potente que tiene el respaldo de
     grandes compañías como \textit{JetBrains} y \textit{Google}.
-    \item \textbf{Java / JavaFX:} \textit{JavaFX} puede considerarse la evolución natural de \textit{Swing},
+    \item \textbf{Java/ JavaFX:}
+    \textit{JavaFX} puede considerarse la evolución natural de \textit{Swing},
     la herramienta principal para el desarrollo de aplicaciones gráficas basadas en \textit{Java}.
     \textit{JavaFX} es una librería moderna y rápida que, gracias a que está desarrollada en \textit{Java},
     puede ser empleada por otros lenguajes de programación que corren sobre la \textit{JVM}
@@ -81,8 +86,8 @@ También es el lenguaje de programación con la comunidad de desarrolladores má
 fácilmente personalizables que se alejan del ya conocido estilo de interfaz \textit{Java}.
 
 \noindent Centrándose en otras tecnologías necesarias, se ha utilizado el entorno de desarrollo
-\textit{Intellij IDEA} y el sistema de automatización \textit{Gradle} para la construcción
-del proyecto.
+\textit{Intellij IDEA}\cite{INTELLIJIDEA} y el sistema de
+automatización \textit{Gradle} para la construcción del proyecto.
 
 \subsection{En defensa de \textit{Java}}\label{subsec:en-defensa-de-java}
 
@@ -150,9 +155,10 @@ de \textit{Java} actuales sin que los usuarios tengan que pasar por complejas in
 \noindent Como dato final, existen muchas aplicaciones que se ejecutan sobre la \textit{JVM}
 sin que el usuario se de cuenta.
 Este es el caso de todos los \textit{IDEs} desarrollados por \textit{JetBrains}, los cuales
-usan la librería \textit{Swing} con un estilo avanzado.
+usan la librería \textit{Swing} con un estilo avanzado, como se puede observar en la figura
+\ref{fig:java-intellij-idea}.
 
-\begin{figure}[H]
+\begin{figure}[h]
     \centering
     \includegraphics[width=\textwidth]{images/base/intellij-idea}
     \caption{\textit{Intellij IDEA}}

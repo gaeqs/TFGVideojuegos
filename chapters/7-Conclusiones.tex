@@ -22,9 +22,25 @@ que un proyecto es ejecutado.
 al usuario usar y crear temas e idiomas.
 
 \noindent Aunque \textit{JAMS} goce de una arquitectura
-totalmente modular, aún no tiene la opción de cargar componentes.
+totalmente personalizabler, aún no tiene la opción de cargar componentes.
 Esta característica será implementada en el Trabajo de Fin de
 Grado del Grado en Diseño y Desarrollo de Videojuegos.
+
+\section{Limitaciones}\label{sec:limitaciones}
+
+\textit{JAMS} presenta las siguientes limitaciones:
+
+\begin{itemize}
+    \item \textbf{Velocidad}: \textit{JAMS} es capaz de ejecutar
+    una simulación a un máximo de \textbf{40 millones de instrucciones por segundo} en un
+    procesador \textit{AMD Ryzen 7 2700X}.
+    Esta velocidad, aunque supere con creces a la mayoría de simuladores \textit{MIPS32},
+    puede impedir ejecutar aplicaciones que requieran de una gran capacidad de cómputo.
+    \item \textbf{Soporte para MIPS32r5}: actualmente, \textit{JAMS} solo da soporte
+    a la última revisión de la arquitectura \textit{MIPS32}.
+    Muchos usuarios siguen utilizando la revisión anterior, por lo que tendrán que migrar
+    sus proyectos antes de poder emplear \textit{JAMS}.
+\end{itemize}
 
 \section{Líneas futuras}\label{sec:líneas-futuras}
 

@@ -29,7 +29,8 @@ Estos se pueden clasificar de diferentes maneras.
     tecnología concreta.
     Algunos ejemplos son \textit{NetBeans}, \textit{CLion} o \textit{Android Studio}.
     \item \textbf{Entornos de desarrollo generales:} son entornos que no se centran en una tecnología en concreto.
-    Algunos ejemplos son \textit{Intellij IDEA}, \textit{Eclipse} o \textit{Visual Studio}
+    Algunos ejemplos son \textit{Intellij IDEA}\cite{INTELLIJIDEA},
+    \textit{Eclipse}\cite{ECLIPSE} o \textit{Microsoft Visual Studio}\cite{VISUALSTUDIO}
 \end{itemize}
 
 \noindent \textbf{Según su complejidad:}
@@ -37,16 +38,17 @@ Estos se pueden clasificar de diferentes maneras.
     \item \textbf{Entornos de desarrollo complejos:} son aplicaciones pesadas con una gran cantidad de
     características y funcionalidades.
     Algunos ejemplos son \textit{Intellij IDEA},
-    \textit{Visual Studio} o \textit{Eclipse}.
+    \textit{Microsoft Visual Studio} o \textit{Eclipse}.
     \item \textbf{Entornos de desarrollo ligeros:} son aplicaciones que ocupan muy poco espacio, donde
     las características más avanzadas suelen ser componentes descargables.
-    Algunos ejemplos son \textit{Visual Studio Code}, \textit{Atom} o \textit{Notepad++}.
+    Algunos ejemplos son \textit{Visual Studio Code}\cite{VISUALSTUDIOCODE},
+    \textit{Atom}\cite{ATOM} o \textit{Notepad++}\cite{NOTEPADPP}.
 \end{itemize}
 
 \subsection{Simuladores y emuladores}
 \label{subsec:simuladores-y-emuladores}
 
-Tanto los simuladores como los simuladores pueden definirse como un
+Tanto los simuladores como los emuladores pueden definirse como un
 programa de computador que imita el funcionamiento de uno o varios
 componentes \textit{hardware}.
 Un emulador o simulador puede imitar una arquitectura, permitiendo
@@ -54,9 +56,8 @@ ejecutar aplicaciones ajenas a la arquitectura del computador principal.
 
 Es importante diferenciar los conceptos de \textbf{simulación}
 y \textbf{emulación} a la hora de crear un programa que ejecute
-código de arquitecturas externas, como es el caso de \textit{JAMS}.
-
-\noindent La diferencia entre los simuladores y emuladores se manifiesta
+código de arquitecturas externas.
+La diferencia entre los simuladores y emuladores se manifiesta
 en la manera en la que se implementan.
 
 \noindent Un emulador tiene como objetivo \textbf{imitar el resultado}
@@ -82,19 +83,19 @@ interfaces sencillas y pocas herramientas.
 Con el paso de los años, estas herramientas han quedado obsoletas, impidiendo desarrollar aplicaciones
 en ensamblador \textit{MIPS32} de una manera cómoda.
 
-\noindent Los principales problemas que presentas estas aplicaciones son los siguientes:
+\noindent Los principales problemas que presentan estas aplicaciones son los siguientes:
 \begin{itemize}
-    \item \textbf{Falta de herramientas:} los entornos de desarrollo \textit{MIPS} sufren de una
+    \item \textbf{Falta de herramientas}: los entornos de desarrollo \textit{MIPS} sufren de una
     carencia grave de herramientas importantes.
     Este problema afecta principalmente a programas como \textit{EduMIPS64}, donde no existe un editor de texto y
     el ensamblador es una aplicación separada que require la línea de comandos para funcionar.
-    \item \textbf{Falta de estructura de proyecto:} ninguna aplicación actual presenta una estructura
+    \item \textbf{Falta de estructura de proyecto}: ninguna aplicación actual presenta una estructura
     de proyecto, indispensable para el desarrollo de aplicaciones medianas y grandes.
-    \item \textbf{Falta de personalización:} al ser aplicaciones muy sencillas, ninguna permite
+    \item \textbf{Falta de personalización}: al ser aplicaciones muy sencillas, ninguna permite
     personalizar la apariencia de la interfaz.
-    \item \textbf{Obsolescencia:} las aplicaciones están desarrolladas con tecnologías antiguas,
+    \item \textbf{Obsolescencia}: las aplicaciones están desarrolladas con tecnologías antiguas,
     con interfaces similares a las de los programas de principio de siglo.
-    \item \textbf{Falta de capacidad de expansión:} el problema más grave que presentan estas aplicaciones
+    \item \textbf{Falta de capacidad de expansión}: el problema más grave que presentan estas aplicaciones
     es la nula capacidad de expansión de sus características, impidiendo que otros desarrolladores
     añadan nuevas funcionalidades de manera sencilla.
 \end{itemize}
@@ -117,9 +118,9 @@ moderna, multiplataforma y expansible.
 
 \noexpand Este objetivo puede separarse en dos pasos:
 \begin{itemize}
-    \item Buscar una lenguaje de programación que permita crear aplicaciones modernas,
+    \item Buscar una lenguaje de programación con capacidad para crear aplicaciones modernas,
     que permita cargar código externo a voluntad y que tenga un buen rendimiento
-    tanto en ejecución como en el desarrollo.
+    tanto en la ejecución como en el desarrollo.
     \item Dentro de las posibilidades del lenguaje de programación seleccionado,
     buscar un \textit{framework} de desarrollo de aplicaciones de escritorio
     que permita desarrollar aplicaciones modernas y de gran calidad.
@@ -128,17 +129,17 @@ moderna, multiplataforma y expansible.
 \subsection{Crear un entorno base y un \textit{framework} que permita implementar diferentes herramientas}
 \label{subsec:crear-un-entorno-base-y-un-framework-que-permita-implementar-diferentes-herramientas}
 
-JAMS pretende ser un entorno de desarrollo completamente modificable.
+\textit{JAMS} pretende ser un entorno de desarrollo completamente modificable.
 La mejor manera para conseguir esto es desarrollar una base genérica
 que se pueda ajustar posteriormente al desarrollo de una tecnología en concreto.
 
-\noindent Esta base debe poder modificar cualquier aspecto de la aplicación,
-desde poder modificar simples mensajes y parámetros de un tema hasta poder
+\noindent Esta base debe poder personalizar cualquier aspecto de la aplicación,
+desde poder modificar simples mensajes y parámetros hasta poder
 añadir nuevas herramientas.
 Estas modificaciones pueden venir de diferentes fuentes, como lo son
 los paquetes de idiomas, los paquetes de temas y los complementos.
 
-\noindent Por último, JAMS debe permitir al usuario configurar los parámetros
+\noindent Por último, \textit{JAMS} debe permitir al usuario configurar los parámetros
 de la aplicación de manera sencilla, proporcionando una interfaz de configuración
 cómoda de usar.
 
@@ -149,15 +150,27 @@ cómoda de usar.
     \item Desarrollar e investigar diferentes formatos que permitan guardar
     y modificar los diferentes elementos estáticos de la aplicación, como lo son
     los idiomas, los temas y la configuración.
-    \item Desarrollar un sistema de carga dinámica de componentes, permitiendo
-    al usuario activar y desactivar componentes a voluntad sin tener que
-    reiniciar la aplicación.
 \end{itemize}
+
+\noindent Este objetivo está altamente relacionado con los
+objetivos principales del Trabajo de Fin de Grado del Grado en
+Diseño y Desarrollo de Videojuegos: desarrollar un \textbf{sistema de carga
+dinámica de componentes}, permitiendo al usuario activar y desactivar
+componentes a voluntad sin tener que reiniciar la aplicación y
+desarrollar tecnologías que permitan \textbf{modificar}
+todos los aspectos de \textit{JAMS} mediante componentes.
+Aunque los objetivos de los dos Trabajos de Fin de Grado están
+correctamente definidos, los procesos de desarrollo para lograrlos están
+fuertemente vinculados.
+Es por este motivo por el que se mencionará mucho la idea de \textbf{componente}
+(un programa externo que modifica el comportamiento de una aplicación principal),
+aunque ninguno de los objetivos de este Trabajo de Fin de Grado requiera el
+desarrollo de estos.
 
 \subsection{Desarrollar un entorno de desarrollo para la arquitectura \textit{MIPS32}}
 \label{subsec:desarrollar-un-entorno-de-desarrollo-para-la-arquitectura-mips32}
 
-Una vez se tenga una base sólida, de ha de desarrollar un editor, un ensamblador
+Una vez se tenga una base sólida, se ha de desarrollar un editor, un ensamblador
 y un simulador para la arquitectura \textit{MIPS32r6}.
 Estas tres tecnologías se apoyarán en diferentes herramientas que complementarán
 su utilización, como puede ser el caso del explorador en el editor y el visualizador
@@ -170,7 +183,7 @@ de memoria en el simulador.
     proporcionada por la base.
     Estos tres componentes deben ser expandibles mediante componentes externos.
     \item Desarrollar diferentes herramientas que complementen las funcionalidades
-    del editor, el ensamblador y el simulador.
+    del editor, del ensamblador y del simulador.
 \end{itemize}
 
 \noindent Cabe destacar que no es un objetivo el permitir crear código válido para
@@ -178,20 +191,19 @@ entornos \textit{MIPS} reales.
 
 \section{Metodología}\label{sec:metodologia}
 
-Debido a que la aplicación está dividida entres secciones (base, interfaz y componentes \textit{MIPS}),
+Debido a que la aplicación está dividida en tres secciones (tecnologías, base y entorno de desarrollo \textit{MIPS}),
 es muy importante marcar una metodología que permita un desarrollo consistente, eficiente y rápido.
 A nivel de desarrollo se ha optado por una metodología ágil, con \textit{sprints} de varios meses
 donde se desarrollan una serie de características claves.
 Todas las características se someten a varias iteraciones donde se modifican y mejoran hasta lograr un
 buen resultado.
 
-\noindent En la base y en los componentes \textit{MIPS} también se ha seguido un
-desarrollo basado en pruebas unitarias, permitiendo mantener la calidad del código mientras la
-aplicación va evolucionando.
+\noindent También se ha seguido un desarrollo basado en pruebas unitarias,
+permitiendo mantener la calidad del código mientras la aplicación va evolucionando.
 
 \noindent Toda la metodología ha sido implementada mediante las herramientas proporcionadas por \textit{GitHub}.
 Los estados de las características asignadas a un \textit{sprint} son documentados mediante proyectos.
-Las acciones obligan que las pruebas unitarias deban superarse sin errores si se desea añadir un nueva
+Las acciones obligan a que las pruebas unitarias deban superarse sin errores si se desea añadir un nueva
 característica a la rama principal.
 Estas acciones también se emplean para generar los binarios cuando un \textit{sprint} es superado y una
 nueva versión de \textit{JAMS} es lanzada.
