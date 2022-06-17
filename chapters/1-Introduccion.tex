@@ -3,47 +3,28 @@
 
 \section{Definición de conceptos}\label{sec:definicion-de-conceptos}
 
-\subsection{La arquitectura \textit{MIPS}}\label{subsec:la-arquitectura-mips}
+\subsection{La arquitectura de la consola \textit{NES}}\label{subsec:la-arquitectura-mips}
 
-Se les conoce con el nombre de \textbf{procesadores \textit{MIPS}} a una familia de microprocesadores que implementan
-la arquitectura \textit{RISC} del mismo nombre.
-Aunque esta arquitectura no ha tenido un gran éxito en los computadores personales, sí ha gozado de fama en
-sistemas embebidos, enrutadores y videoconsolas como la \textit{Nintendo 64} o la \textit{PlayStation 2}. \\
+La \textit{Nintendo Entertainment System}, comúnmente conocida como
+la \textbf{\textit{NES}}, es la segunda consola de sobremesa desarrollada por
+\textit{Nintendo}.
+La \textit{NES} presenta una arquitectura muy interesante:
+la \textbf{unidad central de proceso (\textit{CPU})} es un procesador
+de 8 bits basado en el famoso procesador \textbf{MOS 6502}\cite{MOS6502}.
+La \textbf{unidad de procesamiento de imágenes (\textit{PPU})} está
+diseñada para utilizar la menor memoria posible, utilizando para
+el dibujado un conjunto de paletas de cuatro colores y un conjunto
+de teselas.
+La \textbf{unidad de procesamiento de audio (\textit{APU})} presenta
+cuatro canales de sonido principales: dos de pulso, uno triangular
+y uno de ruido.
 
-\noindent Su simple diseño y baja curva de aprendizaje hace a esta arquitectura ideal para introducir a los alumnos
-a los lenguajes ensamblador.
-
-\subsection{\textit{IDEs}: entornos de desarrollo integrados}\label{subsec:ides-entornos-de-desarrollo-integrados}
-
-Un \textbf{entorno de desarrollo integrado} (\textit{IDE, Integrated Development Environment}) es una aplicación
-informática con diversas herramientas usados en el desarrollo, construcción y depuración de \textit{software}.
-Un \textit{IDE} suele estar desarrollado con dos objetivos claves en mente: maximizar la productividad del
-desarrollador y evitar que este tenga que utilizar herramientas externas en su trabajo.
-
-\noindent Existe una gran variedad de entornos de desarrollos en el mercado.
-Estos se pueden clasificar de diferentes maneras.
-
-\noindent \textbf{Según su propósito:}
-\begin{itemize}
-    \item \textbf{Entornos de desarrollo específicos:} son entornos pensados en el desarrollo en una
-    tecnología concreta.
-    Algunos ejemplos son \textit{NetBeans}, \textit{CLion} o \textit{Android Studio}.
-    \item \textbf{Entornos de desarrollo generales:} son entornos que no se centran en una tecnología en concreto.
-    Algunos ejemplos son \textit{Intellij IDEA}\cite{INTELLIJIDEA},
-    \textit{Eclipse}\cite{ECLIPSE} o \textit{Microsoft Visual Studio}\cite{VISUALSTUDIO}
-\end{itemize}
-
-\noindent \textbf{Según su complejidad:}
-\begin{itemize}
-    \item \textbf{Entornos de desarrollo complejos:} son aplicaciones pesadas con una gran cantidad de
-    características y funcionalidades.
-    Algunos ejemplos son \textit{Intellij IDEA},
-    \textit{Microsoft Visual Studio} o \textit{Eclipse}.
-    \item \textbf{Entornos de desarrollo ligeros:} son aplicaciones que ocupan muy poco espacio, donde
-    las características más avanzadas suelen ser componentes descargables.
-    Algunos ejemplos son \textit{Visual Studio Code}\cite{VISUALSTUDIOCODE},
-    \textit{Atom}\cite{ATOM} o \textit{Notepad++}\cite{NOTEPADPP}.
-\end{itemize}
+\noindent Gracias a su funcionamiento mediante cartuchos y que la
+\textit{NES} permitía hacer operaciones se escritura en el cartucho,
+los desarrolladores podían aumentar las capacidades de la \textit{NES} de manera sencilla,
+añadiendo en el cartucho más memoria, chips de procesamiento específicos
+o canales de sonido.
+Estos chips reciben el nombre de \textit{\textbf{mapeadores}}.\cite{MAPPERS}.
 
 \subsection{Simuladores y emuladores}
 \label{subsec:simuladores-y-emuladores}
@@ -208,9 +189,9 @@ característica a la rama principal.
 Estas acciones también se emplean para generar los binarios cuando un \textit{sprint} es superado y una
 nueva versión de \textit{JAMS} es lanzada.
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=\textwidth]{images/introduction/github}
-    \caption{Proyecto de \textit{GitHub} para la versión 0.4-BETA}
-    \label{fig:introduccion-github}
-\end{figure}
+%\begin{figure}[H]
+%    \centering
+%    \includegraphics[width=\textwidth]{images/introduction/github}
+%    \caption{Proyecto de \textit{GitHub} para la versión 0.4-BETA}
+%    \label{fig:introduccion-github}
+%\end{figure}
