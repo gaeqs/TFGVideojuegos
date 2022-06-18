@@ -26,6 +26,32 @@ añadiendo en el cartucho más memoria, chips de procesamiento específicos
 o canales de sonido.
 Estos chips reciben el nombre de \textit{\textbf{mapeadores}}.\cite{MAPPERS}.
 
+\subsection{Carga dinámica de componentes en aplicaciones \textit{Java}}
+\label{subsec:carga-dinamica-de-componentes-en-aplicaciones-java}
+
+Un componente puede definirse como un \textbf{programa externo que modifica
+el comportamiento de una aplicación principal}, añadiendo nuevas
+características o modificando las ya existentes.
+
+\noindent Existe una gran variedad de técnicas para cargar código externo
+que modifique el comportamiento de una aplicación.
+Muchas aplicaciones incorporan un \textbf{intérprete} para un
+lenguaje de alto nivel, otras aplicaciones prefieren usar
+el \textbf{propio lenguaje de programación} con el que ha sido creado.
+
+\noindent Este es el caso de la mayoría de aplicaciones desarrolladas
+en \textit{Java}.
+La \textit{JVM} permite \textbf{vincular y desvincular} nuevo código externo
+usando las propias librerías proporcionadas por el \textit{SDK}.
+Aplicaciones como \textit{Spigot} o \textit{Sponge} aprovechan esta
+tecnología para permitir que su comunidad desarrolle nuevos
+componentes.
+El procedimiento es sencillo: se crea una nueva clase que extienda a la
+clase deseada y se indica su ruta en un pequeño archivo.
+La aplicación cargara una nueva instancia de la clase
+cuando la aplicación sea lanzada que actúa de
+\textbf{punto de entrada} para el componente.
+
 \subsection{Simuladores y emuladores}
 \label{subsec:simuladores-y-emuladores}
 
@@ -53,145 +79,146 @@ Los simuladores tienden a ser más lentos que los emuladores, pero son más
 adecuados para desarrollar y depurar aplicaciones para la arquitectura
 imitada sin tener el \textit{hardware} físicamente.
 
+\subsection{\textit{JAMS}: \textit{Just Another MIPS Simulator}}
+\label{subsec:jams-just-another-mips-simulator}
+
+\textit{JAMS} es un \textbf{entorno de desarrollo integrado} especializado
+en \textbf{lenguajes ensamblador} y desarrollado en el Trabajo
+de Fin de Grado del Grado en Ingeniería de Computadores ligado
+a este Trabajo de Fin de Grado.
+Por defecto, \textit{JAMS} únicamente permite desarrollar y simular
+aplicaciones programadas en ensamblador \textit{MIPS32}.
+
 
 \section{Descripción del problema}\label{sec:descripcion-del-problema}
 
-Como se verá más adelante, los simuladores de la arquitectura \textit{MIPS} tuvieron
-un auge importante a principios del milenio, con herramientas como \textit{MARS}\cite{MARS}
-o \textit{EduMIPS64}\cite{EDUMIPS64}.
-Estas herramientas estaban centradas principalmente en el \textbf{ámbito educativo}, proporcionando
-interfaces sencillas y pocas herramientas.
-Con el paso de los años, estas herramientas han quedado obsoletas, impidiendo desarrollar aplicaciones
-en ensamblador \textit{MIPS32} de una manera cómoda.
+\textit{JAMS}, aunque tenga una arquitectura modular y altamente
+flexible, no posee la capacidad de \textbf{vincular y desvincular}
+componentes, lo cual impide que otros desarrolladores expandan
+las capacidades del entorno de desarrollo.
 
-\noindent Los principales problemas que presentan estas aplicaciones son los siguientes:
-\begin{itemize}
-    \item \textbf{Falta de herramientas}: los entornos de desarrollo \textit{MIPS} sufren de una
-    carencia grave de herramientas importantes.
-    Este problema afecta principalmente a programas como \textit{EduMIPS64}, donde no existe un editor de texto y
-    el ensamblador es una aplicación separada que require la línea de comandos para funcionar.
-    \item \textbf{Falta de estructura de proyecto}: ninguna aplicación actual presenta una estructura
-    de proyecto, indispensable para el desarrollo de aplicaciones medianas y grandes.
-    \item \textbf{Falta de personalización}: al ser aplicaciones muy sencillas, ninguna permite
-    personalizar la apariencia de la interfaz.
-    \item \textbf{Obsolescencia}: las aplicaciones están desarrolladas con tecnologías antiguas,
-    con interfaces similares a las de los programas de principio de siglo.
-    \item \textbf{Falta de capacidad de expansión}: el problema más grave que presentan estas aplicaciones
-    es la nula capacidad de expansión de sus características, impidiendo que otros desarrolladores
-    añadan nuevas funcionalidades de manera sencilla.
-\end{itemize}
+\noindent Independientemente de la capacidad de carga de componentes,
+una arquitectura \textbf{nunca es completamente modificable} hasta que
+se creen componentes para su aplicación: es necesario
+\textbf{desarrollar un componente} de prueba que cubra
+todos los aspectos del entorno de desarrollo.
+
+\noindent La \textit{NES} es una muy importante para la historia
+del videojuego, con una gran comunidad de desarrolladores detrás
+de ella.
+Sorprendentemente, no existe ningún entorno de desarrollo que permita
+\textbf{desarrollar, ensamblar y simular} videojuegos de manera sencilla.
+Lo más cercano que se puede encontrar son componentes
+para entornos de desarrollo generales con soporte básico de edición y
+ensamblaje para el procesador \textit{MOS 6502}.
 
 
 \section{Objetivos}\label{sec:objetivos}
 
-El objetivo principal de este proyecto es el desarrollo de \textbf{\textit{JAMS}
-(\textit{Just Another MIPS Simulator})}, un \textbf{entorno de desarrollo integrado ligero, expandible y moderno}
-centrado en los lenguajes ensamblador y, más concretamente, en el lenguaje ensamblador \textit{MIPS}.
+El objetivo principal de este proyecto es proporcionar a \textit{JAMS}
+un \textbf{sistema de vinculación de componentes}, que permita cargar
+y descargar componentes de manera rápida y sencilla, permitiendo
+a los desarrolladores expandir las capacidades del entorno de desarrollo.
 
-\noindent Específicamente, en este apartado se detallarán diferentes objetivos.
+\noindent También es necesario \textbf{estabilizar y mejorar}
+la arquitectura de \textit{JAMS}, creando un componente
+de prueba que cubra todos los aspectos del entorno de desarrollo.
+Este componente introducirá un \textbf{editor, ensamblador y simulador}
+enfocados en la arquitectura de la consola \textit{NES}, permitiendo
+desarrollar videojuegos dentro de \textit{JAMS}.
 
-\subsection{Investigar sobre las tecnologías más adecuados para el desarrollo}
-\label{subsec:investigar-sobre-las-tecnologias-mas-adecuados-para-el-desarrollo}
+\noindent En este apartado se detallarán diferentes objetivos.
 
-La tecnología usada en un proyecto tiene mucho peso en el resultado final.
-Es por eso que se debe buscar un conjunto de tecnologías que permitan crear una aplicación
-moderna, multiplataforma y expansible.
+\subsection{Desarrollar un sistema de vinculación de componentes para \textit{JAMS}}
+\label{subsec:desarrollar-un-sistema-de-vinculacion-de-componentes-para-jams}
+
+Este es el \textbf{primer objetivo} que se debe superar en el transcurso de este
+proyecto.
+Para ello, se debe desarrollar un \textbf{vinculador de componentes} que permita
+instalar y desinstalar componentes sin \textbf{tener que reiniciar la aplicación}.
 
 \noexpand Este objetivo puede separarse en dos pasos:
 \begin{itemize}
-    \item Buscar una lenguaje de programación con capacidad para crear aplicaciones modernas,
-    que permita cargar código externo a voluntad y que tenga un buen rendimiento
-    tanto en la ejecución como en el desarrollo.
-    \item Dentro de las posibilidades del lenguaje de programación seleccionado,
-    buscar un \textit{framework} de desarrollo de aplicaciones de escritorio
-    que permita desarrollar aplicaciones modernas y de gran calidad.
+    \item Desarrollar el sistema base, que permita cargar código \textit{ByteCode}
+    usando las librerías proporcionadas por el \textit{SDK} de \textit{Java}.
+    \item Desarrollar un sistema de \textbf{proveedores}, permitiendo
+    eliminar todos los elementos proporcionados por un componente
+    cuando este es desinstalado por el usuario.
 \end{itemize}
 
-\subsection{Crear un entorno base y un \textit{framework} que permita implementar diferentes herramientas}
-\label{subsec:crear-un-entorno-base-y-un-framework-que-permita-implementar-diferentes-herramientas}
+\subsection{Desarrollo y mejora de tecnologías relacionadas con los componentes}
+\label{subsec:desarrollo-y-mejora-de-tecnologias-relacionadas-con-los-componentes}
 
-\textit{JAMS} pretende ser un entorno de desarrollo completamente modificable.
-La mejor manera para conseguir esto es desarrollar una base genérica
-que se pueda ajustar posteriormente al desarrollo de una tecnología en concreto.
+Este objetivo se centra en desarrollar y mejorar la tecnología de \textit{JAMS}
+para permitir a los componentes modificar todos los aspectos del entorno de
+desarrollo de una manera rápida y sencilla.
 
-\noindent Esta base debe poder personalizar cualquier aspecto de la aplicación,
-desde poder modificar simples mensajes y parámetros hasta poder
-añadir nuevas herramientas.
-Estas modificaciones pueden venir de diferentes fuentes, como lo son
-los paquetes de idiomas, los paquetes de temas y los complementos.
-
-\noindent Por último, \textit{JAMS} debe permitir al usuario configurar los parámetros
-de la aplicación de manera sencilla, proporcionando una interfaz de configuración
-cómoda de usar.
-
-\noindent Para conseguir este resultado, se proponen los siguientes subobjetivos:
-\begin{itemize}
-    \item Desarrollar una aplicación base en conjunto con una \textit{API} que pueda
-    ser usada por las diferentes herramientas para tecnologías concretas.
-    \item Desarrollar e investigar diferentes formatos que permitan guardar
-    y modificar los diferentes elementos estáticos de la aplicación, como lo son
-    los idiomas, los temas y la configuración.
-\end{itemize}
-
-\noindent Este objetivo está altamente relacionado con los
-objetivos principales del Trabajo de Fin de Grado del Grado en
-Diseño y Desarrollo de Videojuegos: desarrollar un \textbf{sistema de carga
-dinámica de componentes}, permitiendo al usuario activar y desactivar
-componentes a voluntad sin tener que reiniciar la aplicación y
-desarrollar tecnologías que permitan \textbf{modificar}
-todos los aspectos de \textit{JAMS} mediante componentes.
-Aunque los objetivos de los dos Trabajos de Fin de Grado están
-correctamente definidos, los procesos de desarrollo para lograrlos están
-fuertemente vinculados.
-Es por este motivo por el que se mencionará mucho la idea de \textbf{componente}
-(un programa externo que modifica el comportamiento de una aplicación principal),
-aunque ninguno de los objetivos de este Trabajo de Fin de Grado requiera el
-desarrollo de estos.
+\noindent Estas tecnologías se desarrollarán al mismo tiempo que el propio entorno
+de desarrollo \textit{JAMS} y el componente de prueba, produciendo así
+un código \textbf{limpio y robusto}.
 
 \subsection{Desarrollar un entorno de desarrollo para la arquitectura \textit{MIPS32}}
 \label{subsec:desarrollar-un-entorno-de-desarrollo-para-la-arquitectura-mips32}
 
-Una vez se tenga una base sólida, se ha de desarrollar un editor, un ensamblador
-y un simulador para la arquitectura \textit{MIPS32r6}.
-Estas tres tecnologías se apoyarán en diferentes herramientas que complementarán
-su utilización, como puede ser el caso del explorador en el editor y el visualizador
-de memoria en el simulador.
+Para conseguir una librería robusta, se ha decidido desarrollar un componente
+que proporcione a \textit{JAMS} un \textbf{editor, ensamblador y simulador}
+para la arquitectura de la consola \textit{NES}.
+Este nuevo entorno de desarrollo debe proporcionarse \textbf{íntegramente}
+mediante un componente que el usuario pueda instalar en la aplicación
+principal.
+Es decir, el código de \textit{JAMS} no debe proveer de ningún
+tipo de tecnología específica para el desarrollo de la \textit{NES},
+ni ninguna dependencia que requiera exclusivamente el componente.
 
-\noindent Este objetivo se desarrollará en dos pasos:
+\noindent Este entorno de desarrollo será muy similar al proporcionado
+por \textit{JAMS} para la arquitectura \textit{MIPS32}, por lo que los
+subobjetivos son muy similares:
 
 \begin{itemize}
-    \item Desarrollar un editor, un ensamblador y un simulador usando la tecnología
-    proporcionada por la base.
-    Estos tres componentes deben ser expandibles mediante componentes externos.
+    \item Desarrollar un editor, un ensamblador y un simulador
+    para la consola \textit{NES} usando la tecnología
+    proporcionada por \textit{JAMS}.
+    Estos tres componentes deben ser expandibles mediante otros componentes externos.
     \item Desarrollar diferentes herramientas que complementen las funcionalidades
     del editor, del ensamblador y del simulador.
 \end{itemize}
 
-\noindent Cabe destacar que no es un objetivo el permitir crear código válido para
-entornos \textit{MIPS} reales.
+\noindent A diferencia del entorno de desarrollo \textit{MIPS32}, el entorno
+de desarrollo para la \textit{NES} sí tiene como objetivo permitir crear
+código válido que se pueda ejecutar en una consola real.
+
 
 \section{Metodología}\label{sec:metodologia}
 
-Debido a que la aplicación está dividida en tres secciones (tecnologías, base y entorno de desarrollo \textit{MIPS}),
-es muy importante marcar una metodología que permita un desarrollo consistente, eficiente y rápido.
-A nivel de desarrollo se ha optado por una metodología ágil, con \textit{sprints} de varios meses
-donde se desarrollan una serie de características claves.
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{images/introduction/github}
+    \caption{Proyecto de \textit{GitHub} para la versión 0.4-BETA}
+    \label{fig:introduccion-github}
+\end{figure}
+
+\noindent Debido a que la aplicación principal es muy compleja,
+es muy importante marcar una metodología que permita un
+desarrollo consistente, eficiente y rápido.
+\textit{JAMS} ha sido desarrollado mediante una \textbf{metodología ágil},
+con \textit{sprints} donde se desarrollan una serie de características claves.
 Todas las características se someten a varias iteraciones donde se modifican y mejoran hasta lograr un
 buen resultado.
+El desarrollo de \textit{JAMS} también ha seguido un desarrollo
+basado en pruebas unitarias, permitiendo mantener la calidad del
+código mientras la aplicación va evolucionando.
 
-\noindent También se ha seguido un desarrollo basado en pruebas unitarias,
-permitiendo mantener la calidad del código mientras la aplicación va evolucionando.
-
-\noindent Toda la metodología ha sido implementada mediante las herramientas proporcionadas por \textit{GitHub}.
-Los estados de las características asignadas a un \textit{sprint} son documentados mediante proyectos.
-Las acciones obligan a que las pruebas unitarias deban superarse sin errores si se desea añadir un nueva
-característica a la rama principal.
-Estas acciones también se emplean para generar los binarios cuando un \textit{sprint} es superado y una
+\noindent Toda la metodología ha sido implementada mediante
+las herramientas proporcionadas por \textit{GitHub}.
+Los estados de las características asignadas a un \textit{sprint}
+son documentados mediante proyectos.
+Las acciones obligan a que las pruebas unitarias deban superarse
+sin errores si se desea añadir una nueva característica a la rama principal.
+Estas acciones también se emplean para generar los binarios
+cuando un \textit{sprint} es superado y una
 nueva versión de \textit{JAMS} es lanzada.
 
-%\begin{figure}[H]
-%    \centering
-%    \includegraphics[width=\textwidth]{images/introduction/github}
-%    \caption{Proyecto de \textit{GitHub} para la versión 0.4-BETA}
-%    \label{fig:introduccion-github}
-%\end{figure}
+\noindent El componente con el entorno de desarrollo \textit{NES}
+también ha seguido esta filosofía, pero a menor escala, siendo el
+tiempo entre cada versión \textit{alpha} mucho menor comparado
+con la aplicación principal.
