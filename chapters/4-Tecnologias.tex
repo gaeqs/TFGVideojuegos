@@ -10,6 +10,7 @@ por los componentes, sino que \textbf{el propio \textit{JAMS}}
 aprovecha sus virtudes para proporcionar características
 dentro del programa principal.
 
+
 \section{Gestores}\label{sec:gestores}
 
 Toda la arquitectura de la aplicación está basada en \textbf{gestores}.
@@ -115,26 +116,38 @@ class MyPlugin : Plugin() {
 
 \section{Eventos}\label{sec:eventos}
 
-\textit{JAMS} incluye un sistema de eventos que permite informar de sucesos entre componentes de la aplicación.
-Este sistema está profundamente inspirado en el sistema de eventos usado por la comunidad de \textit{Minecraft}
+\textit{JAMS} incluye un sistema de eventos que permite informar
+de sucesos entre componentes de la aplicación.
+Este sistema está profundamente inspirado en el sistema de eventos
+utilizado por la comunidad de \textit{Minecraft}
 en proyectos como \textit{Spigot}\cite{SPIGOT}
 o \textit{Sponge}\cite{SPONGE}, y puede considerarse una evolución descentralizada
 de esta tecnología.
 
 \subsection{Emisores de eventos}\label{subsec:emisores-de-eventos}
 
-Los emisores de eventos son los encargados de relacionar los creadores de eventos con sus escuchadores.
-Un emisor de evento está representado por la interfaz $EventBroadcast$.
-Esta interfaz es implementada por cualquier elemento que quiera ser usado para registrar escuchas.
-Los gestores, los componentes, o el propio \textit{JAMS} implementan un emisor por defecto.
+Los emisores de eventos son los encargados de transmitir
+eventos a los elementos que los escucha.
+Puede considerarse un \textbf{canal} por el cual diferentes creadores
+de eventos pueden transmitir diferentes tipos de eventos
+que los elementos escuchando pueden recibir.
+
+\noindent Un emisor de eventos está representado por la interfaz $EventBroadcast$.
+Esta interfaz es implementada por cualquier elemento que quiera ser
+usado para registrar escuchas.
+Los gestores, los componentes o el propio \textit{JAMS} implementan
+un emisor por defecto.
 La clase $SimpleEventBroadcast$ contiene una implementación de $EventBroadcast$
-que se puede usar como superclase.
+que se puede utilizar como superclase.
 
 \subsection{Definir escuchas}\label{subsec:definir-escuchas}
 
 Las escuchas son \textbf{métodos no estáticos anotados con la anotación @Listener}.
 Estos métodos solo tienen un parámetro que pide un elemento que extienda la clase
 $Event$ y deben devolver $void$.
+Este método, después de ser registrado en un gestor de idiomas,
+se ejecutará cuando un nuevo idioma sea añadido al gestor.
+Un ejemplo de escucha puede observarse en la figura \ref{fig:listener}.
 
 \begin{figure}[h]
     \centering
@@ -147,10 +160,6 @@ private void onLanguageRegister(ManagerElementRegisterEvent.After<Language> even
     \caption{Ejemplo de una escucha}
     \label{fig:listener}
 \end{figure}
-
-
-\noindent Este método, después de ser registrado en un gestor de idiomas,
-se ejecutará cuando un nuevo idioma sea añadido al gestor.
 
 \noindent A diferencia de otros sistemas de eventos similares,
 el sistema de eventos de \textit{JAMS} permite usar \textbf{eventos genéricos}.
@@ -167,3 +176,108 @@ Si una escucha pide el evento $Event$, su método se ejecutará siempre que un e
 \noindent Algunos eventos implementan la interfaz $Cancellable$, lo cual permite cancelar el evento.
 Las escuchas restantes no serán llamadas cuando un evento es cancelado salvo que se defina lo contrario
 en la etiqueta $@Listener$.
+
+\subsection{Registrar escuchas}\label{subsec:registrar-escuchas}
+
+Una vez un objeto tenga definidas todas sus escuchas, estas
+se puede registrar en uno o varios emisores de eventos.
+Para ello se debe llamar al método $registerListeners$ del
+emisor deseado, tal y como se muestra en la figura \ref{fig:event-registration}.
+
+\begin{figure}[h]
+    \centering
+    \begin{lstlisting}[frame=single,label={lst:event-registration-use},language=Kotlin]
+class ObjectWithListeners {
+
+    init {
+        Jams.getGeneralEventBroadcast().registerListeners(
+            /* instance = */ this,
+            /* useWeakReferences = */ true
+        )
+    }
+
+    @Listener
+    private fun onEvent(event: Event) {
+        println("I received a new event! $event")
+    }
+
+}
+    \end{lstlisting}
+    \caption{Objeto registrando un evento en el emisor general de \textit{JAMS}}
+    \label{fig:event-registration}
+\end{figure}
+
+\noindent El método de registro pide dos simples variables: el objeto
+con las escuchas y si se deben usar \textbf{referencias débiles}.
+Esta última opción permite a los objetos eliminarse de la memoria
+cuando ya no sean necesarios, incluso aunque tengan escuchas registradas.
+Estas escuchas \textbf{serán eliminadas del emisor automáticamente} si no existe
+ninguna referencia al objeto (sin contar la del propio emisor).
+Esto permite desarrollar componentes de una manera \textbf{muy sencilla}:
+combinado con el sistema de proveedores, las referencias débiles
+de las escuchas evita que la aplicación mantenga elementos de un
+componente cuando este se desinstala.
+
+\noindent Por último, cabe destacar que el método de registro
+busca todos los métodos de escucha de un objeto,
+\textbf{buscando también en los métodos de las clases padres}.
+Esto permite heredar funcionalidades de objetos ya programados
+de manera sencilla.
+Si el desarrollador desea registrar un único método puede hacerlo
+con los métodos proporcionados, pero para ello se requieren
+conocimientos de la librería \textit{reflection} de \textit{Java}.
+
+
+\section{Tareas}\label{sec:tareas}
+
+Las tareas son elementos muy importantes dentro de una aplicación
+de escritorio.
+Estas consisten en \textbf{funciones que ejecutan una tarea de manera
+asíncrona al hilo principal} de la aplicación, devolviendo un
+resultado al finalizar su ejecución.
+\textit{Java} proporciona diversas maneras de gestionar
+las tareas dentro de una aplicación, y \textit{JavaFX}
+también implementa su propia solución.
+Es por eso que \textit{JAMS} proporciona una pequeña
+librería que permite a los desarrolladores ejecutar
+tareas \textbf{visibles por el usuario} en la barra
+de proceso de la ventana principal de la aplicación.
+
+\noindent \textit{JAMS} implementa por defecto un
+sistema de tareas basado en \textbf{ejecutadores}.
+Un ejecutador es un conjunto de hilos que ejecutan
+diversas tareas.
+Cada proyecto presenta un ejecutador único por defecto,
+lo que permite los desarrolladores lanzar tareas de una
+manera sencilla, como se puede observar en la figura \ref{fig:tasks-execution}.
+
+\begin{figure}[h]
+    \centering
+    \begin{lstlisting}[frame=single,label={lst:tasks-execution},language=Kotlin]
+fun startTask(project: Project) {
+    project.taskExecutor.execute(LanguageTask.of("MY_TITLE_LANGUAGE_NODE") {
+        Thread.sleep(1000)
+
+        // Do things here!
+
+        Thread.sleep(1000)
+    })
+}
+    \end{lstlisting}
+    \caption{Inicialización de una tarea con título}
+    \label{fig:tasks-execution}
+\end{figure}
+
+\noindent Las tareas creadas con la clase $LanguageTask$
+pueden tener un título y una descripción que cambian dependiendo
+del idioma seleccionado por el usuario.
+Este título y descripción son visibles al usuario, y se muestran
+en la barra inferior de la ventana principal de \textit{JAMS},
+como se puede ver en la figura \ref{fig:jams-assembling}.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{images/tecnologias/jams-assembling}
+    \caption{\textit{JAMS} ejecutando una tarea de ensamblaje}
+    \label{fig:jams-assembling}
+\end{figure}
