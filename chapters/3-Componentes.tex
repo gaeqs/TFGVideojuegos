@@ -87,7 +87,8 @@ class MyPlugin : Plugin() {
     }
 
     @Listener
-    fun onApplicationLoad(event: JAMSApplicationPostInitEvent) = loadApplicationData()
+    fun onApplicationLoad(event: JAMSApplicationPostInitEvent)
+        = loadApplicationData()
 
     private fun loadApplicationData() {
         println("Now I can access the JavaFX application!")
@@ -99,7 +100,7 @@ class MyPlugin : Plugin() {
     \label{fig:entry-point}
 \end{figure}
 
-\noindent El punto de entrada puede ser inicializado en diferentes
+ El punto de entrada puede ser inicializado en diferentes
 etapas del proyecto: el componente será cargado antes del contexto
 de \textit{JavaFX} si este ya estaba instalado en la aplicación
 cuando esta es lanzada.

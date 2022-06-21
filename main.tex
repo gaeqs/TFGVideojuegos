@@ -1,70 +1,125 @@
-\documentclass[twoside,a4paper,11pt]{book}
-\usepackage[english]{babel}
+\documentclass[twoside,spanish,11pt]{book}
 
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
-\usepackage{url}
-\usepackage[pdftex]{graphicx}
-\usepackage{a4wide}
-\usepackage{geometry}
-\usepackage[backend=bibtex]{biblatex}
-\usepackage{hyperref}
-\usepackage{inlinedef}
-\usepackage{subfiles}
-\usepackage[normalsize]{subfigure}
-\usepackage{color}
-\usepackage{amsmath}
-\usepackage{amsfonts}
-\usepackage[normalem]{ulem}
-\usepackage{float}
-\usepackage{enumitem}
-\usepackage{mathtools}
-\usepackage[dvipsnames]{xcolor}
+\usepackage[spanish,es-tabla,english]{babel}
+
+\usepackage[usenames, dvipsnames]{xcolor}
+
+\usepackage{array}
+\usepackage{subcaption}
+\usepackage[toc,page]{appendix}
+\usepackage{multirow}
+\usepackage{indentfirst}
+\usepackage{cite}
+
+\usepackage{ulem}
+\renewcommand{\uline}[1]{\textit{#1}}
+\definecolor{MyOrange}{rgb}{0.9,0.6,0.0}
+\definecolor{MyDarkBlue}{rgb}{0,0,0.8}
+\definecolor{MyDarkRed}{rgb}{0.6,0,0.0}
+\newcommand{\borrar}[1]{\textcolor{MyDarkRed}{\sout{#1}}} %\sout}
+\newcommand{\nuevo}[1]{\textcolor{MyDarkBlue}{\uline{#1}}} %\sout}
+\newcommand{\nota}[1]{\textcolor{MyOrange}{#1}} %\sout}
+
+\reversemarginpar
+\usepackage{setspace}
+\usepackage{todonotes}
+\newcounter{mycomment}
+\newcommand{\mycomment}[3][]{%
+% initials of the author (optional) + note in the margin
+    \refstepcounter{mycomment}%
+    {%
+        \setstretch{0.7}% spacing
+        \todo[color=#3,size=\scriptsize]{%
+            \tiny{\textbf{(\themycomment)[\uppercase{#1}]:}~#2}}%
+    }}
+% For notes, corrections and suggestions
+\definecolor{GRCOLOR}{rgb}{1,0.2,0.5}
+\definecolor{ODRCOLOR}{rgb}{0.2,0.75,0.25}
+\definecolor{LRCOLOR}{rgb}{0.2,0.3,1}
+\definecolor{MyDarkRed}{rgb}{0.6,0,0.0}
+
+\newcommand{\GR}[1] { \mycomment[GR]{#1}{GRCOLOR}}
+\newcommand{\ODR}[1]{ \mycomment[ODR]{#1}{ODRCOLOR}}
+\newcommand{\LR}[1]{ \mycomment[LR]{#1}{LRCOLOR}}
+
+\newcommand{\newGR}[1]{\textcolor{GRCOLOR}{\uline{#1}}} %\sout}
+\newcommand{\delGR}[1]{\textcolor{GRCOLOR}{\sout{#1}}} %\sout}
+\newcommand{\newODR}[1]{\textcolor{ODRCOLOR}{\uline{#1}}} %\sout}
+\newcommand{\delODR}[1]{\textcolor{ODRCOLOR}{\sout{#1}}} %\sout}
+\newcommand{\newLR}[1]{\textcolor{LRCOLOR}{\uline{#1}}} %\sout}
+\newcommand{\delLR}[1]{\textcolor{LRCOLOR}{\sout{#1}}} %\sout}
+\newcommand{\note}[1]{\textcolor{MyDarkRed}{#1}} %\sout}
+\newcommand{\deletenote}[1]{\textcolor{MyDarkRed}{\sout{#1}}} %\sout}
+
+
+%\newcommand{\delsg}[1]{\textcolor{SGCOLOR}{\sout{#1}}} %\sout}
+
+\usepackage{graphicx}
 \usepackage{listings}
-\usepackage{textcomp}
-\usepackage{tikz}
-\usepackage{verbatim}
-\usepackage{forest}
-\usepackage{fontawesome}
+\usepackage{float}
 
-\setcounter{tocdepth}{4}
-\setcounter{secnumdepth}{4}
+\usepackage{rotating}
 
-% For using margin notes instead of marginpar
-\usepackage{marginnote}
-% Margin notes smaller that default
-\renewcommand*{\marginfont}{\footnotesize}
-\newcommand{\myparagraph}[1]{\paragraph{#1}\mbox{}\\}
-
-\addto\captionsenglish{\renewcommand{\chaptername}{Capítulo}}
-\addto\captionsenglish{\renewcommand{\contentsname}{Índice}}
-\addto\captionsenglish{\renewcommand{\listfigurename}{Lista de figuras}}
-
-\lstset{
-    backgroundcolor=\color[rgb]{0.95, 0.95, 0.95},
-    tabsize=2,
-    rulecolor=,
-    basicstyle=\scriptsize,
-    upquote=true,
-    aboveskip={1.5\baselineskip},
-    columns=fixed,
-    showstringspaces=false,
-    extendedchars=true,
-    breaklines=true,
-    prebreak = \raisebox{0ex}[0ex][0ex]{\ensuremath{\hookleftarrow}},
-    frame=single,
-    showtabs=false,
-    showspaces=false,
-    showstringspaces=false,
-    identifierstyle=\ttfamily,
-    keywordstyle=\color[rgb]{1.0,0,0},
-    keywordstyle=[1]\color[rgb]{0,0,0.75},
-    keywordstyle=[2]\color[rgb]{0.5,0.0,0.0},
-    keywordstyle=[3]\color[rgb]{0.127,0.427,0.514},
-    keywordstyle=[4]\color[rgb]{0.4,0.4,0.4},
-    commentstyle=\color[rgb]{0.133,0.545,0.133},
-    stringstyle=\color[rgb]{0.639,0.082,0.082},
+\usepackage[hyphens]{url} % Hay que cargarlo antes que hyperref para URLs largas
+\usepackage[hidelinks=true]{hyperref}
+\hypersetup{
+%	colorlinks,
+    linkcolor={blue!80!black},
+    citecolor={blue!80!black},
+    urlcolor={blue!80!black}
 }
+%\hypersetup{
+%    colorlinks,
+%    linkcolor={black},
+%    citecolor={black},
+%    urlcolor={black}
+%}
+
+\usepackage{marginnote}
+\renewcommand*{\marginfont}{\scriptsize\color{red}\sffamily}
+
+\usepackage{enumitem}
+\setitemize{noitemsep,topsep=0pt,parsep=0pt,partopsep=0pt,itemsep=2mm}%
+\setenumerate{noitemsep,topsep=0pt,parsep=0pt,partopsep=0pt,itemsep=2mm}
+% \setlist{noitemsep}
+%% \setlist[itemize]{itemsep=0.5mm}
+%% \setlist[enumerate]{itemsep=0.5mm}
+
+\usepackage[textfont={footnotesize,sf},labelfont={footnotesize,sf,bf}]{caption}
+
+\renewcommand{\labelitemi}{$\bullet$}
+\renewcommand{\labelitemii}{$\circ$}
+\renewcommand{\labelitemiii}{--}
+
+\setlength{\parskip}{3mm}
+
+%% \usepackage{natbib}
+%% \usepackage{chapterbib}
+
+\renewcommand{\baselinestretch}{1.05}
+
+
+\setcounter{tocdepth}{2}
+\setcounter{secnumdepth}{5}
+
+\usepackage[big,sf,bf,pagestyles]{titlesec}
+
+\usepackage{xspace}
+
+%% \usepackage[a4paper,
+%%   total={145mm,237mm},
+%%   left=40mm,
+%%   top=25mm,
+%%   marginparwidth=2.0cm]{geometry}
+
+\usepackage[a4paper,
+    total={155mm,237mm},
+    left=35mm,
+    top=32mm,
+    marginparwidth=3.0cm,
+]{geometry}
 
 \lstdefinestyle{java} {
     language=Java,
@@ -88,52 +143,116 @@
     stringstyle={\color{ForestGreen}\ttfamily},
 }
 
+\usepackage{multirow}
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+
+\fancyhead[LE]{}
+\fancyhead[RO]{}
+\fancyhead[LO]{\sf{\footnotesize\leftmark}}
+\fancyhead[RE]{\sf{\footnotesize\rightmark}}
+
+%\fancyhead[LE,RO]{\scriptsize\textbf\elautor}
+%\fancyhead[RE,LO]{\scriptsize\textbf\leftmark}
+
+%\renewcommand{\chaptermark}[1]{
+%	\markboth{\chaptername
+%		\ \thechapter.\ #1}{}}
+
+\renewcommand{\sectionmark}[1]{\markright{\thesection.\ #1}}
+
+
+\setlength{\headwidth}{\textwidth}
+
+\usepackage{lmodern,textcomp}
+
+\usepackage{forest}
 \newcommand{\basictree}[1]{\begin{forest}
-    for tree={
-        font=\ttfamily,
-        grow'=0,
-        child anchor=west,
-        parent anchor=south,
-        anchor=west,
-        calign=first,
-        edge path={
-            \noexpand\path [draw, \forestoption{edge}]
-            (!u.south west) +(7.5pt,0) |- node[fill,inner sep=1.25pt] {} (.child anchor)\forestoption{edge label};
-        },
-        before typesetting nodes={
-            if n=1
-                {insert before={[,phantom]}}
-                {}
-        },
-        fit=band,
-        before computing xy={l=15pt},
-    }
-    #1
+                               for tree={
+                                   font=\ttfamily,
+                                   grow'=0,
+                                   child anchor=west,
+                                   parent anchor=south,
+                                   anchor=west,
+                                   calign=first,
+                                   edge path={
+                                       \noexpand\path [draw, \forestoption{edge}]
+                                       (!u.south west) +(7.5pt,0) |- node[fill,inner sep=1.25pt] {} (.child anchor)\forestoption{edge label};
+                                   },
+                                   before typesetting nodes={
+                                       if n=1
+                                           {insert before={[,phantom]}}
+                                           {}
+                                   },
+                                   fit=band,
+                                   before computing xy={l=15pt},
+                               }
+                               #1
 \end{forest}}
 
-\DeclareGraphicsExtensions{.png, .jpg, .pdf, .eps, .tiff}
-\DeclareGraphicsRule{.eps}{pdf}{.pdf}{pdf}
-\pdfcompresslevel=9
-\geometry{a4paper, left=2.6cm, right=2.2cm, top=3.0cm, bottom=3.0cm}
-\linespread{1.2}
-\setlength{\parskip}{1ex plus 0.5ex minus 0.2ex}
-
-\bibliography{main}
-
+\title{Trabajo de Fin de Grado}
 \begin{document}
-    \include{chapters/Front}
-    \clearpage
-    \thispagestyle{empty}
-    \vspace{5cm}
+
+    \include{chapters/front}
+
+    \pagestyle{empty}
+
+    \pagenumbering{gobble}
+
     \frontmatter
+
+    \pagestyle{plain}
+
     \include{chapters/Resumen}
+    \clearpage{\pagestyle{empty}\cleardoublepage}
+
+    \selectlanguage{english}
+
     \include{chapters/Abstract}
+    \clearpage{\pagestyle{empty}\cleardoublepage}
+
+    \selectlanguage{spanish}
+
+
+%	\listoftodos
+
+    \setcounter{tocdepth}{3}
     \tableofcontents
+    \clearpage{\pagestyle{empty}\cleardoublepage}
+
     \listoffigures
+    \clearpage{\pagestyle{empty}\cleardoublepage}
+
     \mainmatter
+
+    \pagestyle{fancy}
+
+    \clearpage{\pagestyle{empty}\cleardoublepage}
+
     \include{chapters/1-Introduccion}
+    \clearpage{\pagestyle{empty}\cleardoublepage}
+
     \include{chapters/2-Antecedentes}
+    \clearpage{\pagestyle{empty}\cleardoublepage}
+
     \include{chapters/3-Componentes}
+    \clearpage{\pagestyle{empty}\cleardoublepage}
+
     \include{chapters/4-Tecnologias}
-    \printbibliography[title=Bibliografía]
+    \clearpage{\pagestyle{empty}\cleardoublepage}
+
+    \include{chapters/5-EntornoNES}
+    \clearpage{\pagestyle{empty}\cleardoublepage}
+
+    %\include{chapters/6-Resultados}
+    %\clearpage{\pagestyle{empty}\cleardoublepage}
+
+    %\include{chapters/7-Conclusiones}
+    %\clearpage{\pagestyle{empty}\cleardoublepage}
+
+    \backmatter
+    \bibliography{main}
+    \bibliographystyle{orobles}
+    \addcontentsline{toc}{chapter}{Bibliografía}
 \end{document}

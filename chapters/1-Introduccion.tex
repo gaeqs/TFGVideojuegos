@@ -19,7 +19,7 @@ La \textbf{unidad de procesamiento de audio (\textit{APU})} presenta
 cuatro canales de sonido principales: dos de pulso, uno triangular
 y uno de ruido.
 
-\noindent Gracias a su funcionamiento mediante cartuchos y que la
+ Gracias a su funcionamiento mediante cartuchos y que la
 \textit{NES} permitía hacer operaciones se escritura en el cartucho,
 los desarrolladores podían aumentar las capacidades de la \textit{NES} de manera sencilla,
 añadiendo en el cartucho más memoria, chips de procesamiento específicos
@@ -33,13 +33,13 @@ Un componente puede definirse como un \textbf{programa externo que modifica
 el comportamiento de una aplicación principal}, añadiendo nuevas
 características o modificando las ya existentes.
 
-\noindent Existe una gran variedad de técnicas para cargar código externo
+ Existe una gran variedad de técnicas para cargar código externo
 que modifique el comportamiento de una aplicación.
 Muchas aplicaciones incorporan un \textbf{intérprete} para un
 lenguaje de alto nivel, otras aplicaciones prefieren usar
 el \textbf{propio lenguaje de programación} con el que ha sido creado.
 
-\noindent Este es el caso de la mayoría de aplicaciones desarrolladas
+ Este es el caso de la mayoría de aplicaciones desarrolladas
 en \textit{Java}.
 La \textit{JVM} permite \textbf{vincular y desvincular} nuevo código externo
 usando las propias librerías proporcionadas por el \textit{SDK}.
@@ -67,13 +67,13 @@ código de arquitecturas externas.
 La diferencia entre los simuladores y emuladores se manifiesta
 en la manera en la que se implementan.
 
-\noindent Un emulador tiene como objetivo \textbf{imitar el resultado}
+ Un emulador tiene como objetivo \textbf{imitar el resultado}
 que la arquitectura imitada produce al ejecutar un programa, sin tener
 en cuenta el proceso interno que produce dicho resultado.
 Los emuladores tienden a ser rápidos, intentando producir el resultado
 de la manera más rápida y fiel posible.
 
-\noindent Los simuladores tienen como objetivo \textbf{imitar el proceso}
+ Los simuladores tienen como objetivo \textbf{imitar el proceso}
 que produce el resultado, simulando todos los componentes de la arquitectura.
 Los simuladores tienden a ser más lentos que los emuladores, pero son más
 adecuados para desarrollar y depurar aplicaciones para la arquitectura
@@ -97,13 +97,13 @@ flexible, no posee la capacidad de \textbf{vincular y desvincular}
 componentes, lo cual impide que otros desarrolladores expandan
 las capacidades del entorno de desarrollo.
 
-\noindent Independientemente de la capacidad de carga de componentes,
+ Independientemente de la capacidad de carga de componentes,
 una arquitectura \textbf{nunca es completamente modificable} hasta que
 se creen componentes para su aplicación: es necesario
 \textbf{desarrollar un componente} de prueba que cubra
 todos los aspectos del entorno de desarrollo.
 
-\noindent La \textit{NES} es una muy importante para la historia
+ La \textit{NES} es una muy importante para la historia
 del videojuego, con una gran comunidad de desarrolladores detrás
 de ella.
 Sorprendentemente, no existe ningún entorno de desarrollo que permita
@@ -120,14 +120,14 @@ un \textbf{sistema de vinculación de componentes}, que permita cargar
 y descargar componentes de manera rápida y sencilla, permitiendo
 a los desarrolladores expandir las capacidades del entorno de desarrollo.
 
-\noindent También es necesario \textbf{estabilizar y mejorar}
+ También es necesario \textbf{estabilizar y mejorar}
 la arquitectura de \textit{JAMS}, creando un componente
 de prueba que cubra todos los aspectos del entorno de desarrollo.
 Este componente introducirá un \textbf{editor, ensamblador y simulador}
 enfocados en la arquitectura de la consola \textit{NES}, permitiendo
 desarrollar videojuegos dentro de \textit{JAMS}.
 
-\noindent En este apartado se detallarán diferentes objetivos.
+ En este apartado se detallarán diferentes objetivos.
 
 \subsection{Desarrollar un sistema de vinculación de componentes para \textit{JAMS}}
 \label{subsec:desarrollar-un-sistema-de-vinculacion-de-componentes-para-jams}
@@ -153,7 +153,7 @@ Este objetivo se centra en desarrollar y mejorar la tecnología de \textit{JAMS}
 para permitir a los componentes modificar todos los aspectos del entorno de
 desarrollo de una manera rápida y sencilla.
 
-\noindent Estas tecnologías se desarrollarán al mismo tiempo que el propio entorno
+ Estas tecnologías se desarrollarán al mismo tiempo que el propio entorno
 de desarrollo \textit{JAMS} y el componente de prueba, produciendo así
 un código \textbf{limpio y robusto}.
 
@@ -170,7 +170,7 @@ Es decir, el código de \textit{JAMS} no debe proveer de ningún
 tipo de tecnología específica para el desarrollo de la \textit{NES},
 ni ninguna dependencia que requiera exclusivamente el componente.
 
-\noindent Este entorno de desarrollo será muy similar al proporcionado
+ Este entorno de desarrollo será muy similar al proporcionado
 por \textit{JAMS} para la arquitectura \textit{MIPS32}, por lo que los
 subobjetivos son muy similares:
 
@@ -183,7 +183,7 @@ subobjetivos son muy similares:
     del editor, del ensamblador y del simulador.
 \end{itemize}
 
-\noindent A diferencia del entorno de desarrollo \textit{MIPS32}, el entorno
+ A diferencia del entorno de desarrollo \textit{MIPS32}, el entorno
 de desarrollo para la \textit{NES} sí tiene como objetivo permitir crear
 código válido que se pueda ejecutar en una consola real.
 
@@ -197,7 +197,7 @@ código válido que se pueda ejecutar en una consola real.
     \label{fig:introduccion-github}
 \end{figure}
 
-\noindent Debido a que la aplicación principal es muy compleja,
+ Debido a que la aplicación principal es muy compleja,
 es muy importante marcar una metodología que permita un
 desarrollo consistente, eficiente y rápido.
 \textit{JAMS} ha sido desarrollado mediante una \textbf{metodología ágil},
@@ -208,7 +208,7 @@ El desarrollo de \textit{JAMS} también ha seguido un desarrollo
 basado en pruebas unitarias, permitiendo mantener la calidad del
 código mientras la aplicación va evolucionando.
 
-\noindent Toda la metodología ha sido implementada mediante
+ Toda la metodología ha sido implementada mediante
 las herramientas proporcionadas por \textit{GitHub}.
 Los estados de las características asignadas a un \textit{sprint}
 son documentados mediante proyectos.
@@ -218,7 +218,7 @@ Estas acciones también se emplean para generar los binarios
 cuando un \textit{sprint} es superado y una
 nueva versión de \textit{JAMS} es lanzada.
 
-\noindent El componente con el entorno de desarrollo \textit{NES}
+ El componente con el entorno de desarrollo \textit{NES}
 también ha seguido esta filosofía, pero a menor escala, siendo el
 tiempo entre cada versión \textit{alpha} mucho menor comparado
 con la aplicación principal.

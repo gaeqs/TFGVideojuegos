@@ -48,7 +48,7 @@ En el registro se pueden recuperar, añadir, eliminar o modificar gestores.
 Igual que los gestores normales, cuando un proveedor se desvincula de la aplicación,
 todos los gestores proporcionados por el proveedor son eliminados del registro.
 
-\noindent \textit{JAMS} permite separar los gestores en dos tipos:
+ \textit{JAMS} permite separar los gestores en dos tipos:
 \textbf{gestores primarios} y \textbf{gestores secundarios}.
 Los gestores primarios son fácilmente accesibles cuando se busca un gestor por tipo
 usando métodos como $Manager.of(Type.class)$.
@@ -87,7 +87,7 @@ class MyManager(provider: ResourceProvider) : Manager<MyElement>(
     \label{fig:manager-definition}
 \end{figure}
 
-\noindent Una vez definido el gestor, este se debe \textbf{registrar}.
+ Una vez definido el gestor, este se debe \textbf{registrar}.
 Para ello, se debe de acceder al registro.
 Una vez registrado, cualquier componente podrá acceder al
 gestor empleando los métodos proporcionados por el propio \textit{JAMS},
@@ -132,7 +132,7 @@ Puede considerarse un \textbf{canal} por el cual diferentes creadores
 de eventos pueden transmitir diferentes tipos de eventos
 que los elementos escuchando pueden recibir.
 
-\noindent Un emisor de eventos está representado por la interfaz $EventBroadcast$.
+ Un emisor de eventos está representado por la interfaz $EventBroadcast$.
 Esta interfaz es implementada por cualquier elemento que quiera ser
 usado para registrar escuchas.
 Los gestores, los componentes o el propio \textit{JAMS} implementan
@@ -151,29 +151,31 @@ Un ejemplo de escucha puede observarse en la figura \ref{fig:listener}.
 
 \begin{figure}[h]
     \centering
-    \begin{lstlisting}[language=Java,style=java,frame=single,label={lst:listeners}]
+    \begin{lstlisting}[frame=single,label={lst:listener},language=Kotlin]
 @Listener
-private void onLanguageRegister(ManagerElementRegisterEvent.After<Language> event) {
-    System.out.println("New language available! " + event.getElement().getName());
+fun onLanguageRegister(
+    event: ManagerElementRegisterEvent.After<Language>
+) {
+    println("New language available! ${event.element.name}")
 }
     \end{lstlisting}
-    \caption{Ejemplo de una escucha}
+    \caption{Objeto registrando un evento en el emisor general de \textit{JAMS}}
     \label{fig:listener}
 \end{figure}
 
-\noindent A diferencia de otros sistemas de eventos similares,
+ A diferencia de otros sistemas de eventos similares,
 el sistema de eventos de \textit{JAMS} permite usar \textbf{eventos genéricos}.
 Un ejemplo es el caso anterior, donde el método pide un elemento de tipo
 $ManagerElementRegisterEvent.After<Language>$.
 Si el emisor al que está registrado emite un evento de tipo
 $ManagerElementRegisterEvent.After<Theme>$, la escucha no será invocada.
 
-\noindent Un evento puede extender la clase de otro evento.
+ Un evento puede extender la clase de otro evento.
 Esto permite generar una jerarquía de eventos.
 Una escucha que pide un cierto tipo de evento se ejecutará siempre que dicho evento o uno de sus hijos ocurra.
 Si una escucha pide el evento $Event$, su método se ejecutará siempre que un evento ocurra.
 
-\noindent Algunos eventos implementan la interfaz $Cancellable$, lo cual permite cancelar el evento.
+ Algunos eventos implementan la interfaz $Cancellable$, lo cual permite cancelar el evento.
 Las escuchas restantes no serán llamadas cuando un evento es cancelado salvo que se defina lo contrario
 en la etiqueta $@Listener$.
 
@@ -207,7 +209,7 @@ class ObjectWithListeners {
     \label{fig:event-registration}
 \end{figure}
 
-\noindent El método de registro pide dos simples variables: el objeto
+ El método de registro pide dos simples variables: el objeto
 con las escuchas y si se deben usar \textbf{referencias débiles}.
 Esta última opción permite a los objetos eliminarse de la memoria
 cuando ya no sean necesarios, incluso aunque tengan escuchas registradas.
@@ -218,7 +220,7 @@ combinado con el sistema de proveedores, las referencias débiles
 de las escuchas evita que la aplicación mantenga elementos de un
 componente cuando este se desinstala.
 
-\noindent Por último, cabe destacar que el método de registro
+ Por último, cabe destacar que el método de registro
 busca todos los métodos de escucha de un objeto,
 \textbf{buscando también en los métodos de las clases padres}.
 Esto permite heredar funcionalidades de objetos ya programados
@@ -243,7 +245,7 @@ librería que permite a los desarrolladores ejecutar
 tareas \textbf{visibles por el usuario} en la barra
 de proceso de la ventana principal de la aplicación.
 
-\noindent \textit{JAMS} implementa por defecto un
+ \textit{JAMS} implementa por defecto un
 sistema de tareas basado en \textbf{ejecutadores}.
 Un ejecutador es un conjunto de hilos que ejecutan
 diversas tareas.
@@ -255,12 +257,13 @@ manera sencilla, como se puede observar en la figura \ref{fig:tasks-execution}.
     \centering
     \begin{lstlisting}[frame=single,label={lst:tasks-execution},language=Kotlin]
 fun startTask(project: Project) {
-    project.taskExecutor.execute(LanguageTask.of("MY_TITLE_LANGUAGE_NODE") {
-        Thread.sleep(1000)
+    project.taskExecutor.execute(
+        LanguageTask.of("MY_TITLE_LANGUAGE_NODE") {
+            Thread.sleep(1000)
 
-        // Do things here!
+            // Do things here!
 
-        Thread.sleep(1000)
+            Thread.sleep(1000)
     })
 }
     \end{lstlisting}
@@ -268,7 +271,7 @@ fun startTask(project: Project) {
     \label{fig:tasks-execution}
 \end{figure}
 
-\noindent Las tareas creadas con la clase $LanguageTask$
+ Las tareas creadas con la clase $LanguageTask$
 pueden tener un título y una descripción que cambian dependiendo
 del idioma seleccionado por el usuario.
 Este título y descripción son visibles al usuario, y se muestran
