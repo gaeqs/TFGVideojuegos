@@ -51,13 +51,13 @@ borrar y mover archivos.
 Si el usuario usa el doble clic sobre un archivo editable, este se abrirá
 en el editor.
 Dependiendo del tipo de archivo, el editor será diferente,
-como se puede observar en la figura \ref{fig:jams-nes-editor}.
+como se puede observar en la figura \ref{fig:nes-editor}.
 
 \begin{figure}[h]
     \centering
     \includegraphics[width=0.8\textwidth]{images/nes/nes-editor}
     \caption{Editor de código y de gráficos junto con el explorador}
-    \label{fig:jams-nes-editor}
+    \label{fig:nes-editor}
 \end{figure}
 
 El menú contextual del explorador presenta varias acciones que
@@ -88,15 +88,50 @@ representados, pudiendo así aportar ayudas al usuario.
 El editor también tiene conocimiento de las referencias y el alcance de
 todas las etiquetas y macros, tanto en el propio archivo a editar
 como en el resto de archivos a ensamblar.
+El editor también incorpora un \textbf{autocompletador}.
+Esta herramienta ayuda al usuario cuando escribe código
+aportando sugerencias de autocompletación, como se puede
+observar en la figura \ref{fig:nes-autocompletion}.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/nes/nes-autocompletion}
+    \caption{Autocompletador ayudando al usuario}
+    \label{fig:nes-autocompletion}
+\end{figure}
+
+El formato \textit{PCX} es un formato de imagen desarrollado
+en el año 1985 que cuenta con una codificación \textit{run-length}.
+Actualmente, el formato ha caído en desuso, pero sus propiedades
+lo hacen un \textbf{gran candidato} para almacenar gráficos
+de la \textit{NES} antes de ser ensamblados.
+Esto se debe a su capacidad de codificar los colores mediante
+una \textit{paleta} de una manera sencilla.
+Al almacenar los valores de los píxeles como índices y no
+como colores, el formato \textit{PCX} se convierte en un
+candidato ideal para gráficos dependientes de una paleta
+externa, como es el caso de los gráficos de una \textit{NES}.
 
 El editor de archivos \textit{PCX} permite modificar los
 gráficos del videojuego de una manera rápida y sencilla.
 Este editor está pensado exclusivamente para gráficos
 de \textit{NES}, por lo que cada pixel solo puede tomar
-cuatro valores.
+cuatro valores diferentes.
 El color final se buscará en la paleta seleccionada.
 El usuario puede cambiar el color de cada valor de la
 paleta utilizando el botón central del ratón sobre
 la casilla a cambiar.
 El usuario también puede emplear el botón principal
 del ratón mientras mantiene pulsada la tecla $Ctrl$.
+Cabe destacar que, aunque este editor permite editar
+archivos \textit{PCX} de cualquier tamaño, la consola
+leerá el archivo como si tuviera un ancho de 128 píxeles.
+Esto es debido a que las tablas donde se guardan los gráficos
+en la consola tienen un tamaño de 16x16 patrones
+de 8x8 píxeles cada uno.
+Si se ensambla un archivo \textit{PCX} con otro ancho,
+lo más probable es que los gráficos se conviertan en
+\textbf{ruido}.
+Los archivo \textit{PCX} creados por \textit{NES4JAMS}
+siempre tienen el tamaño de una tabla de patrones,
+es decir, de 128x128 píxeles.
