@@ -34,6 +34,7 @@ como se puede observar en la figura \ref{fig:nes-project-creation}.
 Una vez creado el proyecto, \textit{JAMS} mostrará una ventana
 principal muy similar a la de los proyectos \textit{MIPS32}.
 
+
 \section{Editor}\label{sec:editor}
 
 Los desarrolladores de videojuegos de \textit{NES} trabajan con
@@ -80,6 +81,8 @@ principal de la sección: \textbf{el visualizador de archivos}.
 \textit{NES4JAMS} implementa dos editores nuevos a \textit{JAMS}:
 el editor de código \textit{MOS 6502} y el editor de gráficos \textit{PCX}.
 
+\subsection{Editor de código}\label{subsec:editor-de-codigo}
+
 El editor de código usa el sistema de indexación desarrollado
 en la capa base de \textit{JAMS}, por lo que este editor también
 puede considerarse un \textbf{editor de texto inteligente}:
@@ -99,6 +102,8 @@ observar en la figura \ref{fig:nes-autocompletion}.
     \caption{Autocompletador ayudando al usuario}
     \label{fig:nes-autocompletion}
 \end{figure}
+
+\subsection{Editor de gráficos}\label{subsec:editor-de-graficos}
 
 El formato \textit{PCX} es un formato de imagen desarrollado
 en el año 1985 que cuenta con una codificación \textit{run-length}.
@@ -121,8 +126,10 @@ El color final se buscará en la paleta seleccionada.
 El usuario puede cambiar el color de cada valor de la
 paleta utilizando el botón central del ratón sobre
 la casilla a cambiar.
-El usuario también puede emplear el botón principal
-del ratón mientras mantiene pulsada la tecla $Ctrl$.
+Por motivos de accesibilidad, el usuario también puede
+cambiar el color empleando el botón principal del
+ratón mientras mantiene pulsada la tecla $Ctrl$.
+
 Cabe destacar que, aunque este editor permite editar
 archivos \textit{PCX} de cualquier tamaño, la consola
 leerá el archivo como si tuviera un ancho de 128 píxeles.
@@ -135,3 +142,72 @@ lo más probable es que los gráficos se conviertan en
 Los archivo \textit{PCX} creados por \textit{NES4JAMS}
 siempre tienen el tamaño de una tabla de patrones,
 es decir, de 128x128 píxeles.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/nes/nes-graphics-change}
+    \caption{\textit{Super Mario Bros.} con los gráficos modificados}
+    \label{fig:nes-graphics-change}
+\end{figure}
+
+\subsection{Archivos iNES}\label{subsec:archivos-nes}
+
+El formato \textit{iNES} es el formato de archivo más utilizado
+para almacenar videojuegos para la consola \textit{NES}.
+Este formato comienza con una cabecera con los datos que suelen
+estar codificados en el propio cartucho, como puede ser el modo
+espejo, el controlador de memoria o la región.
+Esta cabecera también contiene el tamaño de la región del
+programa (\textit{PGR}) y la región de gráficos (\textit{CHR})
+que prosiguen a la cabecera.
+
+\textit{NES4JAMS} es capaz de \textbf{cargar y generar} archivos
+\textit{iNES} de manera nativa.
+Al abrir un archivo \textit{iNES}, \textit{NES4JAMS} mostrará
+el editor mostrado en la figura \ref{fig:nes-ines-editor}.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/nes/nes-ines-editor}
+    \caption{Archivo \textit{iNES} en el editor}
+    \label{fig:nes-ines-editor}
+\end{figure}
+
+En este editor el usuario podrá ejecutar una simulación
+para el videojuego seleccionado, permitiéndole \textbf{modificar}
+los parámetros de la cabecera del videojuego a cargar.
+El usuario también tiene la opción de \textbf{exportar las tablas
+de patrones} del cartucho en un archivo \textit{PCX}.
+Una previsualización de estas tablas se puede observar en la parte
+derecha del editor.
+Por último, el editor da la opción de \textbf{guardar una copia}
+del videojuego con los parámetros modificados.
+
+\subsection{Configuraciones}\label{subsec:configuraciones}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/nes/nes-configurations}
+    \caption{Menú de configuraciones}
+    \label{fig:nes-configurations}
+\end{figure}
+
+Igual que en el entorno de desarrollo para \textit{MIPS32},
+el entorno de desarrollo \textit{NES} permite ensamblar
+el programa con diferentes \textbf{configuraciones}.
+Estas configuraciones definen los \textbf{parámetros de la cabecera}
+del archivo \textit{iNES} resultante y los \textbf{bancos de memoria}
+presentes en el cartucho.
+
+Los bancos de memoria están definidos por una \textbf{dirección de inicio}
+y un \textbf{tamaño} en bytes.
+De manera muy similar a las directivas \textit{.text}
+y \textit{.data} de \textit{MIPS32}, el desarrollador podrá
+alternar entre bancos de memoria usando la directiva \textit{.bank}.
+
+\textit{NES4JAMS} también incorpora una opción que impide a un
+banco de memoria ser escrito en el cartucho.
+Esta funcionalidad es muy importante para algunos videojuegos
+avanzados, ya que les permite utilizar un banco de memoria como
+una representación de una \textbf{memoria RAM} adicional
+dentro del cartucho.
