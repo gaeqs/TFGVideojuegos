@@ -211,3 +211,140 @@ Esta funcionalidad es muy importante para algunos videojuegos
 avanzados, ya que les permite utilizar un banco de memoria como
 una representación de una \textbf{memoria RAM} adicional
 dentro del cartucho.
+
+
+\section{Ensamblador}\label{sec:ensamblador}
+
+El ensamblador para el lenguaje ensamblador \textit{MOS 6502}
+es el ensamblador usado para ensamblar videojuegos para la \textit{NES}.
+Este ensamblador soporta características avanzadas empleadas
+comúnmente al programar en ensamblador, como las macros,
+las etiquetas globales o las referencias relativas.
+El ensamblador ensambla el código de un proyecto en \textbf{cuatro pasos}:
+descubrimiento, expansión, asignación de direcciones y asignación de valores.
+Estos son los mismos pasos que utiliza el ensamblador para \textit{MIPS32},
+y es que este ensamblador presenta \textbf{la misma arquitectura}
+que el ensamblador presente por defecto en \textit{JAMS}.
+
+\subsection{Descubrimiento}\label{subsec:descubrimiento}
+
+En este paso el texto del proyecto se \textbf{descompone en sus primitivas},
+permitiendo al ensamblador entender los diferentes componentes de cada línea.
+Al final de este paso, las etiquetas globales y las etiquetas del archivo
+(etiquetas no definidas dentro de una macro) \textbf{son registradas sin
+ningún valor asignado}.
+Las macros de cada archivo también son registradas.
+El identificador de una macro es definido por su nombre concatenado-*
+al número de parámetros que necesitan.
+Este procedimiento se realiza para dar soporte a la sobrecarga de macros.
+En el caso de la macro $print$, su identificador sería $print-1$.
+
+Cabe destacar que, a diferencia del ensamblador para \textit{MIPS32},
+las etiquetas pueden hacer referencia a una dirección de memoria
+o a una \textbf{equivalencia}.
+Estas equivalencias relacionan una etiqueta a una expresión matemática
+que a la vez puede usar otras etiquetas para calcular su valor.
+
+\subsection{Expansión}\label{subsec:expansion}
+
+En este paso, las llamadas a macros son invocadas,
+insertando el código de la macro en la posición de la llamada.
+Este código efectúa el primer paso del ensamblador mientras es añadido.
+Al ser insertado justo después de la llamada, el código de la macro
+también será expandido.
+
+\subsubsection{Alcance}\label{subsubsec:alcance}
+
+Las etiquetas y macros que están dentro de una macro
+\textbf{tienen un alcance diferente al del archivo}.
+Si la macro es global, el alcance es considerado hijo del alcance global
+y no podrá acceder a las etiquetas del archivo que lo invoca.
+Si la macro es local, el alcance es considerado hijo del alcance del archivo.
+
+Cuando un alcance es hijo de otro alcance,
+\textbf{el hijo podrá acceder a las etiquetas y macros de su padre}.
+El hijo también podrá definir nuevas etiquetas y macros con el mismo
+identificador que una etiqueta o macro de su padre.
+Aunque este comportamiento está permitido, \textbf{el hijo solo podrá acceder
+al elemento que él define}.
+Esta funcionalidad es llamada \textbf{ocultamiento o \textit{shadowing}}.
+
+\subsection{Asignación de direcciones}\label{subsec:asignacion-de-direcciones}
+
+Una vez el ensamblador haya expandido las macros,
+se asignan las direcciones de todas las instrucciones,
+etiquetas y directivas que requieran dirección.
+Estas direcciones se asignan de manera secuencial.
+Existen directivas que pueden modificar el flujo de la asignación,
+como es el caso de la directiva $.bank$ anteriormente mencionada.
+
+\subsection{Asignación de valores}\label{subsec:asignacion-de-valores}
+
+Como paso final, el ensamblador insertará en memoria los valores
+que representan las directivas e instrucciones.
+Es en este paso donde se resuelven los valores de las equivalencias.
+
+\subsection{Empaquetamiento}\label{subsec:empaquetamiento}
+
+Como paso adicional fuera del ensamblador, los datos resultantes
+en los bancos de memoria son empaquetados en un archivo \textit{iNES}.
+Este archivo junta la cabecera especificada en la configuración seleccionada
+por el usuario, los bancos de memoria especificados como memoria
+\textit{ROM} y los gráficos traducidos a tablas de patrones.
+
+\subsection{Características avanzadas}\label{subsec:características-avanzadas}
+
+El ensamblador permite el uso de técnicas avanzadas en
+el desarrollo de aplicaciones en lenguaje ensamblador.
+
+\subsubsection{Referencias relativas}\label{subsubsec:referencias-relativas}
+
+Una directiva o instrucción puede \textbf{referenciar a una etiqueta de manera
+relativa} con las referencias especiales $+$ y $-$.
+La referencia $+$ hace referencia a la etiqueta siguiente.
+La referencia $-$ hace referencia a la etiqueta anterior.
+Las referencias relativas \textbf{solo pueden hacer referencia
+a etiquetas del mismo alcance}.
+No pueden hacer referencia a etiquetas de un alcance mayor.
+
+\subsubsection{Macros anidadas}\label{subsubsec:macros-anidadas}
+
+Una macro puede ser definida dentro de otra macro.
+Esto es conocido como una \textbf{macro anidada}.
+Esta macro solo podrá ser accedida en el alcance de la macro
+en la que está declarada.
+
+\subsubsection{Expresiones}\label{subsubsec:expresiones}
+
+Las expresiones son la característica más avanzada
+presente en el ensamblador.
+Esta característica permite deducir el valor
+de una instrucción o directiva mediante una \textbf{expresión matemática}
+que puede usar etiquetas como parámetros.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/nes/nes-expressions}
+    \caption{Expresiones con sumas usadas en instrucciones}
+    \label{fig:nes-expressions}
+\end{figure}
+
+Los usuarios pueden emplear una gran variedad de operaciones
+en las expresiones, como son la suma, la resta, la multiplicación,
+la división o las operaciones a nivel de bit.
+También existen operaciones \textbf{unarias}, como son
+la conversión de un número en byte o palabra,
+la negación a nivel de bit o la selección del
+primer o segundo byte de una palabra.
+
+\subsection{Detalles finales}\label{subsec:detalles-finales}
+
+A diferencia del ensamblador para \textit{MIPS32},
+este ensamblador no es muy personalizable.
+Esto es debido a que \textit{NES4JAMS} pretende
+ser un entorno de desarrollo para videojuegos de la \textit{NES}
+que puedan ejecutarse en \textbf{consolas reales}.
+\textit{NES4JAMS} da soporte para todas las
+\textbf{instrucciones legales} presentes en la consola,
+por lo que no es factible dar soporte para instrucciones
+de terceros.
