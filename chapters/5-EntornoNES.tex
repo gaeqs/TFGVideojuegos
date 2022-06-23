@@ -348,3 +348,252 @@ que puedan ejecutarse en \textbf{consolas reales}.
 \textbf{instrucciones legales} presentes en la consola,
 por lo que no es factible dar soporte para instrucciones
 de terceros.
+
+
+\section{Simulador}\label{sec:simulador}
+
+Un simulador es una pieza de \textit{software} que imita el
+comportamiento de un dispositivo.
+\textit{NES4JAMS} introduce un emulador de la arquitectura
+de la consola \textit{NES} que permite jugar y depurar
+una gran variedad de videojuegos.
+
+El simulador está principalmente compuesto por cinco partes:
+la unidad central de procesamiento
+(\textit{Central Processing Unit} o \textit{CPU}),
+la unidad de procesamiento de imágenes
+(\textit{Picture Processing Unit} o \textit{PPU}),
+la unidad de procesamiento de audio
+(\textit{Audio Processing Unit} o \textit{APU}),
+el bus de datos y el controlador de memoria o \textit{mapper}.
+El simulador simula el comportamiento de todos los componentes
+en cada \textbf{ciclo de reloj}.
+
+\subsection{Estructura del simulador}\label{subsec:estructura-del-simulador}
+
+El simulador para la consola \textit{NES} no presenta un visualizador
+de instrucciones como nodo principal, si no una herramienta que
+simula la \textit{salida de vídeo} de la consola.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/nes/nes-video}
+    \caption{Simulador reproduciendo una versión de \textit{Bad Apple!} para la \textit{NES}}
+    \label{fig:nes-video}
+\end{figure}
+
+A diferencia de los cauces gráficos actuales, la \textit{NES}
+compone la imagen de salida generando \textbf{un pixel} cada
+ocho ciclos de reloj de la \textit{PPU}.
+Este comportamiento, juntado con otras características como
+la generación de interrupciones de la unidad central
+por parte de la propia \textit{PPU}, hace imposible usar
+herramientas de renderizado avanzadas, como las proporcionadas
+por librerías como \textit{Vulkan} u \textit{OpenGL}.
+
+La única manera de renderizar la salida de vídeo de la \textit{NES}
+es generando la imagen en el \textbf{mismo hilo de ejecución}
+utilizado por la \textit{CPU}.
+De esta manera, la \textit{PPU} ejecuta una cantidad de ciclos
+determinada por la región por cada ciclo de \textit{CPU}.
+
+\textit{JavaFX} no tiene una manera óptima de modificar
+imágenes de manera constante.
+La herramienta de vídeo emplea una versión \textbf{muy modificada}
+de las imágenes proporcionadas por la librería,
+permitiendo así modificar una imagen una cantidad muy alta
+de veces por segundo.
+
+Esta salida de vídeo es complementada por dos herramientas principales:
+la herramienta \textit{memoria} y la herramienta \textit{PPU}.
+Existen otras herramientas más secundarias, como la \textit{consola}, que permite
+visualizar el resultado de la simulación cuando se para, o
+la \textit{información}, que permite visualizar las imágenes por segundo
+de la salida de vídeo.
+
+\subsection{Memoria}\label{subsec:memoria}
+
+La memoria de la \textit{NES} puede separarse en \textbf{tres secciones}:
+la memoria \textit{RAM}, la memoria del cartucho y la memoria \textit{VRAM}.
+La memoria del cartucho está dividida en dos secciones:
+la memoria del programa (\textit{PRG}), donde se guardan
+las instrucciones del videojuego,
+y la memoria de los gráficos (\textit{CHR}), donde se guardan
+las tablas de patrones.
+A su vez, la memoria \textit{VRAM} o \textit{RAM} de la \textit{PPU}
+está también dividida en dos secciones:
+las tablas de nombres y las paletas de colores.
+
+La consola presenta \textbf{dos buses de datos}:
+el bus de datos de la \textit{CPU}
+y el bus de datos de \textit{PPU}.
+El bus de datos de la \textit{CPU} permite a
+este acceder a la memoria \textit{RAM},
+a los registros de la \textit{PPU},
+a los registros de la \textit{APU}
+y a la memoria \textit{PRG} del cartucho.
+A su vez, el bus de datos de la \textit{PPU}
+le permite a este acceder a las tablas de patrones
+del cartucho, a las tablas de nombres y a las paletas
+de colores.
+
+La memoria de los cartuchos que visualizan la \textit{CPU}
+y la \textit{PPU} suelen pasar por un controlador de memoria.
+Este controlador de memoria está situado dentro de cada cartucho
+de juego, y existen más de 250 tipos de controladores, cada
+uno con características específicas.
+Al permitir la \textit{NES} poder realizar operaciones de
+escritura a memoria del cartucho, los controladores
+pueden utilizar \textbf{registros} internos que cambian
+el comportamiento del cartucho.
+Esta técnica se usa principalmente para \textbf{alternar
+entre bancos de memoria}.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/nes/nes-memory}
+    \caption{Memoria del simulador}
+    \label{fig:nes-memory}
+\end{figure}
+
+La herramienta \textbf{memoria} mostrada en la
+figura \ref{fig:nes-memory} permite
+al usuario visualizar la memoria del simulador desde
+el punto de vista de la \textit{CPU} de la \textit{PPU}.
+Adicionalmente, también le permite visualizar los bancos
+de memoria del cartucho de forma directa, sin controladores
+de memoria de por medio.
+
+El usuario también puede \textbf{escribir} valores en una
+dirección de memoria.
+Esta escritura se tratará como una escritura de la \textit{CPU}
+o la \textit{PPU}, dependiendo del punto de vista seleccionado.
+Por este motivo, existen escrituras hechas desde uno de estos
+dos puntos de vista que resultarán \textbf{sin efecto} alguno,
+ya que se intentará modificar valores como los bancos de memoria
+del cartucho, los cuales están considerados memoria de solo
+lectura por ambos componentes.
+Si el usuario desea modificar los bancos de memoria, este puede
+hacerlo desde la visualización directa.
+
+\subsection{Unidad de procesamiento de imágenes}\label{subsec:unidad-de-procesamiento-de-imagenes}
+
+La \textit{PPU} es la unidad de procesamiento encargada de generar
+la salida de vídeo.
+Debido a la escasa memoria presente en la \textit{VRAM}, la \textit{PPU}
+está diseñada para ahorrar \textbf{la mayor memoria posible}.
+Esto lo consigue construyendo la escena usando un complejo
+sistema de paletas y tablas de patrones.
+
+\subsubsection{Fondo de la escena}\label{subsubsec:fondo-de-la-escena}
+
+Para generar el fondo de la escena, la \textit{PPU} utiliza
+tres bancos de memoria diferentes: las tablas de patrones,
+las tablas de nombres y las paletas.
+
+Las tablas de nombres tienen un tamaño de 32x32 bytes.
+Las 30 primeras filas guardan el índice del patrón
+a usar en la posición asignada a dicha dirección.
+Las dos últimas filas almacenan el identificador de las
+paletas a usar en cada conjunto de 2x2 índices.
+La \textit{PPU} es capaz de acceder a \textbf{cuatro tablas
+de nombres}, aunque en realidad solo existan dos
+tablas de nombres en memoria, siendo las otras dos
+un reflejo de las dos primeras.
+El modo de reflejo se puede modificar, pudiendo
+hacer un reflejo horizontal o vertical.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/nes/nes-nametables}
+    \caption{Tablas de nombres en la herramienta \textit{PPU}}
+    \label{fig:nes-nametables}
+\end{figure}
+
+Las tablas de patrones permiten guardar 16x16 patrones de
+8x8 píxeles cada uno.
+Cada pixel ocupa 2 bits de memoria, por lo que una tabla
+de patrones ocupa la pequeña cantidad de 4 KiB.
+La \textit{NES} presenta \textbf{dos tablas de patrones}, siendo
+la primera utilizada para el fondo y la segunda utilizada
+para los \textit{sprites}.
+
+Por último, la \textit{NES} contiene \textbf{ocho paletas}
+de cuatro colores cada una.
+Las cuatro primeras paletas son usadas para el fondo,
+mientras que las cuatro últimas son usadas para los \textit{sprites}.
+El primer color de las paletas tiene un comportamiento especial:
+en las paletas de fondo, este color siempre es el mismo,
+leyendo la \textit{PPU} siempre el color de la primera paleta.
+Este color es considerado el color base de la escena.
+En las paletas de los \textit{sprites}, el primer color
+se considera siempre transparente.
+
+\subsubsection{\textit{Sprites}}\label{subsubsec:sprites}
+
+La \textit{PPU} contiene una memoria exclusiva para guardar
+los atributos de los \textit{sprites}.
+Esta memoria es llamada \textit{OAM} o \textit{Object Attribute Memory},
+y es capaz de almacenar hasta 64 \textit{sprites}.
+Cada \textit{sprite} ocupa 4 bytes de memoria, en donde se
+definen atributos como el índice del patrón o la posición en la escena.
+
+\subsubsection{Herramienta \textit{PPU}}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/nes/nes-patterntables}
+    \caption{Paletas y tablas de patrones en la herramienta \textit{PPU}}
+    \label{fig:nes-patterntables}
+\end{figure}
+
+La herramienta \textbf{PPU} del simulador permite
+visualizar las tablas de patrones, las tablas de nombres
+y las paletas que están actualmente en memoria.
+Estos datos se actualizan \textbf{en cada fotograma},
+lo que permite detectar los cambios en la \textit{PPU}
+de una manera muy visual.
+Las figuras \ref{fig:nes-nametables} y \ref{fig:nes-patterntables}
+muestran las diferentes opciones de esta herramienta.
+
+Cabe destacar que esta herramienta no es puramente visual:
+el usuario puede seleccionar una paleta de la lista.
+Esto hará que las tablas de patrones \textbf{usen la paleta seleccionada}.
+Muchos videojuegos modifican algunas paletas cada poco tiempo
+para crear pequeñas animaciones.
+Este es el caso de las monedas en \textit{Super Mario Bros.}, las cuales
+cambian de color cíclicamente.
+Si la paleta seleccionada está siendo animada, las tablas de patrones
+cambiarán de color respectivamente.
+
+\subsection{Audio}\label{subsec:audio}
+
+La consola \textit{NES} presenta
+una \textbf{unidad de procesamiento de audio} o \textit{APU}.
+Esta unidad tiene \textbf{cuatro canales}: dos canales de pulso,
+un canal triangular y un canal de ruido.
+
+En la consola original, los cuatro canales generaban una muestra
+por cada ciclo de reloj de la \textit{CPU}, lo que equivaldría
+a \textbf{1.77 millones de muestras por minuto}.
+Esta cantidad de muestras es innecesaria en un equipo de sonido
+moderno, y su reproduction resulta inviable en las librerías
+modernas.
+Es por eso que \textit{NES4JAMS} rebaja la cantidad de datos comprimiendo
+todas las muestras de un periodo de tiempo en una media ponderada.
+
+\subsection{Unidad de procesamiento central}\label{subsec:unidad-de-procesamiento-central}
+
+Como elemento final del simulador se encuentra el componente
+principal de la consola: la \textbf{unidad de procesamiento central}
+o \textit{CPU}.
+La \textit{NES} usa un procesador \textit{MOS 6502}: una unidad
+de procesamiento central de 8 bits muy utilizada a principio
+de los años 80.
+
+Aunque el número de instrucciones documentadas por \textit{MOS Technologies}
+sean 151, existen \textbf{instrucciones no oficiales}, producto del diseño
+del procesador, lo que sube el número de instrucciones a 256.
+\textit{NES4JAMS} actualmente \textbf{no soporta} este tipo de instrucciones,
+lo que puede impedir simular ciertos juegos que hacen uso de ellas.
+
