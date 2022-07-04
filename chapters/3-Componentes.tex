@@ -1,5 +1,7 @@
 \chapter{Sistema de vinculación de componentes}\label{ch:sistema-de-vinculacion-de-componentes}
 
+\note{Óscar: ¿no tendría sentido fundir este capítulo con el 4?}
+  
 En este capítulo se abordará la creación de un sistema de
 vinculación de componentes para \textit{JAMS}, empezando por
 la estructura de un componente y terminando por la carga
@@ -14,7 +16,7 @@ Más concretamente, un componente de \textit{JAMS} debe contener
 dos elementos esenciales:
 \begin{itemize}
     \item \textbf{Punto de entrada}: está conformado por una
-    clase que extiende a $Plugin$.
+    clase que extiende a $Plugin$.\note{Óscar: ¿Qué es Plugin?}
     \textit{JAMS} crea una instancia de esta clase para
     poder ejecutar el código externo.
     \item \textbf{Archivo de metadatos}: confirmado por un archivo
@@ -49,12 +51,12 @@ dos elementos esenciales:
 \subsection{Dependencias}\label{subsec:dependencias}
 
 Un componente puede depender de otro componente.
-Para proporcionar una inicialización de los componentes
-correcta se proporcionan los parámetros $dependencies$
+Para proporcionar una inicialización \newODR{correcta} de los componentes
+\delODR{correcta} se proporcionan los parámetros $dependencies$
 y $soft\_dependencies$, los cuales se pueden utilizar en
 el archivo $plugin.json$.
 Todos los componentes cuyo nombre esté dentro de una de estas
-listas será inicializado antes.
+listas será\newODR{n} inicializado\newODR{s} antes.
 Si no se encuentra ningún componente que tenga el nombre
 de algún valor de $dependencies$, el componente no
 se inicializará, lanzando una excepción.
@@ -66,7 +68,7 @@ una \textbf{dependencia cíclica}.
 Como ya se ha mencionado, un punto de entrada está conformado
 por una \textbf{clase que extiende a $Plugin$}.
 El desarrollador puede extender dos métodos definidos por esta clase:
-$onEnable$ y $onEnable$, los cuales serán llamados cuando el
+$onEnable$ y $onEnable$ \nota{Óscar: yo leo el mismo nombre dos veces}, los cuales serán llamados cuando el
 componente es vinculado o desvinculado de la aplicación principal.
 Un ejemplo de punto de entrada se puede observar en la figura \ref{fig:entry-point}.
 
@@ -158,3 +160,7 @@ y la descripción de estos.
     \caption{Sección de componentes en la configuración}
     \label{fig:plugin-ui}
 \end{figure}
+
+\note{Óscar: quiero insistir: si la figura no está citada en el texto,
+  sobra. Por otro lado, esto habría que remaquetarlo: no puedes dejar
+  así la figura. Te puedo ayudar con eso, una vez que el texto sea definitivo}
