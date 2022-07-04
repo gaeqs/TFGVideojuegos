@@ -36,7 +36,7 @@ Cuando un proveedor se desvincula de la aplicación, todos los elementos proporc
 por el proveedor son eliminados de los gestores.
 Este diseño es una de las principales razones por las que la carga y descarga de
 componentes es viable en \textit{JAMS}.
-Al tener todos los elementos de correctamente etiquetados, \textit{JAMS}
+Al tener todos los elementos \delODR{de} correctamente etiquetados, \textit{JAMS}
 puede retirar los elementos de un componente cuando éste se
 descarga con una simple llamada a cada gestor.
 
@@ -127,10 +127,11 @@ de esta tecnología.
 \subsection{Emisores de eventos}\label{subsec:emisores-de-eventos}
 
 Los emisores de eventos son los encargados de transmitir
-eventos a los elementos que los escucha.
+eventos a los elementos que los escucha\newODR{n}.
 Puede considerarse un \textbf{canal} por el cual diferentes creadores
 de eventos pueden transmitir diferentes tipos de eventos
-que los elementos escuchando pueden recibir.
+que \delODR{los elementos escuchando pueden recibir}\newODR{podrán
+  recibir los elementos que estén escuchando}.
 
  Un emisor de eventos está representado por la interfaz $EventBroadcast$.
 Esta interfaz es implementada por cualquier elemento que quiera ser
@@ -165,7 +166,8 @@ fun onLanguageRegister(
 
  A diferencia de otros sistemas de eventos similares,
 el sistema de eventos de \textit{JAMS} permite usar \textbf{eventos genéricos}.
-Un ejemplo es el caso anterior, donde el método pide un elemento de tipo
+Un ejemplo es el caso anterior, donde el método
+\delODR{pide}\newODR{¿invoca a?} un elemento de tipo
 $ManagerElementRegisterEvent.After<Language>$.
 Si el emisor al que está registrado emite un evento de tipo
 $ManagerElementRegisterEvent.After<Theme>$, la escucha no será invocada.
@@ -173,7 +175,7 @@ $ManagerElementRegisterEvent.After<Theme>$, la escucha no será invocada.
  Un evento puede extender la clase de otro evento.
 Esto permite generar una jerarquía de eventos.
 Una escucha que pide un cierto tipo de evento se ejecutará siempre que dicho evento o uno de sus hijos ocurra.
-Si una escucha pide el evento $Event$, su método se ejecutará siempre que un evento ocurra.
+Si una escucha \delODR{pide el}\newODR{¿invoca al?} evento $Event$, su método se ejecutará siempre que un evento ocurra.
 
  Algunos eventos implementan la interfaz $Cancellable$, lo cual permite cancelar el evento.
 Las escuchas restantes no serán llamadas cuando un evento es cancelado salvo que se defina lo contrario
@@ -211,13 +213,14 @@ class ObjectWithListeners {
 
  El método de registro pide dos simples variables: el objeto
 con las escuchas y si se deben usar \textbf{referencias débiles}.
-Esta última opción permite a los objetos eliminarse de la memoria
+Esta última opción permite \delODR{a los objetos
+  eliminarse}\newODR{que los objetos sean eliminados} de la memoria
 cuando ya no sean necesarios, incluso aunque tengan escuchas registradas.
 Estas escuchas \textbf{serán eliminadas del emisor automáticamente} si no existe
 ninguna referencia al objeto (sin contar la del propio emisor).
 Esto permite desarrollar componentes de una manera \textbf{muy sencilla}:
 combinado con el sistema de proveedores, las referencias débiles
-de las escuchas evita que la aplicación mantenga elementos de un
+de las escuchas evita\newODR{n} que la aplicación mantenga elementos de un
 componente cuando este se desinstala.
 
  Por último, cabe destacar que el método de registro
@@ -246,7 +249,8 @@ tareas \textbf{visibles por el usuario} en la barra
 de proceso de la ventana principal de la aplicación.
 
  \textit{JAMS} implementa por defecto un
-sistema de tareas basado en \textbf{ejecutadores}.
+sistema de tareas basado en \textbf{ejecutadores}\note{Óscar: yo diría
+  que en cristiano es ejecutores, o eso dice la RAE}.
 Un ejecutador es un conjunto de hilos que ejecutan
 diversas tareas.
 Cada proyecto presenta un ejecutador único por defecto,
@@ -276,7 +280,9 @@ pueden tener un título y una descripción que cambian dependiendo
 del idioma seleccionado por el usuario.
 Este título y descripción son visibles al usuario, y se muestran
 en la barra inferior de la ventana principal de \textit{JAMS},
-como se puede ver en la figura \ref{fig:jams-assembling}.
+como se puede ver en la figura
+\ref{fig:jams-assembling}.\note{Remaquetar esta figura. No puedes
+  dejarla solita en la siguiente página}
 
 \begin{figure}[h]
     \centering
