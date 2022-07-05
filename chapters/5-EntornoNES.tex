@@ -2,13 +2,13 @@
 
 En este capítulo se abordará el desarrollo de \textit{NES4JAMS},
 un componente que aporta a \textit{JAMS} un entorno de desarrollo
-integrado para la creación de videojuegos de la consola
+integrado para la creación de videojuegos \delODR{de}\newODR{para} la consola
 \textit{NES}.
 Gracias a la arquitectura de \textit{JAMS}, este componente
 aprovechará muchas de las características desarrolladas
 para el entorno de desarrollo \textit{MIPS32} presente
 por defecto en la aplicación.
-Este entorno de desarrollo consistirá de un editor
+Este entorno de desarrollo consistirá \delODR{de}\newODR{en} un editor
 de texto, un ensamblador y un simulador.
 
 
@@ -16,14 +16,16 @@ de texto, un ensamblador y un simulador.
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.8\textwidth]{images/nes/nes-project-creation}
+    \includegraphics[width=0.85\textwidth]{images/nes/nes-project-creation}
+    %% Óscar: he cambiado el width de 0.8 a 0.85 para que no se quede
+    %% una línea sola al final, que queda fatal.
     \caption{Creación de un proyecto \textit{NES}}
     \label{fig:nes-project-creation}
 \end{figure}
 
-\textit{NES4JAMS} añade un nuevo tipo de proyecto
+\textit{NES4JAMS} añade \newODR{a \emph{JAMS}} un nuevo tipo de proyecto
 que incorpora todas las herramientas para el desarrollo
-de videojuegos de \textit{NES}.
+de videojuegos \delODR{de}\newODR{para} \textit{NES}.
 Los usuarios podrán crear nuevos proyectos de este tipo
 desde el menú de creación de proyectos.
 Como los proyectos de \textit{NES} están destinados
@@ -32,13 +34,17 @@ especificar \textbf{el nombre y la localización del proyecto},
 como se puede observar en la figura \ref{fig:nes-project-creation}.
 
 Una vez creado el proyecto, \textit{JAMS} mostrará una ventana
-principal muy similar a la de los proyectos \textit{MIPS32}.
+principal muy similar a la de los proyectos \textit{MIPS32}. \note{Y
+  por comentarios como este creo que hay que dedicar algo más de
+  espacio a introducir JAMS en el estado del arte, porque el lector no
+  tiene ni idea de cómo es la ventana principal de JAMS en los
+  proyectos MIPS32}
 
 
 \section{Editor}\label{sec:editor}
 
-Los desarrolladores de videojuegos de \textit{NES} trabajan con
-dos tipos de archivo principales: los archivos \textit{asm}
+Los desarrolladores de videojuegos \delODR{de}\newODR{para} \textit{NES} trabajan con
+dos tipos de archivo\newODR{s} principales: los archivos \textit{asm}
 para el código y los archivos \textit{pcx} para los gráficos.
 \textit{NES4JAMS} permite al usuario editar los dos tipos de archivo
 de manera sencilla.
@@ -78,7 +84,7 @@ importa, por lo que esta herramienta permite ordenarlos de una manera sencilla.
 
 Una vez el usuario abra un archivo, su editor aparecerá en la herramienta
 principal de la sección: \textbf{el visualizador de archivos}.
-\textit{NES4JAMS} implementa dos editores nuevos a \textit{JAMS}:
+\textit{NES4JAMS} \delODR{implementa}\newODR{incorpora/añade} dos editores nuevos a \textit{JAMS}:
 el editor de código \textit{MOS 6502} y el editor de gráficos \textit{PCX}.
 
 \subsection{Editor de código}\label{subsec:editor-de-codigo}
@@ -121,7 +127,9 @@ El editor de archivos \textit{PCX} permite modificar los
 gráficos del videojuego de una manera rápida y sencilla.
 Este editor está pensado exclusivamente para gráficos
 de \textit{NES}, por lo que cada pixel solo puede tomar
-cuatro valores diferentes.
+cuatro valores diferentes.\note{Óscar: ¿cuáles? No puedes presuponer
+  que el lector conoce sobradamente el formato PCX. Quizá deberías
+  explicar ciertos detalles de la NES, como cuántos colores tenía, etc}
 El color final se buscará en la paleta seleccionada.
 El usuario puede cambiar el color de cada valor de la
 paleta utilizando el botón central del ratón sobre
@@ -139,7 +147,7 @@ de 8x8 píxeles cada uno.
 Si se ensambla un archivo \textit{PCX} con otro ancho,
 lo más probable es que los gráficos se conviertan en
 \textbf{ruido}.
-Los archivo \textit{PCX} creados por \textit{NES4JAMS}
+Los archivo\newODR{s} \textit{PCX} creados por \textit{NES4JAMS}
 siempre tienen el tamaño de una tabla de patrones,
 es decir, de 128x128 píxeles.
 
@@ -180,7 +188,7 @@ El usuario también tiene la opción de \textbf{exportar las tablas
 de patrones} del cartucho en un archivo \textit{PCX}.
 Una previsualización de estas tablas se puede observar en la parte
 derecha del editor.
-Por último, el editor da la opción de \textbf{guardar una copia}
+Por último, el editor \delODR{da}\newODR{ofrece} la opción de \textbf{guardar una copia}
 del videojuego con los parámetros modificados.
 
 \subsection{Configuraciones}\label{subsec:configuraciones}
@@ -188,7 +196,8 @@ del videojuego con los parámetros modificados.
 \begin{figure}[h]
     \centering
     \includegraphics[width=0.8\textwidth]{images/nes/nes-configurations}
-    \caption{Menú de configuraciones}
+    \caption{Menú de configuraciones\note{Insisto: tienes que
+        referenciar todas las figuras en el texto, y esta no lo está}}
     \label{fig:nes-configurations}
 \end{figure}
 
@@ -225,6 +234,8 @@ descubrimiento, expansión, asignación de direcciones y asignación de valores.
 Estos son los mismos pasos que utiliza el ensamblador para \textit{MIPS32},
 y es que este ensamblador presenta \textbf{la misma arquitectura}
 que el ensamblador presente por defecto en \textit{JAMS}.
+\note{Óscar: En este párrafo hay mucho ``ensamblador''. Hay que redactarlo
+  nuevamente ;)}
 
 \subsection{Descubrimiento}\label{subsec:descubrimiento}
 
@@ -237,13 +248,14 @@ Las macros de cada archivo también son registradas.
 El identificador de una macro es definido por su nombre concatenado-*
 al número de parámetros que necesitan.
 Este procedimiento se realiza para dar soporte a la sobrecarga de macros.
-En el caso de la macro $print$, su identificador sería $print-1$.
+En el caso de la macro $print$, su identificador sería
+$print-1$.\note{Óscar: me he perdido con el símbolo ``*''}
 
 Cabe destacar que, a diferencia del ensamblador para \textit{MIPS32},
 las etiquetas pueden hacer referencia a una dirección de memoria
 o a una \textbf{equivalencia}.
-Estas equivalencias relacionan una etiqueta a una expresión matemática
-que a la vez puede usar otras etiquetas para calcular su valor.
+Estas equivalencias relacionan una etiqueta \delODR{a}\newODR{con} una expresión matemática
+que a la vez puede \delODR{usar}\newODR{hacer uso de} otras etiquetas para calcular su valor.
 
 \subsection{Expansión}\label{subsec:expansion}
 
@@ -298,8 +310,11 @@ y usarlo en otros emuladores.
 \subsection{Características avanzadas}\label{subsec:características-avanzadas}
 
 El ensamblador permite el uso de técnicas avanzadas en
-el desarrollo de aplicaciones en lenguaje ensamblador.
+el desarrollo de aplicaciones en lenguaje ensamblador\newODR{, como
+  las que se detallan a continuación}.
 
+\note{Óscar: yo no haría subsubsections, porque son epígrafes muy
+  cortos. ¿Qué tal como ítems?}
 \subsubsection{Referencias relativas}\label{subsubsec:referencias-relativas}
 
 Una directiva o instrucción puede \textbf{referenciar a una etiqueta de manera
@@ -328,13 +343,14 @@ que puede usar etiquetas como parámetros.
 \begin{figure}[h]
     \centering
     \includegraphics[width=0.8\textwidth]{images/nes/nes-expressions}
-    \caption{Expresiones con sumas usadas en instrucciones}
+    \caption{Expresiones con sumas usadas en instrucciones\note{Óscar:
+    referénciala en el texto}}
     \label{fig:nes-expressions}
 \end{figure}
 
 Los usuarios pueden emplear una gran variedad de operaciones
 en las expresiones, como son la suma, la resta, la multiplicación,
-la división o las operaciones a nivel de bit.
+la división \delODR{o las operaciones}\newODR{u operaciones lógicas} a nivel de bit.
 También existen operaciones \textbf{unarias}, como son
 la conversión de un número en byte o palabra,
 la negación a nivel de bit o la selección del
@@ -345,7 +361,7 @@ primer o segundo byte de una palabra.
 A diferencia del ensamblador para \textit{MIPS32},
 este ensamblador no es muy personalizable.
 Esto es debido a que \textit{NES4JAMS} pretende
-ser un entorno de desarrollo para videojuegos de la \textit{NES}
+ser un entorno de desarrollo \delODR{para}\newODR{de} videojuegos \delODR{de}\newODR{para} la \textit{NES}
 que puedan ejecutarse en \textbf{consolas reales}.
 \textit{NES4JAMS} da soporte para todas las
 \textbf{instrucciones legales} presentes en la consola,
@@ -374,9 +390,11 @@ en cada \textbf{ciclo de reloj}.
 
 \subsection{Estructura del simulador}\label{subsec:estructura-del-simulador}
 
-El simulador para la consola \textit{NES} no presenta un visualizador
-de instrucciones como nodo principal, si no una herramienta que
+\delODR{El simulador para la consola \textit{NES} no presenta un visualizador
+de instrucciones como nodo principal, si no}\newODR{El nodo principal del simulador para la consola \emph{NES} no
+  es un visualizador de instrucciones, sino} una herramienta que
 simula la \textit{salida de vídeo} de la consola.
+
 
 \begin{figure}[h]
     \centering
@@ -388,7 +406,7 @@ simula la \textit{salida de vídeo} de la consola.
 A diferencia de los cauces gráficos actuales, la \textit{NES}
 compone la imagen de salida generando \textbf{un pixel} cada
 ocho ciclos de reloj de la \textit{PPU}.
-Este comportamiento, juntado con otras características como
+Este comportamiento, junt\delODR{ad}o con otras características como
 la generación de interrupciones de la unidad central
 por parte de la propia \textit{PPU}, hace imposible usar
 herramientas de renderizado avanzadas, como las proporcionadas
@@ -405,14 +423,17 @@ imágenes de manera constante.
 La herramienta de vídeo emplea una versión \textbf{muy modificada}
 de las imágenes proporcionadas por la librería,
 permitiendo así modificar una imagen una cantidad muy alta
-de veces por segundo.
+de veces por segundo.\note{Óscar: ¿Qué quieres decir en este párrafo?
+ ¿Qué significa ``una manera óptima de modificar imágenes de manera
+  constante''? Etc.}
 
 Esta salida de vídeo es complementada por dos herramientas principales:
 la herramienta \textit{memoria} y la herramienta \textit{PPU}.
 Existen otras herramientas más secundarias, como la \textit{consola}, que permite
 visualizar el resultado de la simulación cuando se para, o
 la \textit{información}, que permite visualizar las imágenes por segundo
-de la salida de vídeo.
+de la salida de vídeo.\note{Óscar: ¿por qué ``imágenes por segundo''?
+  ¿Qué quieres decir?}
 
 \subsection{Memoria}\label{subsec:memoria}
 
@@ -446,7 +467,7 @@ Este controlador de memoria está situado dentro de cada cartucho
 de juego, y existen más de 250 tipos de controladores, cada
 uno con características específicas.
 Al permitir la \textit{NES} poder realizar operaciones de
-escritura a memoria del cartucho, los controladores
+escritura \delODR{a}\newODR{en} memoria del cartucho, los controladores
 pueden utilizar \textbf{registros} internos que cambian
 el comportamiento del cartucho.
 Esta técnica se usa principalmente para \textbf{alternar
@@ -505,6 +526,8 @@ tablas de nombres en memoria, siendo las otras dos
 un reflejo de las dos primeras.
 El modo de reflejo se puede modificar, pudiendo
 hacer un reflejo horizontal o vertical.
+\note{Óscar: ¿para qué sirve todo esto, que pueda acceder a 4 tablas
+  de nombres, dos de ellas reflejo de las dos existentes?}
 
 \begin{figure}[h]
     \centering
@@ -536,7 +559,7 @@ se considera siempre transparente.
 
 La \textit{PPU} contiene una memoria exclusiva para guardar
 los atributos de los \textit{sprites}.
-Esta memoria es llamada \textit{OAM} o \textit{Object Attribute Memory},
+Esta memoria es llamada \textit{OAM} \delODR{o}\newODR{u} \textit{Object Attribute Memory},
 y es capaz de almacenar hasta 64 \textit{sprites}.
 Cada \textit{sprite} ocupa 4 bytes de memoria, en donde se
 definen atributos como el índice del patrón o la posición en la escena.
@@ -580,7 +603,7 @@ En la consola original, los cuatro canales generaban una muestra
 por cada ciclo de reloj de la \textit{CPU}, lo que equivaldría
 a \textbf{1.77 millones de muestras por minuto}.
 Esta cantidad de muestras es innecesaria en un equipo de sonido
-moderno, y su reproduction resulta inviable en las librerías
+moderno, y su reproducción resulta inviable en las librerías
 modernas.
 Es por eso que \textit{NES4JAMS} rebaja la cantidad de datos comprimiendo
 todas las muestras de un periodo de tiempo en una media ponderada.
