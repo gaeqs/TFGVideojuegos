@@ -68,7 +68,7 @@ una \textbf{dependencia cíclica}.
 Como ya se ha mencionado, un punto de entrada está conformado
 por una \textbf{clase que extiende a $Plugin$}.
 El desarrollador puede extender dos métodos definidos por esta clase:
-$onEnable$ y $onEnable$ \nota{Óscar: yo leo el mismo nombre dos veces}, los cuales serán llamados cuando el
+$onEnable$ y $onDisable$, los cuales serán llamados cuando el
 componente es vinculado o desvinculado de la aplicación principal.
 Un ejemplo de punto de entrada se puede observar en la figura \ref{fig:entry-point}.
 
@@ -149,7 +149,7 @@ el proceso de desvinculación a la \textit{JVM}.
 \section{Interfaz de usuario}\label{sec:interfaz-de-usuario}
 
 Los usuarios pueden instalar o desinstalar componentes
-desde la \textbf{ventana de configuración}.
+desde la \textbf{ventana de configuración}, mostrada en la figura \ref{fig:plugin-ui}.
 En esta interfaz se mostrará la lista de componentes
 que están instalados junto con el nombre, la versión
 y la descripción de estos.

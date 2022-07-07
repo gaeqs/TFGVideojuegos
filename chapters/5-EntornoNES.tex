@@ -245,11 +245,11 @@ Al final de este paso, las etiquetas globales y las etiquetas del archivo
 (etiquetas no definidas dentro de una macro) \textbf{son registradas sin
 ningún valor asignado}.
 Las macros de cada archivo también son registradas.
-El identificador de una macro es definido por su nombre concatenado-*
+El identificador de una macro es definido por su nombre concatenado
 al número de parámetros que necesitan.
 Este procedimiento se realiza para dar soporte a la sobrecarga de macros.
 En el caso de la macro $print$, su identificador sería
-$print-1$.\note{Óscar: me he perdido con el símbolo ``*''}
+$print-1$.
 
 Cabe destacar que, a diferencia del ensamblador para \textit{MIPS32},
 las etiquetas pueden hacer referencia a una dirección de memoria
@@ -343,18 +343,21 @@ que puede usar etiquetas como parámetros.
 \begin{figure}[h]
     \centering
     \includegraphics[width=0.8\textwidth]{images/nes/nes-expressions}
-    \caption{Expresiones con sumas usadas en instrucciones\note{Óscar:
-    referénciala en el texto}}
+    \caption{Expresiones con sumas usadas en instrucciones}
     \label{fig:nes-expressions}
 \end{figure}
 
 Los usuarios pueden emplear una gran variedad de operaciones
 en las expresiones, como son la suma, la resta, la multiplicación,
-la división \delODR{o las operaciones}\newODR{u operaciones lógicas} a nivel de bit.
+la división u operaciones lógicas a nivel de bit.
 También existen operaciones \textbf{unarias}, como son
 la conversión de un número en byte o palabra,
 la negación a nivel de bit o la selección del
 primer o segundo byte de una palabra.
+
+Estas expresiones se utilizan de manera directa en las
+instrucciones y directivas, como se puede observar en
+la figura \ref{fig:nes-expressions}.
 
 \subsection{Detalles finales}\label{subsec:detalles-finales}
 
@@ -502,7 +505,7 @@ hacerlo desde la visualización directa.
 
 \subsection{Unidad de procesamiento de imágenes}\label{subsec:unidad-de-procesamiento-de-imagenes}
 
-La \textit{PPU} es la unidad de procesamiento encargada de generar
+La \textit{PPU}\cite{PPU} es la unidad de procesamiento encargada de generar
 la salida de vídeo.
 Debido a la escasa memoria presente en la \textit{VRAM}, la \textit{PPU}
 está diseñada para ahorrar \textbf{la mayor memoria posible}.
@@ -512,22 +515,32 @@ sistema de paletas y tablas de patrones.
 \subsubsection{Fondo de la escena}\label{subsubsec:fondo-de-la-escena}
 
 Para generar el fondo de la escena, la \textit{PPU} utiliza
-tres bancos de memoria diferentes: las tablas de patrones,
-las tablas de nombres y las paletas.
+tres bancos de memoria diferentes: las tablas de patrones\cite{PATTERN_TABLES},
+las tablas de nombres\cite{NAME_TABLES} y las paletas\cite{PALETTES}.
 
 Las tablas de nombres tienen un tamaño de 32x32 bytes.
 Las 30 primeras filas guardan el índice del patrón
 a usar en la posición asignada a dicha dirección.
 Las dos últimas filas almacenan el identificador de las
 paletas a usar en cada conjunto de 2x2 índices.
-La \textit{PPU} es capaz de acceder a \textbf{cuatro tablas
-de nombres}, aunque en realidad solo existan dos
-tablas de nombres en memoria, siendo las otras dos
-un reflejo de las dos primeras.
-El modo de reflejo se puede modificar, pudiendo
-hacer un reflejo horizontal o vertical.
+
+La \textit{PPU} contiene en su memoria \textbf{dos tablas de nombre}
+(comunmente denominadas \textit{A} y \textit{B}),
+aunque tenga reservado direcciones de memoria para cuatro de ellas.
+Estas direcciones \textbf{redireccionarán} a la tabla
+\textit{A} o a la tabla \textit{B} dependiendo
+del \textbf{modo espejo}\cite{MIRRORING} especificado por el videojuego.
+Cabe destacar que existen videojuegos con memoria \textit{RAM}
+extra en sus cartuchos, permitiendo añadir las tablas \textit{C} y \textit{D}.
 \note{Óscar: ¿para qué sirve todo esto, que pueda acceder a 4 tablas
   de nombres, dos de ellas reflejo de las dos existentes?}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{images/nes/nes-mirroring}
+    \caption{Diferentes modos espejo representados en la web \textit{NESdev Wiki}}
+    \label{fig:nes-mirroring}
+\end{figure}
 
 \begin{figure}[h]
     \centering
@@ -541,7 +554,7 @@ Las tablas de patrones permiten guardar 16x16 patrones de
 Cada pixel ocupa 2 bits de memoria, por lo que una tabla
 de patrones ocupa la pequeña cantidad de 4 KiB.
 La \textit{NES} presenta \textbf{dos tablas de patrones}, siendo
-la primera utilizada para el fondo y la segunda utilizada
+por defecto la primera utilizada para el fondo y la segunda utilizada
 para los \textit{sprites}.
 
 Por último, la \textit{NES} contiene \textbf{ocho paletas}
@@ -555,14 +568,32 @@ Este color es considerado el color base de la escena.
 En las paletas de los \textit{sprites}, el primer color
 se considera siempre transparente.
 
+Con esta configuración, la \textit{NES} genera una escena de juego
+con un fondo de 512x480 píxeles: cuatro veces más que la salida
+de vídeo de la consola.
+La \textit{PPU} permite a los videojuegos desplazar la salida
+de vídeo por la escena con una precisión de píxel.
+Si el desplazamiento es tan grande que el área de renderizado
+sale de la escena, se produce un desbordamiento en la \textit{PPU}
+y la escena se repite.
+Gracias a estas propiedades se puede crear videojuegos con
+un desplazamiento suave y fácil de implementar.
+
 \subsubsection{\textit{Sprites}}\label{subsubsec:sprites}
 
 La \textit{PPU} contiene una memoria exclusiva para guardar
 los atributos de los \textit{sprites}.
-Esta memoria es llamada \textit{OAM} \delODR{o}\newODR{u} \textit{Object Attribute Memory},
+Esta memoria es llamada \textit{OAM} u \textit{Object Attribute Memory}\cite{OAM},
 y es capaz de almacenar hasta 64 \textit{sprites}.
 Cada \textit{sprite} ocupa 4 bytes de memoria, en donde se
 definen atributos como el índice del patrón o la posición en la escena.
+
+Cabe destacar la posición de los \textit{sprites} es
+absoluta con respeto a la salida de vídeo, por lo que no
+es afectada por el desplazamiento del fondo.
+Es el propio videojuego el que debe encargarse
+de actualizar la posición de todos los \textit{sprites}
+cuando la escena se desplaza.
 
 \subsubsection{Herramienta \textit{PPU}}
 
@@ -595,7 +626,7 @@ cambiarán de color respectivamente.
 \subsection{Audio}\label{subsec:audio}
 
 La consola \textit{NES} presenta
-una \textbf{unidad de procesamiento de audio} o \textit{APU}.
+una \textbf{unidad de procesamiento de audio} o \textit{APU}\cite{APU}.
 Esta unidad tiene \textbf{cuatro canales}: dos canales de pulso,
 un canal triangular y un canal de ruido.
 
@@ -613,7 +644,7 @@ todas las muestras de un periodo de tiempo en una media ponderada.
 Como elemento final del simulador se encuentra el componente
 principal de la consola: la \textbf{unidad de procesamiento central}
 o \textit{CPU}.
-La \textit{NES} usa un procesador \textit{MOS 6502}: una unidad
+La \textit{NES} usa un procesador \textit{MOS 6502}\cite{MOS6502}: una unidad
 de procesamiento central de 8 bits muy utilizada a principio
 de los años 80.
 
