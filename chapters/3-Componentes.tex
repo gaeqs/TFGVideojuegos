@@ -16,7 +16,8 @@ Más concretamente, un componente de \textit{JAMS} debe contener
 dos elementos esenciales:
 \begin{itemize}
     \item \textbf{Punto de entrada}: está conformado por una
-    clase que extiende a $Plugin$.\note{Óscar: ¿Qué es Plugin?}
+    clase que extiende a $Plugin$, una clase proporcionada por
+    \textit{JAMS} que representa un componente.
     \textit{JAMS} crea una instancia de esta clase para
     poder ejecutar el código externo.
     \item \textbf{Archivo de metadatos}: confirmado por un archivo
@@ -51,12 +52,12 @@ dos elementos esenciales:
 \subsection{Dependencias}\label{subsec:dependencias}
 
 Un componente puede depender de otro componente.
-Para proporcionar una inicialización \newODR{correcta} de los componentes
-\delODR{correcta} se proporcionan los parámetros $dependencies$
-y $soft\_dependencies$, los cuales se pueden utilizar en
+Para realizar una inicialización correcta de los componentes
+se proporcionan los parámetros $dependencies$
+y $soft\_dependencies$, los cuales pueden utilizarse en
 el archivo $plugin.json$.
 Todos los componentes cuyo nombre esté dentro de una de estas
-listas será\newODR{n} inicializado\newODR{s} antes.
+listas serán inicializados con anterioridad.
 Si no se encuentra ningún componente que tenga el nombre
 de algún valor de $dependencies$, el componente no
 se inicializará, lanzando una excepción.
@@ -68,8 +69,8 @@ una \textbf{dependencia cíclica}.
 Como ya se ha mencionado, un punto de entrada está conformado
 por una \textbf{clase que extiende a $Plugin$}.
 El desarrollador puede extender dos métodos definidos por esta clase:
-$onEnable$ y $onDisable$, los cuales serán llamados cuando el
-componente es vinculado o desvinculado de la aplicación principal.
+$onEnable$ y $onDisable$, que serán llamados cuando el
+componente se vincula o desvincula de la aplicación principal.
 Un ejemplo de punto de entrada se puede observar en la figura \ref{fig:entry-point}.
 
 \begin{figure}[h]
@@ -102,48 +103,47 @@ class MyPlugin : Plugin() {
     \label{fig:entry-point}
 \end{figure}
 
- El punto de entrada puede ser inicializado en diferentes
-etapas del proyecto: el componente será cargado antes del contexto
+El punto de entrada puede ser inicializado en diferentes
+etapas del proyecto: el componente se cargará antes que el contexto
 de \textit{JavaFX} si este ya estaba instalado en la aplicación
-cuando esta es lanzada.
-Es por eso que el desarrollador debe \textbf{comprobar si el contexto ha sido creado}
+cuando esta se lanza.
+El desarrollador debe \textbf{comprobar si el contexto se ha creado}
 antes de añadir o modificar nuevos elementos.
-Si el contexto aún no ha sido creado, los componentes podrán
+Si el contexto aún no se ha creado, los componentes podrán
 usar el evento $JAMSApplicationPostInitEvent$ para ejecutar
-código cuando este sea inicializado.
-Este sistema de eventos se verá en profundidad en esta memoria más adelante.
+código cuando este se inicialice.
+Este sistema de eventos se analizará en profundidad más adelante en esta memoria.
 
 
 \section{Vinculación de un componente}\label{sec:vinculacion-de-un-componente}
 
-Un componente puede ser vinculado de dos maneras diferentes:
+Es posible vincular un componente de dos maneras diferentes:
 cuando el usuario \textbf{instala el componente} desde la aplicación
-y cuando la \textbf{aplicación principal es inicializada} y el componente
+y cuando \textbf{se inicializa la aplicación principal} y el componente
 está ya instalado.
 La vinculación de componentes difiere en varios aspectos en estas
-dos situaciones: cuando el componente es instalado, \textit{JAMS}
+dos situaciones: cuando se instala el componente, \textit{JAMS}
 comprueba si \textbf{todas sus dependencias fuertes están presentes}.
-Si esto no se cumple, el componente no puede ser instalado.
-Cuando la aplicación principal es inicializada esta debe vincular
-una cantidad no definida de componentes.
-Es por ello que debe generar un \textbf{grafo de dependencias}
-antes de inicializar los componentes.
+Si esto no se cumple, el componente no se instala.
+Cuando arranca aplicación principal debe vincular
+una cantidad no definida de componentes, y por ello tiene que
+generar un \textbf{grafo de dependencias} antes de inicializarlos.
 
 \section{Desvinculación de un componente}\label{sec:desvinculacion-de-un-componente}
 
-Un componente es desvinculado de la aplicación principal
-cuando el usuario \textbf{desinstala el componente} desde
-la aplicación o cuando la \textbf{aplicación principal es cerrada}.
+Un componente se desvincula de la aplicación principal
+cuando \textbf{el usuario lo desinstala} desde
+la configuración o cuando la \textbf{aplicación principal se cierra}.
 De la misma manera que en la vinculación, el proceso de
 desvinculación \textbf{difiere} en ambas circunstancias.
 Para que un componente sea desinstalado, el usuario
 debe desinstalar previamente \textbf{todos los componentes
-que dependen} del componente a desinstalar.
-Solo cuando no exista ningún componente dependiente
-es cuando se puede desinstalar el componente deseado.
-Cuando la aplicación principal es cerrada
+que dependen} del componente desinstalado.
+Se puede desinstalar el componente cuando no hay
+ningún componente dependiente instalado.
+Cuando la aplicación principal se cierra
 \textbf{no se desvincula ningún componente},
-únicamente se llama al método $onDisable$, dejando
+si no que se llama únicamente a sus métodos $onDisable$, dejando
 el proceso de desvinculación a la \textit{JVM}.
 
 \section{Interfaz de usuario}\label{sec:interfaz-de-usuario}
@@ -151,8 +151,8 @@ el proceso de desvinculación a la \textit{JVM}.
 Los usuarios pueden instalar o desinstalar componentes
 desde la \textbf{ventana de configuración}, mostrada en la figura \ref{fig:plugin-ui}.
 En esta interfaz se mostrará la lista de componentes
-que están instalados junto con el nombre, la versión
-y la descripción de estos.
+que están instalados junto con su nombre, su versión
+y su descripción.
 
 \begin{figure}[h]
     \centering
@@ -160,7 +160,3 @@ y la descripción de estos.
     \caption{Sección de componentes en la configuración}
     \label{fig:plugin-ui}
 \end{figure}
-
-\note{Óscar: quiero insistir: si la figura no está citada en el texto,
-  sobra. Por otro lado, esto habría que remaquetarlo: no puedes dejar
-  así la figura. Te puedo ayudar con eso, una vez que el texto sea definitivo}

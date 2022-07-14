@@ -12,15 +12,14 @@ La \textit{NES} presenta una arquitectura muy interesante:
 la \textbf{unidad central de procesamiento (\textit{CPU})} es un procesador
 de 8 bits basado en el famoso procesador \textbf{MOS 6502}\cite{MOS6502}.
 La \textbf{unidad de procesamiento de imágenes (\textit{PPU})}\cite{PPU} está
-diseñada para \delODR{utilizar}\newODR{hacer uso de} la menor memoria posible, utilizando para
-\delODR{el dibujado}\newODR{dibujar} un conjunto de paletas de cuatro colores y un conjunto
-de teselas.
+diseñada para hacer uso de la mínima cantidad de memoria posible, utilizando para
+dibujar un conjunto de paletas de cuatro colores y un conjunto de teselas.
 La \textbf{unidad de procesamiento de audio (\textit{APU})}\cite{APU} presenta
 cuatro canales de sonido principales: dos de pulso, uno triangular
 y uno de ruido.
 
 Gracias a su funcionamiento mediante cartuchos y que la
-\textit{NES} permitía hacer operaciones \delODR{s}\newODR{d}e escritura en el cartucho,
+\textit{NES} permitía hacer operaciones de escritura en el cartucho,
 los desarrolladores podían aumentar las capacidades de la \textit{NES} de manera sencilla,
 añadiendo en el cartucho más memoria, chips de procesamiento específicos
 o canales de sonido.
@@ -38,23 +37,20 @@ características o modificando las ya existentes.
 Existe una gran variedad de técnicas para cargar código externo
 que modifique el comportamiento de una aplicación.
 Muchas aplicaciones incorporan un \textbf{intérprete} para un
-lenguaje de alto nivel, otras aplicaciones prefieren usar
-el \textbf{propio lenguaje de programación} con el que ha sido creado.
+lenguaje de alto nivel, mientras que otras prefieren utilizar
+el \textbf{propio lenguaje de programación} con el que han sido creados.
 
 Este es el caso de la mayoría de aplicaciones desarrolladas
 en \textit{Java}\cite{JAVA_PLUGINS}.
-\newODR{La máquina virtual de Java (\textit{Java Virtual Machine, o JVM})} permite \textbf{vincular y desvincular} nuevo código externo
+La máquina virtual de Java (\textit{Java Virtual Machine, o JVM}) permite \textbf{vincular y desvincular} nuevo código externo
 usando las propias librerías proporcionadas por el \textit{SDK}.
 Aplicaciones como \textit{Spigot}\cite{SPIGOT} o \textit{Sponge}\cite{SPONGE} aprovechan esta
 tecnología para permitir que su comunidad desarrolle nuevos
 componentes.
 El procedimiento es sencillo: se crea una nueva clase que extienda a la
 clase deseada y se indica su ruta en un pequeño archivo.
-\delODR{La aplicación cargará una nueva instancia de la clase
-cuando la aplicación sea lanzada que actúa de
-\textbf{punto de entrada} para el componente.}
-\newODR{Cuando se lance la aplicación esta cargará una nueva instancia
-  de la clase, que actuará como \textbf{punto de entrada} para el componente.}
+Cuando se lance la aplicación esta cargará una nueva instancia
+de la clase, que actuará como \textbf{punto de entrada} para el componente.
 
 \subsection{Simuladores y emuladores}
 \label{subsec:simuladores-y-emuladores}
@@ -62,8 +58,8 @@ cuando la aplicación sea lanzada que actúa de
 Tanto los simuladores como los emuladores pueden definirse como un
 programa de computador que imita el funcionamiento de uno o varios
 componentes \textit{hardware}.
-Un emulador o simulador puede imitar una arquitectura, permitiendo
-ejecutar aplicaciones ajenas a la arquitectura del computador principal.
+Un emulador o simulador imita a una arquitectura, permitiendo
+ejecutar aplicaciones ajenas a la arquitectura del computador anfitrión.
 
 Es importante diferenciar los conceptos de \textbf{simulación}
 y \textbf{emulación} a la hora de crear un programa que ejecute
@@ -78,8 +74,7 @@ Los emuladores tienden a ser rápidos, intentando producir el resultado
 de la manera más rápida y fiel posible.
 
 Los simuladores tienen como objetivo \textbf{imitar el proceso}
-que produce el resultado, \delODR{simulando}\newODR{reproduciendo el
-  comportamiento de} todos los componentes de la arquitectura.
+que produce el resultado, simulando todos los componentes de la arquitectura.
 Los simuladores tienden a ser más lentos que los emuladores, pero son más
 adecuados para desarrollar y depurar aplicaciones para la arquitectura
 imitada sin tener el \textit{hardware} físicamente.
@@ -88,7 +83,7 @@ imitada sin tener el \textit{hardware} físicamente.
 \label{subsec:jams-just-another-mips-simulator}
 
 \textit{JAMS} es un \textbf{entorno de desarrollo integrado} especializado
-en \textbf{lenguajes ensamblador} y desarrollado en el Trabajo
+en \textbf{lenguajes ensambladores} y desarrollado en el Trabajo
 de Fin de Grado del Grado en Ingeniería de Computadores ligado
 a este Trabajo de Fin de Grado.\note{Óscar: yo no diría ``ligado'', y
   pondría una cita bibliográfica al otro TFG}
@@ -99,10 +94,9 @@ aplicaciones programadas en ensamblador \textit{MIPS32}.
 
 \section{Descripción del problema}\label{sec:descripcion-del-problema}
 
-\textit{JAMS}, aunque tenga una arquitectura modular y altamente
-flexible, no posee la capacidad de \textbf{vincular y desvincular}
-componentes, lo cual impide que otros desarrolladores expandan
-las capacidades del entorno de desarrollo.
+Aunque tiene una arquitectura modular y muy flexible, \textit{JAMS}
+no posee la capacidad de \textbf{vincular y desvincular}
+componentes, lo cual impide que otros desarrolladores expandan sus capacidades.
 
 Independientemente de la capacidad de carga de componentes,
 una arquitectura \textbf{nunca es completamente modificable} hasta que
@@ -113,7 +107,7 @@ todos los aspectos del entorno de desarrollo.
 La \textit{NES} es una consola muy importante para la historia
 del videojuego, con una gran comunidad de desarrolladores detrás
 de ella.
-Sorprendentemente, no existe ningún entorno de desarrollo que permita
+Sorprendentemente, no existe ningún entorno que permita
 \textbf{desarrollar, ensamblar y simular} videojuegos de manera sencilla.
 Lo más cercano que se puede encontrar son componentes
 para entornos de desarrollo generales con soporte básico de edición y
@@ -130,16 +124,15 @@ a los desarrolladores expandir las capacidades del entorno de desarrollo.
 También es necesario \textbf{estabilizar y mejorar}
 la arquitectura de \textit{JAMS}, creando un componente
 de prueba que cubra todos los aspectos del entorno de desarrollo.
-Este componente introducirá un \textbf{editor, ensamblador y simulador}
+Este componente introducirá \textbf{un editor, un ensamblador y un simulador}
 enfocados en la arquitectura de la consola \textit{NES}, permitiendo
 desarrollar videojuegos dentro de \textit{JAMS}.
 
-\delODR{En este apartado se detallarán diferentes objetivos.}\newODR{A
-  continuación se detallarán los diferentes objetivos parciales en los
-  que se ha descompuesto este objetivo principal.}
+A continuación se detallarán los diferentes objetivos parciales en los
+que se ha descompuesto este objetivo principal.
 
-\subsection{Desarrollar un sistema de vinculación de componentes para \textit{JAMS}}
-\label{subsec:desarrollar-un-sistema-de-vinculacion-de-componentes-para-jams}
+\subsection{Desarrollo de un sistema de vinculación de componentes para \textit{JAMS}}
+\label{subsec:desarrollo-de-un-sistema-de-vinculacion-de-componentes-para-jams}
 
 Este es el \textbf{primer objetivo} que se debe superar en el transcurso de este
 proyecto.
@@ -152,7 +145,7 @@ instalar y desinstalar componentes sin \textbf{tener que reiniciar la aplicació
     usando las librerías proporcionadas por el \textit{SDK} de \textit{Java}.
     \item Desarrollar un sistema de \textbf{proveedores}, permitiendo
     eliminar todos los elementos proporcionados por un componente
-    cuando este \delODR{es}\newODR{sea} desinstalado por el usuario.
+    cuando este sea desinstalado por el usuario.
 \end{itemize}
 
 \subsection{Desarrollo y mejora de tecnologías relacionadas con los componentes}
@@ -162,28 +155,27 @@ Este objetivo se centra en desarrollar y mejorar la tecnología de \textit{JAMS}
 para permitir a los componentes modificar todos los aspectos del entorno de
 desarrollo de una manera rápida y sencilla.
 
-Estas tecnologías se desarrollarán al mismo tiempo que el propio entorno
-de desarrollo \textit{JAMS} y el componente de prueba, produciendo así
-un código \textbf{limpio y robusto}.\note{Óscar: pero el desarrollo de
-  JAMS no es parte de este proyecto, así que esto no puedes decirlo así}
+El desarrollo de estas tecnologías ha provocado la necesidad de
+realizar modificaciones en el propio JAMS,
+obteniéndose finalmente como resultado un código limpio y robusto.
 
-\subsection{Desarrollar un entorno de desarrollo para la arquitectura \textit{NES}}
-\label{subsec:desarrollar-un-entorno-de-desarrollo-para-la-arquitectura-mips32}
+\subsection{Creación de un entorno de desarrollo para la arquitectura \textit{NES}}
+\label{subsec:creacion-de-un-entorno-de-desarrollo-para-la-arquitectura-mips32}
 
 Para conseguir una librería robusta, se ha decidido desarrollar un componente
-que proporcione a \textit{JAMS} un \textbf{editor}, \newODR{un}
-\textbf{ensamblador} y \newODR{un} \textbf{simulador}
+que proporcione a \textit{JAMS} un \textbf{editor}, un
+\textbf{ensamblador} y un \textbf{simulador}
 para la arquitectura de la consola \textit{NES}.
 Este nuevo entorno de desarrollo debe proporcionarse \textbf{íntegramente}
 mediante un componente que el usuario pueda instalar en la aplicación
 principal.
 Es decir, el código de \textit{JAMS} no debe proveer de ningún
 tipo de tecnología específica para el desarrollo de la \textit{NES},
-ni ninguna dependencia que requiera exclusivamente el componente.
+y tampoco debe existir en JAMS ninguna dependencia que requiera el uso de este componente.
 
 Este entorno de desarrollo será muy similar al proporcionado
-por \textit{JAMS} para la arquitectura \textit{MIPS32},  por lo que los
-subobjetivos son muy similares:
+por \textit{JAMS} para la arquitectura \textit{MIPS32}, por lo que los
+subobjetivos son muy parecidos:
 
 \begin{itemize}
     \item Desarrollar un editor, un ensamblador y un simulador
@@ -194,8 +186,8 @@ subobjetivos son muy similares:
     del editor, del ensamblador y del simulador.
 \end{itemize}
 
-A diferencia del entorno de desarrollo \textit{MIPS32}, \newODR{del
-  que ya dispone \emph{JAMS},} el entorno
+A diferencia del entorno de desarrollo \textit{MIPS32}, del
+  que ya dispone \emph{JAMS}, el entorno
 de desarrollo para la \textit{NES} sí tiene como objetivo permitir crear
 código válido que se pueda ejecutar en una consola real.
 
@@ -205,7 +197,7 @@ código válido que se pueda ejecutar en una consola real.
 \begin{figure}[h]
     \centering
     \includegraphics[width=\textwidth]{images/introduction/github}
-    \caption{Proyecto de \textit{GitHub} para la versión 0.4-BETA\note{Óscar: esta figura no la referencias en el texto: por lo tanto sobra.}}
+    \caption{Proyecto de \textit{GitHub} para la versión 0.4-BETA}
     \label{fig:introduccion-github}
 \end{figure}
 
@@ -223,13 +215,12 @@ código mientras la aplicación va evolucionando.
 Toda la metodología ha sido implementada mediante
 las herramientas proporcionadas por \textit{GitHub}.
 Los estados de las características asignadas a un \textit{sprint}
-\delODR{son documentados}\newODR{se documentan} mediante proyectos.
+se documentan mediante proyectos, como se observa en la figura \ref{fig:introduccion-github}.
 Las acciones obligan a que las pruebas unitarias deban superarse
 sin errores si se desea añadir una nueva característica a la rama principal.
 Estas acciones también se emplean para generar los binarios
-cuando \newODR{se supera} un \textit{sprint} \delODR{es superado} y
-\newODR{se lanza} una
-nueva versión de \textit{JAMS} \delODR{es lanzada}.
+cuando se supera un \textit{sprint} y se lanza una
+nueva versión de \textit{JAMS} .
 
 El componente con el entorno de desarrollo \textit{NES}
 también ha seguido esta filosofía, pero a menor escala, siendo el

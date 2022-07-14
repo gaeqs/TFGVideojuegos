@@ -520,14 +520,14 @@ las tablas de nombres\cite{NAME_TABLES} y las paletas\cite{PALETTES}.
 
 Las tablas de nombres tienen un tamaño de 32x32 bytes.
 Las 30 primeras filas guardan el índice del patrón
-a usar en la posición asignada a dicha dirección.
+utilizado en la posición asignada a dicha dirección.
 Las dos últimas filas almacenan el identificador de las
-paletas a usar en cada conjunto de 2x2 índices.
+paletas empleado en cada conjunto de 2x2 índices.
 
 La \textit{PPU} contiene en su memoria \textbf{dos tablas de nombre}
 (comunmente denominadas \textit{A} y \textit{B}),
 aunque tenga reservado direcciones de memoria para cuatro de ellas.
-Estas direcciones \textbf{redireccionarán} a la tabla
+Estas direcciones \textbf{apuntan} a la tabla
 \textit{A} o a la tabla \textit{B} dependiendo
 del \textbf{modo espejo}\cite{MIRRORING} especificado por el videojuego.
 Cabe destacar que existen videojuegos con memoria \textit{RAM}
@@ -569,13 +569,14 @@ En las paletas de los \textit{sprites}, el primer color
 se considera siempre transparente.
 
 Con esta configuración, la \textit{NES} genera una escena de juego
-con un fondo de 512x480 píxeles: cuatro veces más que la salida
+con un fondo de 512x480 píxeles, cuatro veces mayor que la salida
 de vídeo de la consola.
 La \textit{PPU} permite a los videojuegos desplazar la salida
 de vídeo por la escena con una precisión de píxel.
 Si el desplazamiento es tan grande que el área de renderizado
-sale de la escena, se produce un desbordamiento en la \textit{PPU}
-y la escena se repite.
+sale de la escena, se produce un desbordamiento en la \textit{PPU},
+de forma que la tabla de nombres actúa como una memoria circular
+y se dibuja en pantalla el fragmento de la escena que está en el lado contrario.
 Gracias a estas propiedades se puede crear videojuegos con
 un desplazamiento suave y fácil de implementar.
 
