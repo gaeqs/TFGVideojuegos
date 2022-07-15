@@ -300,15 +300,6 @@ un emisor por defecto.
 La clase $SimpleEventBroadcast$ contiene una implementación de $EventBroadcast$
 que puede utilizarse como superclase.
 
-\subsection{Definir escuchas}\label{subsec:definir-escuchas}
-
-Las escuchas son \textbf{métodos no estáticos marcados con la anotación @Listener}.
-Estos métodos solo tienen un parámetro que pide un elemento que extienda la clase
-$Event$ y deben devolver $void$.
-Este método, después de ser registrado en un gestor de idiomas,
-se ejecutará cuando se añada un nuevo idioma.
-En la figura \ref{fig:listener} se observa una escucha de ejemplo.
-
 \begin{figure}[h]
     \centering
     \begin{lstlisting}[frame=single,label={lst:listener},language=Kotlin]
@@ -322,6 +313,38 @@ fun onLanguageRegister(
     \caption{Objeto registrando un evento en el emisor general de \textit{JAMS}}
     \label{fig:listener}
 \end{figure}
+
+\subsection{Definir escuchas}\label{subsec:definir-escuchas}
+
+\begin{figure}[h]
+    \centering
+    \begin{lstlisting}[frame=single,label={lst:event-registration-use},language=Kotlin]
+class ObjectWithListeners {
+
+    init {
+        Jams.getGeneralEventBroadcast().registerListeners(
+            /* instance = */ this,
+            /* useWeakReferences = */ true
+        )
+    }
+
+    @Listener
+    private fun onEvent(event: Event) {
+        println("I received a new event! $event")
+    }
+
+}
+    \end{lstlisting}
+    \caption{Objeto registrando un evento en el emisor general de \textit{JAMS}}
+    \label{fig:event-registration}
+\end{figure}
+
+Las escuchas son \textbf{métodos no estáticos marcados con la anotación @Listener}.
+Estos métodos solo tienen un parámetro que pide un elemento que extienda la clase
+$Event$ y deben devolver $void$.
+Este método, después de ser registrado en un gestor de idiomas,
+se ejecutará cuando se añada un nuevo idioma.
+En la figura \ref{fig:listener} se observa una escucha de ejemplo.
 
 A diferencia de otros sistemas similares,
 el sistema de eventos de \textit{JAMS} permite usar \textbf{eventos genéricos}.
@@ -350,25 +373,20 @@ emisor deseado, tal y como se muestra en la figura \ref{fig:event-registration}.
 
 \begin{figure}[h]
     \centering
-    \begin{lstlisting}[frame=single,label={lst:event-registration-use},language=Kotlin]
-class ObjectWithListeners {
+    \begin{lstlisting}[frame=single,label={lst:tasks-execution},language=Kotlin]
+fun startTask(project: Project) {
+    project.taskExecutor.execute(
+        LanguageTask.of("MY_TITLE_LANGUAGE_NODE") {
+            Thread.sleep(1000)
 
-    init {
-        Jams.getGeneralEventBroadcast().registerListeners(
-            /* instance = */ this,
-            /* useWeakReferences = */ true
-        )
-    }
+            // Do things here!
 
-    @Listener
-    private fun onEvent(event: Event) {
-        println("I received a new event! $event")
-    }
-
+            Thread.sleep(1000)
+    })
 }
     \end{lstlisting}
-    \caption{Objeto registrando un evento en el emisor general de \textit{JAMS}}
-    \label{fig:event-registration}
+    \caption{Inicialización de una tarea con título}
+    \label{fig:tasks-execution}
 \end{figure}
 
 El método de registro pide dos variables: el objeto
@@ -382,6 +400,13 @@ combinado con el sistema de proveedores, las referencias débiles
 de las escuchas evitan que la aplicación mantenga elementos de un
 componente cuando este se desinstala.
 
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{images/tecnologias/jams-assembling}
+    \caption{\textit{JAMS} ejecutando una tarea de ensamblaje}
+    \label{fig:jams-assembling}
+\end{figure}
+
 Por último, cabe destacar que el método de registro
 busca todos los métodos de escucha de un objeto,
 \textbf{ampliando la búsqueda a los métodos de las clases padre}.
@@ -390,7 +415,6 @@ de manera sencilla.
 Si el desarrollador desea registrar un único método puede hacerlo
 con los métodos proporcionados, pero para ello se requieren
 conocimientos de la librería \textit{reflection} de \textit{Java}.
-
 
 \section{Tareas}\label{sec:tareas}
 
@@ -415,34 +439,9 @@ Cada proyecto presenta un ejecutor único por defecto,
 lo que permite los desarrolladores lanzar tareas de una
 manera sencilla, como se puede observar en la figura \ref{fig:tasks-execution}.
 
-\begin{figure}[h]
-    \centering
-    \begin{lstlisting}[frame=single,label={lst:tasks-execution},language=Kotlin]
-fun startTask(project: Project) {
-    project.taskExecutor.execute(
-        LanguageTask.of("MY_TITLE_LANGUAGE_NODE") {
-            Thread.sleep(1000)
-
-            // Do things here!
-
-            Thread.sleep(1000)
-    })
-}
-    \end{lstlisting}
-    \caption{Inicialización de una tarea con título}
-    \label{fig:tasks-execution}
-\end{figure}
-
 Las tareas creadas con la clase $LanguageTask$
 pueden tener un título y una descripción que cambian dependiendo
 del idioma seleccionado por el usuario.
 Ambos son visibles al usuario, y se muestran
 en la barra inferior de la ventana principal de \textit{JAMS},
 como se puede ver en la figura \ref{fig:jams-assembling}.
-
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=\textwidth]{images/tecnologias/jams-assembling}
-    \caption{\textit{JAMS} ejecutando una tarea de ensamblaje}
-    \label{fig:jams-assembling}
-\end{figure}
