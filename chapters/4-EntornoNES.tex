@@ -107,18 +107,6 @@ observar en la figura \ref{fig:nes-autocompletion}.
 
 \subsection{Editor de gráficos}\label{subsec:editor-de-graficos}
 
-\textit{PCX} es un formato de imagen desarrollado
-en el año 1985 que cuenta con una codificación \textit{run-length}.
-Actualmente, el formato ha caído en desuso, pero sus propiedades
-lo hacen un \textbf{gran candidato} para almacenar gráficos
-de la \textit{NES} antes de ser ensamblados.
-Esto se debe a su capacidad de codificar los colores mediante
-una \textit{paleta} de una manera sencilla.
-Al almacenar los valores de los píxeles como índices y no
-como colores, el formato \textit{PCX} se convierte en un
-candidato ideal para gráficos dependientes de una paleta
-externa, como es el caso de los gráficos de una \textit{NES}.
-
 El editor de archivos \textit{PCX} permite modificar los
 gráficos del videojuego de una manera rápida y sencilla.
 Este editor está pensado exclusivamente para gráficos
@@ -142,7 +130,7 @@ de 8x8 píxeles cada uno.
 Si se ensambla un archivo \textit{PCX} con otro ancho,
 lo más probable es que los gráficos se conviertan en
 \textbf{ruido}.
-Los archivo\newODR{s} \textit{PCX} creados por \textit{NES4JAMS}
+Los archivos \textit{PCX} creados por \textit{NES4JAMS}
 siempre tienen el tamaño de una tabla de patrones,
 es decir, de 128x128 píxeles.
 
@@ -155,14 +143,11 @@ es decir, de 128x128 píxeles.
 
 \subsection{Archivos iNES}\label{subsec:archivos-nes}
 
-El formato \textit{iNES} es el formato de archivo más utilizado
+Como ya se comentó en los antecedentes,
+el formato \textit{iNES} es el formato de archivo más utilizado
 para almacenar videojuegos para la consola \textit{NES}.
-Este formato comienza con una cabecera con los datos que suelen
-estar codificados en el propio cartucho, como puede ser el modo
-espejo, el controlador de memoria o la región.
-La cabecera también contiene el tamaño de la región del
-programa (\textit{PGR}) y la región de gráficos (\textit{CHR})
-que van detrás de ella.
+Los archivos con este formato están divididos en tres secciones:
+la cabecera, región del programa (\textit{PGR}) y la región de gráficos (\textit{CHR}).
 
 \textit{NES4JAMS} es capaz de \textbf{cargar y generar} archivos
 \textit{iNES} de manera nativa.
@@ -190,8 +175,7 @@ del videojuego con los parámetros modificados.
 \begin{figure}[h]
     \centering
     \includegraphics[width=0.8\textwidth]{images/nes/nes-configurations}
-    \caption{Menú de configuraciones\note{Insisto: tienes que
-        referenciar todas las figuras en el texto, y esta no lo está}}
+    \caption{Menú de configuraciones}
     \label{fig:nes-configurations}
 \end{figure}
 
@@ -450,7 +434,7 @@ de juego.
 Existen más de 250 tipos de controladores, cada
 uno con características específicas.
 Al permitir la \textit{NES} poder realizar operaciones de
-escritura \delODR{a}\newODR{en} memoria del cartucho, los controladores
+escritura en memoria del cartucho, los controladores
 pueden utilizar \textbf{registros} internos que cambian
 el comportamiento del cartucho.
 Esta técnica se usa principalmente para \textbf{alternar
@@ -513,8 +497,6 @@ Estas direcciones \textbf{apuntan} a la tabla
 del \textbf{modo espejo}\cite{MIRRORING} especificado por el videojuego.
 Cabe destacar que existen videojuegos con memoria \textit{RAM}
 extra en sus cartuchos, permitiendo añadir las tablas \textit{C} y \textit{D}.
-\note{Óscar: ¿para qué sirve todo esto, que pueda acceder a 4 tablas
-  de nombres, dos de ellas reflejo de las dos existentes?}
 
 \begin{figure}[h]
     \centering

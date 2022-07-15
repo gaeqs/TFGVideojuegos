@@ -24,8 +24,7 @@ los desarrolladores podían aumentar las capacidades de la \textit{NES} de maner
 añadiendo en el cartucho más memoria, chips de procesamiento específicos
 o canales de sonido.
 Estos chips reciben el nombre de \textbf{\textit{mapeadores}
-o controladores de memoria}.\cite{MAPPERS}\note{Óscar: en la entrada
-  bibliográfica deberías poner la fecha de consulta}.
+o controladores de memoria}.\cite{MAPPERS}.
 
 \subsection{Carga dinámica de componentes en aplicaciones \textit{Java}}
 \label{subsec:carga-dinamica-de-componentes-en-aplicaciones-java}
@@ -82,15 +81,29 @@ imitada sin tener el \textit{hardware} físicamente.
 \subsection{\textit{JAMS}: \textit{Just Another MIPS Simulator}}
 \label{subsec:jams-just-another-mips-simulator}
 
-\textit{JAMS} es un \textbf{entorno de desarrollo integrado} especializado
-en \textbf{lenguajes ensambladores} y desarrollado en el Trabajo
-de Fin de Grado del Grado en Ingeniería de Computadores ligado
-a este Trabajo de Fin de Grado.\note{Óscar: yo no diría ``ligado'', y
-  pondría una cita bibliográfica al otro TFG}
+\textit{JAMS}\cite{JAMS} es un \textbf{entorno de desarrollo integrado} especializado
+en \textbf{lenguajes ensambladores} y desarrollado en el Trabajo Fin de Grado
+del Grado en Ingeniería de Computadores de la misma
+autoría que este Trabajo Fin de Grado.
 \textit{JAMS} está desarrollado en \textit{Java}\cite{JAVA} junto
 con la librería para aplicaciones gráficas \textit{JavaFX}\cite{JAVAFX}.
 Por defecto, \textit{JAMS} únicamente permite desarrollar y simular
 aplicaciones programadas en ensamblador \textit{MIPS32}.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{images/introduction/jams-collage}
+    \caption{Diferentes aspectos de \textit{JAMS}}
+    \label{fig:jams-collage}
+\end{figure}
+
+El entorno de desarrollo está enfocado en \textbf{proyectos},
+con una estructura basada en pequeñas herramientas que pueden
+desplegarse desde los laterales de la ventana principal, como
+se muestra en la figura \ref{fig:jams-collage}.
+La aplicación es totalmente personalizable, pudiendo el usuario
+cambiar su idioma, su aspecto o su comportamiento desde
+su configuración.
 
 \section{Descripción del problema}\label{sec:descripcion-del-problema}
 

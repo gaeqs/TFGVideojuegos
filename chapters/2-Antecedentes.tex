@@ -1,6 +1,6 @@
 \chapter{Antecedentes}\label{ch:antecedentes}
 
-\note{Óscar: tus antecedentes son cortos. Comentarlo. Igual puedes comentar aquí algo sobre JAMS}
+
 \section{Antecedentes en los sistemas de componentes}
 \label{sec:antecedentes-en-los-sistemas-de-componentes}
 
@@ -90,4 +90,30 @@ Algunas de estas herramientas son las siguientes:
     videojuegos de la \textit{NES}.
     La aplicación cuenta con funciones para recrear escenas
     mediante los \textit{tilesets} creados.
+\end{itemize}
+
+En el desarrollo para la consola \textit{NES} también se utiliza
+una serie de formatos de archivos comunes:
+
+\begin{itemize}
+    \item \textbf{Archivos \textit{PCX}}: \textit{PCX} es un formato de imagen desarrollado
+    en el año 1985 que cuenta con una codificación \textit{run-length}.
+    Actualmente, el formato ha caído en desuso, pero sus propiedades
+    lo hacen un \textbf{gran candidato} para almacenar gráficos
+    de la \textit{NES} antes de ser ensamblados.
+    Esto se debe a su capacidad de codificar los colores mediante
+    una \textit{paleta} de una manera sencilla.
+    Al almacenar los valores de los píxeles como índices y no
+    como colores, el formato \textit{PCX} se convierte en un
+    candidato ideal para gráficos dependientes de una paleta
+    externa, como es el caso de los gráficos de una \textit{NES}.
+    \item \textbf{Archivos \textit{iNES}}: \textit{iNES}
+    es el formato de archivo más utilizado
+    para almacenar videojuegos para la consola \textit{NES}.
+    Este formato comienza con una cabecera con los datos que suelen
+    estar codificados en el propio cartucho, como puede ser el modo
+    espejo, el controlador de memoria o la región.
+    La cabecera también contiene el tamaño de la región del
+    programa (\textit{PGR}) y la región de gráficos (\textit{CHR})
+    que van detrás de ella.
 \end{itemize}
