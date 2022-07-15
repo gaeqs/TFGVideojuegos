@@ -1,14 +1,14 @@
 \chapter{Entorno de desarrollo \textit{NES}}\label{ch:entorno-de-desarrollo-nes}
 
-En este capítulo se abordará el desarrollo de \textit{NES4JAMS},
+En este capítulo se abordará el análisis del desarrollo de \textit{NES4JAMS},
 un componente que aporta a \textit{JAMS} un entorno de desarrollo
-integrado para la creación de videojuegos \delODR{de}\newODR{para} la consola
+integrado para la creación de videojuegos para la consola
 \textit{NES}.
 Gracias a la arquitectura de \textit{JAMS}, este componente
-aprovechará muchas de las características desarrolladas
+aprovechará muchas de las características creadas
 para el entorno de desarrollo \textit{MIPS32} presente
 por defecto en la aplicación.
-Este entorno de desarrollo consistirá \delODR{de}\newODR{en} un editor
+Este entorno de desarrollo consistirá en un editor
 de texto, un ensamblador y un simulador.
 
 
@@ -23,9 +23,9 @@ de texto, un ensamblador y un simulador.
     \label{fig:nes-project-creation}
 \end{figure}
 
-\textit{NES4JAMS} añade \newODR{a \emph{JAMS}} un nuevo tipo de proyecto
+\textit{NES4JAMS} añade a \emph{JAMS} un nuevo tipo de proyecto
 que incorpora todas las herramientas para el desarrollo
-de videojuegos \delODR{de}\newODR{para} \textit{NES}.
+de videojuegos para \textit{NES}.
 Los usuarios podrán crear nuevos proyectos de este tipo
 desde el menú de creación de proyectos.
 Como los proyectos de \textit{NES} están destinados
@@ -34,28 +34,24 @@ especificar \textbf{el nombre y la localización del proyecto},
 como se puede observar en la figura \ref{fig:nes-project-creation}.
 
 Una vez creado el proyecto, \textit{JAMS} mostrará una ventana
-principal muy similar a la de los proyectos \textit{MIPS32}. \note{Y
-  por comentarios como este creo que hay que dedicar algo más de
-  espacio a introducir JAMS en el estado del arte, porque el lector no
-  tiene ni idea de cómo es la ventana principal de JAMS en los
-  proyectos MIPS32}
+principal muy similar a la de los proyectos \textit{MIPS32}.
 
 
 \section{Editor}\label{sec:editor}
 
-Los desarrolladores de videojuegos \delODR{de}\newODR{para} \textit{NES} trabajan con
-dos tipos de archivo\newODR{s} principales: los archivos \textit{asm}
+Los desarrolladores de videojuegos para \textit{NES} trabajan con
+dos tipos de archivos principales: los archivos \textit{asm}
 para el código y los archivos \textit{pcx} para los gráficos.
 \textit{NES4JAMS} permite al usuario editar los dos tipos de archivo
 de manera sencilla.
 
 Cuando el usuario desea editar uno de estos archivos,
 debe seleccionarlo en la herramienta \textbf{explorador}.
-Esta herramienta muestra una representación en forma de árbol
-de la estructura del proyecto.
+Esta herramienta muestra una representación de la
+estructura del proyecto en forma de árbol.
 El usuario puede expandir y contraer carpetas, así como crear,
 borrar y mover archivos.
-Si el usuario usa el doble clic sobre un archivo editable, este se abrirá
+Si el usuario hace doble clic sobre un archivo editable, este se abrirá
 en el editor.
 Dependiendo del tipo de archivo, el editor será diferente,
 como se puede observar en la figura \ref{fig:nes-editor}.
@@ -73,18 +69,18 @@ del proyecto.
 Una de las opciones más particulares es la opción de añadir o eliminar
 archivos de código o de gráficos del ensamblador.
 Al ser \textit{JAMS} un entorno de desarrollo basado en \textbf{proyectos},
-se ha de proporcionar una manera de incluir o excluir archivos del
+es necesario proporcionar una manera de incluir o excluir archivos del
 videojuego resultante.
-Con este simple sistema, el usuario podrá elegir qué archivos se debe ensamblar.
-Los archivos a ensamblar estarán marcados en \textbf{verde} en el explorador,
-y aparecerán en orden en los nodos \textbf{Archivos a ensamblar} y
-\textbf{\textit{Sprites} a ensamblar}.
-Cabe destacar que, como se verá más adelante, los el orden de ensamblaje
-importa, por lo que esta herramienta permite ordenarlos de una manera sencilla.
+Con este sistema tan sencillo, el usuario podrá elegir qué archivos es preciso ensamblar.
+Estos archivos para ensamblar estarán marcados en \textbf{verde} en el explorador,
+y aparecerán en orden en los nodos \textbf{Archivos para ensamblar} y
+\textbf{\textit{Sprites} para ensamblar}.
+Cabe destacar que, como se verá más adelante, el orden de ensamblaje
+importa, por lo que esta herramienta permite ordenar los ficheros de una manera sencilla.
 
 Una vez el usuario abra un archivo, su editor aparecerá en la herramienta
 principal de la sección: \textbf{el visualizador de archivos}.
-\textit{NES4JAMS} \delODR{implementa}\newODR{incorpora/añade} dos editores nuevos a \textit{JAMS}:
+\textit{NES4JAMS} añade dos editores nuevos a \textit{JAMS}:
 el editor de código \textit{MOS 6502} y el editor de gráficos \textit{PCX}.
 
 \subsection{Editor de código}\label{subsec:editor-de-codigo}
@@ -95,8 +91,8 @@ puede considerarse un \textbf{editor de texto inteligente}:
 el editor convierte el texto puro en los componentes ensamblador
 representados, pudiendo así aportar ayudas al usuario.
 El editor también tiene conocimiento de las referencias y el alcance de
-todas las etiquetas y macros, tanto en el propio archivo a editar
-como en el resto de archivos a ensamblar.
+todas las etiquetas y macros, tanto en el propio archivo editado
+como en el resto de archivos fuente del proyecto.
 El editor también incorpora un \textbf{autocompletador}.
 Esta herramienta ayuda al usuario cuando escribe código
 aportando sugerencias de autocompletación, como se puede
@@ -111,7 +107,7 @@ observar en la figura \ref{fig:nes-autocompletion}.
 
 \subsection{Editor de gráficos}\label{subsec:editor-de-graficos}
 
-El formato \textit{PCX} es un formato de imagen desarrollado
+\textit{PCX} es un formato de imagen desarrollado
 en el año 1985 que cuenta con una codificación \textit{run-length}.
 Actualmente, el formato ha caído en desuso, pero sus propiedades
 lo hacen un \textbf{gran candidato} para almacenar gráficos
@@ -126,14 +122,13 @@ externa, como es el caso de los gráficos de una \textit{NES}.
 El editor de archivos \textit{PCX} permite modificar los
 gráficos del videojuego de una manera rápida y sencilla.
 Este editor está pensado exclusivamente para gráficos
-de \textit{NES}, por lo que cada pixel solo puede tomar
-cuatro valores diferentes.\note{Óscar: ¿cuáles? No puedes presuponer
-  que el lector conoce sobradamente el formato PCX. Quizá deberías
-  explicar ciertos detalles de la NES, como cuántos colores tenía, etc}
+de \textit{NES} (patrones a los que se les aplica una
+paleta de cuatro colores), por lo que cada pixel solo puede tomar
+cuatro valores diferentes.
 El color final se buscará en la paleta seleccionada.
-El usuario puede cambiar el color de cada valor de la
+El usuario puede cambiar el color de cada elemento de la
 paleta utilizando el botón central del ratón sobre
-la casilla a cambiar.
+la entrada seleccionada.
 Por motivos de accesibilidad, el usuario también puede
 cambiar el color empleando el botón principal del
 ratón mientras mantiene pulsada la tecla $Ctrl$.
@@ -165,9 +160,9 @@ para almacenar videojuegos para la consola \textit{NES}.
 Este formato comienza con una cabecera con los datos que suelen
 estar codificados en el propio cartucho, como puede ser el modo
 espejo, el controlador de memoria o la región.
-Esta cabecera también contiene el tamaño de la región del
+La cabecera también contiene el tamaño de la región del
 programa (\textit{PGR}) y la región de gráficos (\textit{CHR})
-que prosiguen a la cabecera.
+que van detrás de ella.
 
 \textit{NES4JAMS} es capaz de \textbf{cargar y generar} archivos
 \textit{iNES} de manera nativa.
@@ -183,12 +178,11 @@ el editor mostrado en la figura \ref{fig:nes-ines-editor}.
 
 En este editor el usuario podrá ejecutar una simulación
 para el videojuego seleccionado, permitiéndole \textbf{modificar}
-los parámetros de la cabecera del videojuego a cargar.
+parámetros de cabecera.
 El usuario también tiene la opción de \textbf{exportar las tablas
 de patrones} del cartucho en un archivo \textit{PCX}.
-Una previsualización de estas tablas se puede observar en la parte
-derecha del editor.
-Por último, el editor \delODR{da}\newODR{ofrece} la opción de \textbf{guardar una copia}
+Se puede observar una previsualización de estas tablas en la parte derecha del editor.
+Por último, el editor ofrece la opción de \textbf{guardar una copia}
 del videojuego con los parámetros modificados.
 
 \subsection{Configuraciones}\label{subsec:configuraciones}
@@ -214,37 +208,38 @@ De manera muy similar a las directivas \textit{.text}
 y \textit{.data} de \textit{MIPS32}, el desarrollador podrá
 alternar entre bancos de memoria usando la directiva \textit{.bank}.
 
-\textit{NES4JAMS} también incorpora una opción que impide a un
-banco de memoria ser escrito en el cartucho.
+\textit{NES4JAMS} también incorpora una opción que impide copiar un
+banco de memoria en el cartucho.
 Esta funcionalidad es muy importante para algunos videojuegos
 avanzados, ya que les permite utilizar un banco de memoria como
 una representación de una \textbf{memoria RAM} adicional
 dentro del cartucho.
 
+La interfaz usada para modificar estas configuraciones puede observarse
+en la figura \ref{fig:nes-configurations}.
 
-\section{Ensamblador}\label{sec:ensamblador}
 
-El ensamblador para el lenguaje ensamblador \textit{MOS 6502}
-es el ensamblador usado para ensamblar videojuegos para la \textit{NES}.
+\section{Ensamblador \textit{MOS 6502}}\label{sec:ensamblador}
+
+El ensamblador para el procesador \textit{MOS 6502} se utiliza
+para convertir los proyectos en archivos \textit{iNES}.
 Este ensamblador soporta características avanzadas empleadas
-comúnmente al programar en ensamblador, como las macros,
+comúnmente al programar, como las macros,
 las etiquetas globales o las referencias relativas.
-El ensamblador ensambla el código de un proyecto en \textbf{cuatro pasos}:
+El código fuente de un proyecto se ensambla en \textbf{cuatro pasos}:
 descubrimiento, expansión, asignación de direcciones y asignación de valores.
 Estos son los mismos pasos que utiliza el ensamblador para \textit{MIPS32},
-y es que este ensamblador presenta \textbf{la misma arquitectura}
-que el ensamblador presente por defecto en \textit{JAMS}.
-\note{Óscar: En este párrafo hay mucho ``ensamblador''. Hay que redactarlo
-  nuevamente ;)}
+y es que el del \textit{MOS 6502} presenta \textbf{la misma arquitectura}
+que el incluido por defecto en \textit{JAMS}.
 
 \subsection{Descubrimiento}\label{subsec:descubrimiento}
 
 En este paso el texto del proyecto se \textbf{descompone en sus primitivas},
-permitiendo al ensamblador entender los diferentes componentes de cada línea.
+permitiendo al ensamblador descubrir los diferentes componentes de cada línea.
 Al final de este paso, las etiquetas globales y las etiquetas del archivo
 (etiquetas no definidas dentro de una macro) \textbf{son registradas sin
 ningún valor asignado}.
-Las macros de cada archivo también son registradas.
+También se registran las macros de cada archivo.
 El identificador de una macro es definido por su nombre concatenado
 al número de parámetros que necesitan.
 Este procedimiento se realiza para dar soporte a la sobrecarga de macros.
@@ -254,15 +249,15 @@ $print-1$.
 Cabe destacar que, a diferencia del ensamblador para \textit{MIPS32},
 las etiquetas pueden hacer referencia a una dirección de memoria
 o a una \textbf{equivalencia}.
-Estas equivalencias relacionan una etiqueta \delODR{a}\newODR{con} una expresión matemática
-que a la vez puede \delODR{usar}\newODR{hacer uso de} otras etiquetas para calcular su valor.
+Estas equivalencias relacionan una etiqueta con una expresión matemática
+que a la vez puede hacer uso de otras etiquetas para calcular su valor.
 
 \subsection{Expansión}\label{subsec:expansion}
 
-En este paso, las llamadas a macros son invocadas,
+En este paso, se invocan las llamadas a macro,
 insertando el código de la macro en la posición de la llamada.
-Este código efectúa el primer paso del ensamblador mientras es añadido.
-Al ser insertado justo después de la llamada, el código de la macro
+Este código efectúa el primer paso del ensamblaje mientras es añadido.
+Al insertarse justo después de la llamada, el código de la macro
 también será expandido.
 
 \subsubsection{Alcance}\label{subsubsec:alcance}
@@ -285,7 +280,7 @@ Esta funcionalidad es llamada \textbf{ocultamiento o \textit{shadowing}}.
 
 Una vez el ensamblador haya expandido las macros,
 se asignan las direcciones de todas las instrucciones,
-etiquetas y directivas que requieran dirección.
+etiquetas y directivas que lo requieran.
 Estas direcciones se asignan de manera secuencial.
 Existen directivas que pueden modificar el flujo de la asignación,
 como es el caso de la directiva $.bank$ anteriormente mencionada.
@@ -305,40 +300,41 @@ por el usuario, los bancos de memoria especificados como memoria
 \textit{ROM} y los gráficos traducidos a tablas de patrones.
 Este archivo está situado en los archivos del simulador, lo que
 permite que el desarrollador pueda distribuir su videojuego
-y usarlo en otros emuladores.
+y utilizarlo en otros emuladores.
 
 \subsection{Características avanzadas}\label{subsec:características-avanzadas}
 
 El ensamblador permite el uso de técnicas avanzadas en
-el desarrollo de aplicaciones en lenguaje ensamblador\newODR{, como
-  las que se detallan a continuación}.
+el desarrollo de aplicaciones en lenguaje ensamblador, como
+las que se detallan a continuación.
 
-\note{Óscar: yo no haría subsubsections, porque son epígrafes muy
-  cortos. ¿Qué tal como ítems?}
-\subsubsection{Referencias relativas}\label{subsubsec:referencias-relativas}
-
-Una directiva o instrucción puede \textbf{referenciar a una etiqueta de manera
-relativa} con las referencias especiales $+$ y $-$.
-La referencia $+$ hace referencia a la etiqueta siguiente.
-La referencia $-$ hace referencia a la etiqueta anterior.
-Las referencias relativas \textbf{solo pueden hacer referencia
-a etiquetas del mismo alcance}.
-No pueden hacer referencia a etiquetas de un alcance mayor.
-
-\subsubsection{Macros anidadas}\label{subsubsec:macros-anidadas}
-
-Una macro puede ser definida dentro de otra macro.
-Esto es conocido como una \textbf{macro anidada}.
-Esta macro solo podrá ser accedida en el alcance de la macro
-en la que está declarada.
-
-\subsubsection{Expresiones}\label{subsubsec:expresiones}
-
-Las expresiones son la característica más avanzada
-presente en el ensamblador.
-Esta característica permite deducir el valor
-de una instrucción o directiva mediante una \textbf{expresión matemática}
-que puede usar etiquetas como parámetros.
+\begin{itemize}
+    \item \textbf{Referencias relativas}: una directiva o instrucción puede \textbf{referenciar a una etiqueta de manera
+    relativa} con las referencias especiales $+$ y $-$.
+    La referencia $+$ hace referencia a la etiqueta siguiente.
+    La referencia $-$ hace referencia a la etiqueta anterior.
+    Las referencias relativas \textbf{solo pueden hacer referencia
+    a etiquetas del mismo alcance}.
+    No pueden hacer referencia a etiquetas de un alcance mayor.
+    \item \textbf{Macros anidadas}: una macro puede ser definida dentro de otra macro.
+    Esto es conocido como una \textbf{macro anidada}.
+    Una macro anidada solo podrá ser accedida en el alcance de la macro
+    en la que está declarada.
+    \item \textbf{Expresiones}: las expresiones son la característica más avanzada
+    presente en el ensamblador, y permite deducir el valor
+    de una instrucción o directiva mediante una \textbf{expresión matemática}
+    que puede usar etiquetas como parámetros.
+    Los usuarios pueden emplear una gran variedad de operaciones
+    en las expresiones, como son la suma, la resta, la multiplicación,
+    la división y las operaciones lógicas a nivel de bit.
+    También existen operaciones \textbf{unarias}, como son
+    la conversión de un número en byte o palabra,
+    la negación a nivel de bit o la selección del
+    primer o segundo byte de una palabra.
+    Estas expresiones se utilizan de manera directa en las
+    instrucciones y directivas, como se observa en
+    la figura \ref{fig:nes-expressions}.
+\end{itemize}
 
 \begin{figure}[h]
     \centering
@@ -347,24 +343,12 @@ que puede usar etiquetas como parámetros.
     \label{fig:nes-expressions}
 \end{figure}
 
-Los usuarios pueden emplear una gran variedad de operaciones
-en las expresiones, como son la suma, la resta, la multiplicación,
-la división u operaciones lógicas a nivel de bit.
-También existen operaciones \textbf{unarias}, como son
-la conversión de un número en byte o palabra,
-la negación a nivel de bit o la selección del
-primer o segundo byte de una palabra.
-
-Estas expresiones se utilizan de manera directa en las
-instrucciones y directivas, como se puede observar en
-la figura \ref{fig:nes-expressions}.
-
 \subsection{Detalles finales}\label{subsec:detalles-finales}
 
 A diferencia del ensamblador para \textit{MIPS32},
 este ensamblador no es muy personalizable.
 Esto es debido a que \textit{NES4JAMS} pretende
-ser un entorno de desarrollo \delODR{para}\newODR{de} videojuegos \delODR{de}\newODR{para} la \textit{NES}
+ser un entorno de desarrollo de videojuegos para la \textit{NES}
 que puedan ejecutarse en \textbf{consolas reales}.
 \textit{NES4JAMS} da soporte para todas las
 \textbf{instrucciones legales} presentes en la consola,
@@ -376,7 +360,7 @@ de terceros.
 
 Un simulador es una pieza de \textit{software} que imita el
 comportamiento de un dispositivo.
-\textit{NES4JAMS} introduce un emulador de la arquitectura
+\textit{NES4JAMS} introduce un simulador de la arquitectura
 de la consola \textit{NES} que permite jugar y depurar
 una gran variedad de videojuegos.
 
@@ -393,11 +377,10 @@ en cada \textbf{ciclo de reloj}.
 
 \subsection{Estructura del simulador}\label{subsec:estructura-del-simulador}
 
-\delODR{El simulador para la consola \textit{NES} no presenta un visualizador
-de instrucciones como nodo principal, si no}\newODR{El nodo principal del simulador para la consola \emph{NES} no
-  es un visualizador de instrucciones, sino} una herramienta que
-simula la \textit{salida de vídeo} de la consola.
-
+El nodo principal del simulador para la consola \emph{NES} no
+es un visualizador de instrucciones, sino una herramienta que
+simula la \textit{salida de vídeo} de la consola y que puede
+observarse en la figura \ref{fig:nes-video}.
 
 \begin{figure}[h]
     \centering
@@ -409,10 +392,10 @@ simula la \textit{salida de vídeo} de la consola.
 A diferencia de los cauces gráficos actuales, la \textit{NES}
 compone la imagen de salida generando \textbf{un pixel} cada
 ocho ciclos de reloj de la \textit{PPU}.
-Este comportamiento, junt\delODR{ad}o con otras características como
+Este comportamiento, junto con otras características como
 la generación de interrupciones de la unidad central
 por parte de la propia \textit{PPU}, hace imposible usar
-herramientas de renderizado avanzadas, como las proporcionadas
+herramientas de renderizado avanzadas como las proporcionadas
 por librerías como \textit{Vulkan} u \textit{OpenGL}.
 
 La única manera de renderizar la salida de vídeo de la \textit{NES}
@@ -421,22 +404,18 @@ utilizado por la \textit{CPU}.
 De esta manera, la \textit{PPU} ejecuta una cantidad de ciclos
 determinada por la región por cada ciclo de \textit{CPU}.
 
-\textit{JavaFX} no tiene una manera óptima de modificar
-imágenes de manera constante.
+\textit{JavaFX} no está optimizada para modificar imágenes en movimiento.
 La herramienta de vídeo emplea una versión \textbf{muy modificada}
 de las imágenes proporcionadas por la librería,
-permitiendo así modificar una imagen una cantidad muy alta
-de veces por segundo.\note{Óscar: ¿Qué quieres decir en este párrafo?
- ¿Qué significa ``una manera óptima de modificar imágenes de manera
-  constante''? Etc.}
+permitiendo así modificar una imagen muchas veces por segundo
+de manera constante.
 
-Esta salida de vídeo es complementada por dos herramientas principales:
+Esta salida de vídeo se complementa con dos herramientas principales:
 la herramienta \textit{memoria} y la herramienta \textit{PPU}.
-Existen otras herramientas más secundarias, como la \textit{consola}, que permite
+Existen otras herramientas secundarias, como la \textit{consola}, que permite
 visualizar el resultado de la simulación cuando se para, o
-la \textit{información}, que permite visualizar las imágenes por segundo
-de la salida de vídeo.\note{Óscar: ¿por qué ``imágenes por segundo''?
-  ¿Qué quieres decir?}
+la \textit{información}, que permite visualizar el número de imágenes por segundo
+mostradas en la salida de vídeo.
 
 \subsection{Memoria}\label{subsec:memoria}
 
@@ -448,7 +427,7 @@ las instrucciones del videojuego,
 y la memoria de los gráficos (\textit{CHR}), donde se guardan
 las tablas de patrones.
 A su vez, la memoria \textit{VRAM} o \textit{RAM} de la \textit{PPU}
-está también dividida en dos secciones:
+se divide también en dos secciones:
 las tablas de nombres y las paletas de colores.
 
 La consola presenta \textbf{dos buses de datos}:
@@ -465,9 +444,10 @@ del cartucho, a las tablas de nombres y a las paletas
 de colores.
 
 La memoria de los cartuchos que visualizan la \textit{CPU}
-y la \textit{PPU} suelen pasar por un controlador de memoria.
-Este controlador de memoria está situado dentro de cada cartucho
-de juego, y existen más de 250 tipos de controladores, cada
+y la \textit{PPU} suelen pasar por un controlador de memoria,
+que está situado dentro de cada cartucho
+de juego.
+Existen más de 250 tipos de controladores, cada
 uno con características específicas.
 Al permitir la \textit{NES} poder realizar operaciones de
 escritura \delODR{a}\newODR{en} memoria del cartucho, los controladores
@@ -495,12 +475,12 @@ El usuario también puede \textbf{escribir} valores en una
 dirección de memoria.
 Esta escritura se tratará como una escritura de la \textit{CPU}
 o la \textit{PPU}, dependiendo del punto de vista seleccionado.
-Por este motivo, existen escrituras hechas desde uno de estos
+Por este motivo, existen escrituras realizadas desde uno de estos
 dos puntos de vista que resultarán \textbf{sin efecto} alguno,
 ya que se intentará modificar valores como los bancos de memoria
-del cartucho, los cuales están considerados memoria de solo
+del cartucho, considerados como memoria de solo
 lectura por ambos componentes.
-Si el usuario desea modificar los bancos de memoria, este puede
+Si el usuario desea modificar los bancos de memoria, puede
 hacerlo desde la visualización directa.
 
 \subsection{Unidad de procesamiento de imágenes}\label{subsec:unidad-de-procesamiento-de-imagenes}
@@ -508,8 +488,8 @@ hacerlo desde la visualización directa.
 La \textit{PPU}\cite{PPU} es la unidad de procesamiento encargada de generar
 la salida de vídeo.
 Debido a la escasa memoria presente en la \textit{VRAM}, la \textit{PPU}
-está diseñada para ahorrar \textbf{la mayor memoria posible}.
-Esto lo consigue construyendo la escena usando un complejo
+está diseñada para ahorrar \textbf{la mayor cantidad de memoria posible}.
+Esto lo consigue construyendo la escena mediante un complejo
 sistema de paletas y tablas de patrones.
 
 \subsubsection{Fondo de la escena}\label{subsubsec:fondo-de-la-escena}
@@ -523,9 +503,10 @@ Las 30 primeras filas guardan el índice del patrón
 utilizado en la posición asignada a dicha dirección.
 Las dos últimas filas almacenan el identificador de las
 paletas empleado en cada conjunto de 2x2 índices.
+De esta manera se genera un escenario de 32x30 patrones.
 
 La \textit{PPU} contiene en su memoria \textbf{dos tablas de nombre}
-(comunmente denominadas \textit{A} y \textit{B}),
+(comúnmente denominadas \textit{A} y \textit{B}),
 aunque tenga reservado direcciones de memoria para cuatro de ellas.
 Estas direcciones \textbf{apuntan} a la tabla
 \textit{A} o a la tabla \textit{B} dependiendo
@@ -552,19 +533,19 @@ extra en sus cartuchos, permitiendo añadir las tablas \textit{C} y \textit{D}.
 Las tablas de patrones permiten guardar 16x16 patrones de
 8x8 píxeles cada uno.
 Cada pixel ocupa 2 bits de memoria, por lo que una tabla
-de patrones ocupa la pequeña cantidad de 4 KiB.
+de patrones ocupa 4 KiB.
 La \textit{NES} presenta \textbf{dos tablas de patrones}, siendo
-por defecto la primera utilizada para el fondo y la segunda utilizada
+por defecto la primera utilizada para el fondo y la segunda
 para los \textit{sprites}.
 
 Por último, la \textit{NES} contiene \textbf{ocho paletas}
 de cuatro colores cada una.
-Las cuatro primeras paletas son usadas para el fondo,
-mientras que las cuatro últimas son usadas para los \textit{sprites}.
+Las cuatro primeras paletas se usan para el fondo,
+mientras que las cuatro últimas se emplean para los \textit{sprites}.
 El primer color de las paletas tiene un comportamiento especial:
 en las paletas de fondo, este color siempre es el mismo,
 leyendo la \textit{PPU} siempre el color de la primera paleta.
-Este color es considerado el color base de la escena.
+Se considera este color como el color base de la escena.
 En las paletas de los \textit{sprites}, el primer color
 se considera siempre transparente.
 
@@ -584,9 +565,9 @@ un desplazamiento suave y fácil de implementar.
 
 La \textit{PPU} contiene una memoria exclusiva para guardar
 los atributos de los \textit{sprites}.
-Esta memoria es llamada \textit{OAM} u \textit{Object Attribute Memory}\cite{OAM},
+Esta memoria recibe el nombre de \textit{OAM} u \textit{Object Attribute Memory}\cite{OAM},
 y es capaz de almacenar hasta 64 \textit{sprites}.
-Cada \textit{sprite} ocupa 4 bytes de memoria, en donde se
+Cada \textit{sprite} ocupa 4 bytes de memoria, donde se
 definen atributos como el índice del patrón o la posición en la escena.
 
 Cabe destacar la posición de los \textit{sprites} es
@@ -607,7 +588,7 @@ cuando la escena se desplaza.
 
 La herramienta \textbf{PPU} del simulador permite
 visualizar las tablas de patrones, las tablas de nombres
-y las paletas que están actualmente en memoria.
+y las paletas que residen actualmente en memoria.
 Estos datos se actualizan \textbf{en cada fotograma},
 lo que permite detectar los cambios en la \textit{PPU}
 de una manera muy visual.
@@ -619,10 +600,10 @@ el usuario puede seleccionar una paleta de la lista.
 Esto hará que las tablas de patrones \textbf{usen la paleta seleccionada}.
 Muchos videojuegos modifican algunas paletas cada poco tiempo
 para crear pequeñas animaciones.
-Este es el caso de las monedas en \textit{Super Mario Bros.}, las cuales
+Este es el caso de las monedas en \textit{Super Mario Bros.}, que
 cambian de color cíclicamente.
 Si la paleta seleccionada está siendo animada, las tablas de patrones
-cambiarán de color respectivamente.
+cambiarán de color de forma alternativa.
 
 \subsection{Audio}\label{subsec:audio}
 
@@ -633,11 +614,11 @@ un canal triangular y un canal de ruido.
 
 En la consola original, los cuatro canales generaban una muestra
 por cada ciclo de reloj de la \textit{CPU}, lo que equivaldría
-a \textbf{1.77 millones de muestras por minuto}.
+a \textbf{1,77 millones de muestras por minuto}.
 Esta cantidad de muestras es innecesaria en un equipo de sonido
 moderno, y su reproducción resulta inviable en las librerías
 modernas.
-Es por eso que \textit{NES4JAMS} rebaja la cantidad de datos comprimiendo
+Por ello \textit{NES4JAMS} rebaja la cantidad de datos comprimiendo
 todas las muestras de un periodo de tiempo en una media ponderada.
 
 \subsection{Unidad de procesamiento central}\label{subsec:unidad-de-procesamiento-central}
@@ -650,8 +631,8 @@ de procesamiento central de 8 bits muy utilizada a principio
 de los años 80.
 
 Aunque el número de instrucciones documentadas por \textit{MOS Technologies}
-sean 151, existen \textbf{instrucciones no oficiales}, producto del diseño
-del procesador, lo que sube el número de instrucciones a 256.
+sea de 151, existen \textbf{instrucciones no oficiales}, producto del diseño
+del procesador, lo que aumenta el número de instrucciones a 256.
 \textit{NES4JAMS} actualmente \textbf{no soporta} este tipo de instrucciones,
-lo que puede impedir simular ciertos juegos que hacen uso de ellas.
+lo que puede impedir simular ciertos juegos las utilizan.
 
